@@ -1,0 +1,5 @@
+﻿shieldmaids_for_all = {
+	default = shieldmaids_default
+	shieldmaids_for_all = {}
+	shieldmaids_default = {}
+}

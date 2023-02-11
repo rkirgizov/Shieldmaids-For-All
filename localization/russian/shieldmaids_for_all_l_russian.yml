@@ -1,0 +1,7 @@
+﻿l_russian:
+#  Rules
+  rule_shieldmaids_for_all:0 "#X SFA:#! Доступность воительниц"
+  setting_shieldmaids_default:0 "По умолчанию"
+  setting_shieldmaids_default_desc:0 "Как в оригинальной игре. SFA отключен."
+  setting_shieldmaids_for_all:0 "Все культуры"
+  setting_shieldmaids_for_all_desc:0 "Воительницы могут быть во всех культурах."

@@ -1,0 +1,7 @@
+﻿l_english:
+#  Rules
+  rule_shieldmaids_for_all:0 "Availability of schildmaids"
+  setting_shieldmaids_default:0 "By default"
+  setting_shieldmaids_default_desc:0 "As in the original game"
+  setting_shieldmaids_for_all:0 "All cultures"
+  setting_shieldmaids_for_all_desc:0 "Shieldmaids can be found in all cultures"
