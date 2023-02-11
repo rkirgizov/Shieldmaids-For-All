@@ -1,0 +1,61 @@
+﻿
+###TRIGGER LIST
+#prisoner_gives_warscore_for_trigger - takes WAR and CHARACTER (primary enemy or one of their top 3 player heirs)
+
+can_be_warrior_trigger = {
+	is_adult = yes
+	is_imprisoned = no
+	OR = {
+		can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = $ARMY_OWNER$ }
+		AND = {
+			$ARMY_OWNER$.culture = {
+				has_cultural_parameter = high_prowess_ignores_knight_restrictions
+			}
+			prowess >= 10
+		}
+	}
+	NOT = {
+		has_trait = incapable
+		# kelamor
+		has_trait = pregnant
+	}
+}
+
+can_be_commander_basic_trigger = {
+	is_alive = yes
+	is_adult = yes
+	NOR = {
+		has_trait = incapable
+		# kelamor
+		has_trait = pregnant
+		AND = {
+			has_trait = devoted
+			faith = {
+				NOT = {
+					has_doctrine_parameter = clergy_can_fight
+				}
+			}
+		}
+		AND = {
+			is_clergy = yes
+			faith = {
+				NOT = {
+					has_doctrine_parameter = clergy_can_fight
+				}
+			}
+		}
+	}
+	OR = { # You can always lead your own armies
+		this = $ARMY_OWNER$
+		can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = $ARMY_OWNER$ }
+	}
+	
+	trigger_if = {
+		limit = {
+			$ARMY_OWNER$ = {
+				is_ai = yes
+			}
+		}
+		is_ai = yes
+	}
+}

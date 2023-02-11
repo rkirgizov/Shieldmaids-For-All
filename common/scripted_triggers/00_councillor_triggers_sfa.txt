@@ -1,0 +1,68 @@
+﻿can_be_chancellor_trigger = {
+	can_be_councillor_basics_trigger = yes
+	NOT = { has_council_position = councillor_spouse }
+	OR = {
+		is_ruler = yes
+		AND = {
+			is_female = yes
+			$COURT_OWNER$.faith = { NOT = { has_doctrine_parameter = male_dominated_council } }
+		}
+		AND = {
+			is_male = yes
+			$COURT_OWNER$.faith = { NOT = { has_doctrine_parameter = female_dominated_council } }
+		}
+		AND = {
+			has_trait = shieldmaiden
+			OR = { # kelamor
+				has_game_rule = shieldmaids_for_all	
+				$COURT_OWNER$.culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+			}			
+		}
+	}
+}
+
+can_be_steward_trigger = {
+	can_be_councillor_basics_trigger = yes
+	NOT = { has_council_position = councillor_spouse }
+	OR = {
+		is_ruler = yes
+		AND = {
+			is_female = yes
+			$COURT_OWNER$.faith = { NOT = { has_doctrine_parameter = male_dominated_council } }
+		}
+		AND = {
+			is_male = yes
+			$COURT_OWNER$.faith = { NOT = { has_doctrine_parameter = female_dominated_council } }
+		}
+		AND = {
+			has_trait = shieldmaiden
+			OR = { # kelamor
+				has_game_rule = shieldmaids_for_all	
+				$COURT_OWNER$.culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+			}			
+		}
+	}
+}
+
+can_be_marshal_trigger = {
+	can_be_councillor_basics_trigger = yes
+	NOT = { has_council_position = councillor_spouse }
+	OR = {
+		is_ruler = yes
+		AND = {
+			is_female = yes
+			$COURT_OWNER$.faith = { NOT = { has_doctrine_parameter = male_dominated_council } }
+		}
+		AND = {
+			is_male = yes
+			$COURT_OWNER$.faith = { NOT = { has_doctrine_parameter = female_dominated_council } }
+		}
+		AND = {
+			has_trait = shieldmaiden
+			OR = { # kelamor
+				has_game_rule = shieldmaids_for_all	
+				$COURT_OWNER$.culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+			}			
+		}
+	}
+}
