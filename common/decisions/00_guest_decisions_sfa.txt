@@ -1,0 +1,56 @@
+﻿invite_knights_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_invite_knights.dds"
+
+	ai_check_interval = 0
+
+	cooldown = { days = 3650 }
+	
+	desc = invite_knights_decision_desc
+
+	effect = {
+		#A flag to increase weights for knights in regular guest invites
+		add_character_flag = {
+			flag = invite_knights_decision_active
+			days = 1095
+		}
+		#A counter for the free "extra knights", will be reduced by 1 for every extra knight and extra knights stops when it reaches 0
+		set_variable = {
+			name = number_of_invite_knights_countdown
+			value = 3 #If this number changes make sure the tooltips change
+			days = 1000
+		}
+		trigger_event = {
+			id = minor_decisions.0001
+			days = { 20 40 }
+		}
+
+		#Effect tooltip
+		if = { # sfa
+			limit = { has_game_rule = shieldmaids_for_all }
+			custom_tooltip = invite_knights_decision.warriors.tt
+		}
+		else = {			
+			if = {
+				limit = { culture = { has_cultural_parameter = martial_custom_male_only_combatant } }
+				custom_tooltip = invite_knights_decision.men.tt
+			}
+			else_if = {
+				limit = { culture = { has_cultural_parameter = martial_custom_female_only_combatant } }
+				custom_tooltip = invite_knights_decision.women.tt
+			}
+			else = {
+				custom_tooltip = invite_knights_decision.warriors.tt
+			}
+		}
+	}
+
+	cost = { prestige = { value = medium_prestige_value } }	
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}

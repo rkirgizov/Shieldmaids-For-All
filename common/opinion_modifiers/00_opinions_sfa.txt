@@ -1,0 +1,14 @@
+﻿#################################################
+# #Event Opinions
+
+fp1_rejected_my_sword_opinion = {
+	opinion = -60
+	decaying = yes
+	years = 10
+}
+
+fp1_accepted_my_sword_opinion = {
+	opinion = 30
+	decaying = yes
+	years = 20
+}

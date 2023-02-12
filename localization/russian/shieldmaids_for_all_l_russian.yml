@@ -5,3 +5,26 @@
   setting_shieldmaids_default_desc:0 "Как в оригинальной игре. SFA отключен."
   setting_shieldmaids_for_all:0 "Все культуры"
   setting_shieldmaids_for_all_desc:0 "Воительницы могут быть во всех культурах."
+
+# Tradition effects
+ culture_hasnt_access_to_shieldmaidens_short:0 "«[GetTrait('shieldmaiden').GetName(GetNullCharacter)]» не в традициях Вашей [Concept( 'culture', 'культуры' )|E]"
+
+# Regect Interaction
+reject_shieldmaiden_interaction_extra_icon: "$hook_extra_icon$"
+reject_shieldmaiden_interaction:0 "Изгнать из [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
+reject_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] больше не может быть [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )] в вашем войске."
+reject_shieldmaiden_interaction_notification:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')|l]!"
+
+# Interaction Cost Desc
+ CHAR_DYNASTY_LEVEL_COST_DESC:0 "[dynasty_prestige_level|E] династии персонажа"
+ WAS_BANISHED_SHIELDMAID_COST_DESC:0 "Ранее изгоняли из [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
+ NO_LOWBORN_COST_DESC:0 "Этот персонаж [noble|E]"
+
+
+# Interaction AI Accept Desc
+ SKILL_DIPLOMACY_AI_ACCEPT_DESC:0 "Ваш навык «[diplomacy|El]»: $VALUE|=+0$"
+ WAS_BANISHED_SHIELDMAID_AI_ACCEPT_DESC:0 "Ранее изгоняли из воителей: $VALUE|=+0$"
+ CHAR_HAS_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [weak_hook|El]: $VALUE|=+0$"
+ CHAR_HAS_STRONG_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [strong_hook|El]: $VALUE|=+0$"
+ CHAR_NO_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] [noble|E]: $VALUE|=+0$"
+ CHAR_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] худородный: $VALUE|=+0$"
