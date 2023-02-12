@@ -10,7 +10,7 @@
   culture_hasnt_access_to_shieldmaidens_short:0 "«[GetTrait('shieldmaiden').GetName(GetNullCharacter)]» не в традициях Вашей [Concept( 'culture', 'культуры' )|E]"
 
 # Designate Interaction
-  designate_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [recipient.Custom('ShieldPersonFemaleMale')|U] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName]."
+  designate_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [recipient.Custom('ShieldPersonFemaleMale')|U] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName] [schemes|E]."
 
 # Regect Interaction
   reject_shieldmaiden_interaction_extra_icon: "$hook_extra_icon$"
@@ -39,7 +39,7 @@
 # can_make_shieldmaiden
   action_can_make_shieldmaiden:0 "Можно сделать [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )]"
   action_can_make_shieldmaiden_combined_group_description:0 "[skill|E] «[prowess|E]» у нескольких  [Concept( 'courtier', 'придворных' )|E] высок, и они согласны стать воителями.$action_can_make_shieldmaiden_HELP$"
-  action_can_make_shieldmaiden_HELP:1 "\n\n#help Даже в одиночестве [recipient.Custom('ShieldPersonFemaleMale')|U] может принести заметную пользу. Их навыки постоянно совершенствуются, они даже могут спасти вас от [Concept( 'scheme', 'покушения' )|E] на [GetScheme('murder').GetTypeName].\n\nОднако постарайтесь не растратить весь [prestige|E].#!"
+  action_can_make_shieldmaiden_HELP:1 "\n\n#help Даже в одиночестве [recipient.Custom('ShieldPersonFemaleMale')|U] может принести заметную пользу. Их навыки постоянно совершенствуются, они даже могут спасти вас от [Concept( 'scheme', 'покушения' )|E] на [GetScheme('murder').GetTypeName] [schemes|E].\n\nОднако постарайтесь не растратить весь [prestige|E].#!"
 # can_grant_title_shieldmaiden
   action_can_grant_title_shieldmaiden:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительницу', 'щитовика' )]"
   action_can_grant_title_shieldmaiden_label:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительницу', 'щитовика' )] [recipient.GetShortUINameNoTooltip]"
