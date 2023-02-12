@@ -1,0 +1,14 @@
+﻿##################################################
+# #General Character Modifiers
+
+##################################################
+# #Shieldmaiden Character Modifiers
+
+banished_shieldmaiden_modifier = {
+	icon = stress_negative
+	martial = -2
+	prowess = -4
+	general_opinion = -10
+	monthly_prestige = -0.1
+	stress_gain_mult = 0.1	
+}

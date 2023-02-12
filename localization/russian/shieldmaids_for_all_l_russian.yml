@@ -1,5 +1,5 @@
 ﻿l_russian:
-#  Rules
+# Rules
   rule_shieldmaids_for_all:0 "#X SFA:#! Доступность воительниц"
   setting_shieldmaids_default:0 "По умолчанию"
   setting_shieldmaids_default_desc:0 "Как в оригинальной игре. SFA отключен."
@@ -7,24 +7,47 @@
   setting_shieldmaids_for_all_desc:0 "Воительницы могут быть во всех культурах."
 
 # Tradition effects
- culture_hasnt_access_to_shieldmaidens_short:0 "«[GetTrait('shieldmaiden').GetName(GetNullCharacter)]» не в традициях Вашей [Concept( 'culture', 'культуры' )|E]"
+  culture_hasnt_access_to_shieldmaidens_short:0 "«[GetTrait('shieldmaiden').GetName(GetNullCharacter)]» не в традициях Вашей [Concept( 'culture', 'культуры' )|E]"
+
+# Designate Interaction
+  designate_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [recipient.Custom('ShieldPersonFemaleMale')|U] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName]."
 
 # Regect Interaction
-reject_shieldmaiden_interaction_extra_icon: "$hook_extra_icon$"
-reject_shieldmaiden_interaction:0 "Изгнать из [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
-reject_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] больше не может быть [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )] в вашем войске."
-reject_shieldmaiden_interaction_notification:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')|l]!"
+  reject_shieldmaiden_interaction_extra_icon: "$hook_extra_icon$"
+  reject_shieldmaiden_interaction:0 "Изгнать из [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
+  reject_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] больше не может быть [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )] в вашем войске."
+  reject_shieldmaiden_interaction_notification:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')|l]!"
 
 # Interaction Cost Desc
- CHAR_DYNASTY_LEVEL_COST_DESC:0 "[dynasty_prestige_level|E] династии персонажа"
- WAS_BANISHED_SHIELDMAID_COST_DESC:0 "Ранее изгоняли из [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
- NO_LOWBORN_COST_DESC:0 "Этот персонаж [noble|E]"
-
+  CHAR_DYNASTY_LEVEL_COST_DESC:0 "[dynasty_prestige_level|E] династии персонажа"
+  WAS_BANISHED_SHIELDMAID_COST_DESC:0 "Ранее изгоняли из [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
+  NO_LOWBORN_COST_DESC:0 "Этот персонаж [noble|E]"
 
 # Interaction AI Accept Desc
- SKILL_DIPLOMACY_AI_ACCEPT_DESC:0 "Ваш навык «[diplomacy|El]»: $VALUE|=+0$"
- WAS_BANISHED_SHIELDMAID_AI_ACCEPT_DESC:0 "Ранее изгоняли из воителей: $VALUE|=+0$"
- CHAR_HAS_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [weak_hook|El]: $VALUE|=+0$"
- CHAR_HAS_STRONG_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [strong_hook|El]: $VALUE|=+0$"
- CHAR_NO_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] [noble|E]: $VALUE|=+0$"
- CHAR_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] худородный: $VALUE|=+0$"
+  SKILL_DIPLOMACY_AI_ACCEPT_DESC:0 "Ваш навык «[diplomacy|El]»: $VALUE|=+0$"
+  WAS_BANISHED_SHIELDMAID_AI_ACCEPT_DESC:0 "Ранее изгоняли из воителей: $VALUE|=+0$"
+  CHAR_HAS_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [weak_hook|El]: $VALUE|=+0$"
+  CHAR_HAS_STRONG_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [strong_hook|El]: $VALUE|=+0$"
+  CHAR_NO_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] [noble|E]: $VALUE|=+0$"
+  CHAR_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] худородный: $VALUE|=+0$"
+
+# Modifiers
+  banished_shieldmaiden_modifier:0 "Сломанный щит"
+  banished_shieldmaiden_modifier_desc:0 "Этот персонаж был с позором изгнан из воителей и в каждом шелесте ему теперь мерещатся насмешки."
+
+# Actions
+# can_make_shieldmaiden
+  action_can_make_shieldmaiden:0 "Можно сделать [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )]"
+  action_can_make_shieldmaiden_combined_group_description:0 "[skill|E] «[prowess|E]» у нескольких  [Concept( 'courtier', 'придворных' )|E] высок, и они согласны стать воителями.$action_can_make_shieldmaiden_HELP$"
+  action_can_make_shieldmaiden_HELP:1 "\n\n#help Даже в одиночестве [recipient.Custom('ShieldPersonFemaleMale')|U] может принести заметную пользу. Их навыки постоянно совершенствуются, они даже могут спасти вас от [Concept( 'scheme', 'покушения' )|E] на [GetScheme('murder').GetTypeName].\n\nОднако постарайтесь не растратить весь [prestige|E].#!"
+# can_grant_title_shieldmaiden
+  action_can_grant_title_shieldmaiden:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительницу', 'щитовика' )]"
+  action_can_grant_title_shieldmaiden_label:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительницу', 'щитовика' )] [recipient.GetShortUINameNoTooltip]"
+  action_can_grant_title_shieldmaiden_combined_label:0 "[recipient.GetShortUINameNoTooltip]"
+  action_can_grant_title_shieldmaiden_desc:0 "[recipient.GetUIName] уже давно служит вам [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )] и [Select_CString(recipient.IsFemale, 'верна', 'верен' )].$action_can_grant_title_shieldmaiden_HELP$"
+  action_can_grant_title_shieldmaiden_click:0 "#I Щелкните, чтобы посмотреть#!"
+  action_can_grant_title_shieldmaiden_combined_group_label:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
+  action_can_grant_title_shieldmaiden_combined_group_name:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )]"
+  action_can_grant_title_shieldmaiden_combined_group_description:0 "Несколько [Select_CString(recipient.IsFemale, 'воительниц', 'щитовиков' )] уже давно служит вам и верны.$action_can_grant_title_shieldmaiden_group_HELP$"
+  action_can_grant_title_shieldmaiden_HELP:1 "\n\n#help Возможно, пришла пора наградить [Select_CString(recipient.IsFemale, 'её', 'его' )] землями? \n\nОднако будьте осторожны, учитывайте уровень отношения к вам, и не разбрасывайтесь владениями.#!"
+  action_can_grant_title_shieldmaiden_group_HELP:1 "\n\n#help Возможно, пришла пора наградить их землями? \n\nОднако будьте осторожны, учитывайте уровень отношения к вам, и не разбрасывайтесь владениями.#!"
