@@ -1,0 +1,163 @@
+﻿designate_shieldmaiden_culture_no_effect = {
+	every_courtier_or_guest = {
+		hidden_effect = {
+			random = {
+				chance = {
+					value = 0
+					if = {
+						limit = { 
+								AND = {
+									NOT = { has_trait = shieldmaiden }
+									NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+								}
+						}
+						add = 50
+					}
+				}		
+				add_to_list = random_courtiers_and_guests 
+			}
+		}
+	}
+	if = {
+		limit = {
+			any_in_list = {
+				list = random_courtiers_and_guests
+				count = 1
+				always = yes
+			}
+		}
+		every_in_list = {
+			list = random_courtiers_and_guests
+			add_opinion = {
+				target = scope:actor
+				modifier = sfa_shieldmaidens_not_tradition
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_in_list = {
+				list = random_courtiers_and_guests
+				count > 1
+				always = yes
+			}
+		}
+		every_in_list = {
+			list = random_courtiers_and_guests
+			custom = your_courtiers_and_guests_random
+			add_opinion = {
+				target = scope:actor
+				modifier = sfa_shieldmaidens_not_tradition
+			}
+		}
+	}
+}
+
+designate_shieldmaiden_we_shieldmaidens_too = {
+	every_courtier_or_guest = {
+		hidden_effect = {
+			random = {
+				chance = {
+					value = 0
+					if = {
+						limit = {
+							has_trait = shieldmaiden
+						}
+						add = 80
+					}
+				}			
+				add_to_list = random_shieldmaidens 
+			}
+		}
+	}
+	if = {
+		limit = {
+			any_in_list = {
+				list = random_shieldmaidens
+				count = 1
+				always = yes
+			}
+		}
+		every_in_list = {
+			list = random_shieldmaidens
+			add_opinion = {
+				target = scope:actor
+				modifier = sfa_we_shieldmaidens_too
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_in_list = {
+				list = random_shieldmaidens
+				count > 1
+				always = yes
+			}
+		}
+		every_in_list = {
+			list = random_shieldmaidens
+			custom = your_shieldmaidens_random
+			add_opinion = {
+				target = scope:actor
+				modifier = sfa_we_shieldmaidens_too
+			}
+		}
+	}
+}
+
+designate_shieldmaiden_its_our_tradition = {
+	every_courtier_or_guest = {
+		hidden_effect = {
+			random = {
+				chance = {
+					value = 0
+					if = {
+						limit = { 
+							AND = {
+								culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+								NOT = { 
+									scope:actor = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } } 
+								}
+							}
+						}
+						add = 80
+					}
+				}		
+				add_to_list = random_courtiers_and_guests_with_shieldmaidens_tradition
+			}
+		}
+	}
+	if = {
+		limit = {
+			any_in_list = {
+				list = random_courtiers_and_guests_with_shieldmaidens_tradition
+				count = 1
+				always = yes
+			}
+		}
+		every_in_list = {
+			list = random_courtiers_and_guests_with_shieldmaidens_tradition
+			add_opinion = {
+				target = scope:actor
+				modifier = sfa_we_with_shieldmaidens_tradition
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_in_list = {
+				list = random_courtiers_and_guests_with_shieldmaidens_tradition
+				count > 1
+				always = yes
+			}
+		}
+		every_in_list = {
+			list = random_courtiers_and_guests_with_shieldmaidens_tradition
+			custom = your_courtiers_and_guests_random
+			add_opinion = {
+				target = scope:actor
+				modifier = sfa_we_with_shieldmaidens_tradition
+			}
+		}
+	}
+}

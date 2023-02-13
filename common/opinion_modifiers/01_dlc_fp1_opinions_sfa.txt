@@ -12,3 +12,21 @@ fp1_accepted_my_sword_opinion = {
 	decaying = yes
 	years = 10
 }
+
+sfa_shieldmaidens_not_tradition = {
+	opinion = -10
+	decaying = yes
+	years = 3
+}
+
+sfa_we_shieldmaidens_too = {
+	opinion = 15
+	decaying = yes
+	years = 3
+}
+
+sfa_we_with_shieldmaidens_tradition = {
+	opinion = 20
+	decaying = yes
+	years = 3
+}
