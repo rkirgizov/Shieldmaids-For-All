@@ -1,0 +1,4 @@
+sfa_shieldmaidens_traditions = {
+	texture = "gfx/interface/icons/traits/shieldmaiden.dds"
+	alias = { shieldmaidens }
+}

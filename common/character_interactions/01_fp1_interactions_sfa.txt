@@ -83,6 +83,7 @@ designate_shieldmaiden_interaction = {
 			# prowess >= decent_skill_rating
 			is_adult = yes
 			is_imprisoned = no
+			NOT = { has_trait = pregnant }
 		}
 	}
 
@@ -99,13 +100,18 @@ designate_shieldmaiden_interaction = {
 	on_accept = {
 		
 		scope:actor = {
-			designate_shieldmaiden_culture_no_effect = yes
-			designate_shieldmaiden_we_shieldmaidens_too = yes
-			designate_shieldmaiden_its_our_tradition = yes
+			# designate_shieldmaiden_we_shieldmaidens_too = yes
+			# designate_shieldmaiden_its_our_tradition = yes
 			stress_impact = {
 				arrogant = medium_stress_impact_gain
 				paranoid = minor_stress_impact_gain
 			}
+
+			# remove_opinion_culture_not_access_shieldmaidens = 10
+			
+			# add_tyranny = 5
+			calling_of_the_shieldmaidens = yes
+
 			# sfa 
 			if = {
 				limit = {

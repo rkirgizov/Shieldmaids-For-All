@@ -1,0 +1,44 @@
+shieldmaiden = {
+	
+	fame = yes
+	martial = 3
+	prowess = 3
+	
+	same_opinion = 10
+
+	ruler_designer_cost = 40
+	
+	name = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_shieldmaiden
+			}
+			triggered_desc = {
+				trigger = { is_male = yes }
+				desc = trait_shieldmaiden_male
+			}
+			desc = trait_shieldmaiden_female
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_shieldmaiden_desc
+			}
+			triggered_desc = {
+				trigger = { is_male = yes }
+				desc = trait_shieldmaiden_male_character_desc
+			}
+			desc = trait_shieldmaiden_female_character_desc
+		}
+	}
+
+	ai_boldness = high_positive_ai_value
+	ai_energy = high_positive_ai_value
+}
