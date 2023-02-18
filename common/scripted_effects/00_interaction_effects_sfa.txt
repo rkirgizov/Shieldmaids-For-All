@@ -6,6 +6,10 @@
 		}
 	}
 	hidden_effect = {
+		# отмечает, что персонаж призван на службу
+		scope:recipient = {
+			add_character_flag = rule_hired_shieldmaid
+		}
 		every_courtier_or_guest = {
 			if = {
 				limit = {

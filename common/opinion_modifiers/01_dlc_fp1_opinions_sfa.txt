@@ -13,18 +13,6 @@ fp1_accepted_my_sword_opinion = {
 	years = 10
 }
 
-sfa_shieldmaidens_not_tradition = {
-	opinion = -10
-	decaying = yes
-	years = 3
-}
-
-sfa_we_shieldmaidens_too = {
-	# opinion = 15
-	decaying = yes
-	years = 5
-}
-
 sfa_calling_shieldmaidens_opinion = {
 	decaying = yes
 	years = 5

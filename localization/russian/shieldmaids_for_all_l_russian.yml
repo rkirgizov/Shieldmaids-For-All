@@ -27,7 +27,7 @@
   CHAR_HAS_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [weak_hook|El]: $VALUE|=+0$"
   CHAR_HAS_STRONG_HOOK_ON_ME_AI_ACCEPT_DESC:0 "Имеет на вас [strong_hook|El]: $VALUE|=+0$"
   CHAR_NO_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] [noble|E]: $VALUE|=+0$"
-  CHAR_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] худородного происхождения: $VALUE|=+0$"
+  CHAR_LOWBORN_DESC_AI_ACCEPT_DESC:0 "[recipient.GetShortUIName|U] худородный: $VALUE|=+0$"
 
 # Modifiers
   banished_shieldmaiden_modifier:0 "Сломанный щит"
