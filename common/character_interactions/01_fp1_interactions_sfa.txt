@@ -98,20 +98,19 @@ designate_shieldmaiden_interaction = {
 	}
 
 	on_accept = {
-		
+		scope:recipient = {
+			add_trait = shieldmaiden
+			add_opinion = {
+				target = scope:actor
+				modifier = fp1_accepted_my_sword_opinion
+			}
+		}
 		scope:actor = {
-			# designate_shieldmaiden_we_shieldmaidens_too = yes
-			# designate_shieldmaiden_its_our_tradition = yes
+			calling_of_the_shieldmaidens = yes
 			stress_impact = {
 				arrogant = medium_stress_impact_gain
 				paranoid = minor_stress_impact_gain
 			}
-
-			# remove_opinion_culture_not_access_shieldmaidens = 10
-			
-			# add_tyranny = 5
-			calling_of_the_shieldmaidens = yes
-
 			# sfa 
 			if = {
 				limit = {
@@ -129,13 +128,6 @@ designate_shieldmaiden_interaction = {
 				limit = { always = scope:hook }
 				scope:actor = { use_hook = scope:recipient }
 			}						
-		}
-		scope:recipient = {
-			add_trait = shieldmaiden
-			add_opinion = {
-				target = scope:actor
-				modifier = fp1_accepted_my_sword_opinion
-			}
 		}
 		hidden_effect = {
 			scope:actor = {
@@ -157,65 +149,13 @@ designate_shieldmaiden_interaction = {
 		}
 	}
 
-	# auto_accept = {
-	# 	# scope:recipient = { is_lowborn = yes }
-	# 	# sfa
-	# 	# custom_description = {
-	# 	# 	text = "spending_hook"
-	# 	# 	subject = scope:actor
-	# 	# 	object = scope:recipient
-	# 	# 	AND = {
-	# 	# 		always = scope:hook
-	# 	# 		scope:actor = { has_strong_hook = scope:recipient }
-	# 	# 	}
-	# 	# }				
-	# }
-
-	send_option = {
-		# sfa
-		# is_shown = {
-		# 	scope:recipient = { is_lowborn = no }
-		# }
-		is_valid = {
-			scope:actor = {
-				has_usable_hook = scope:recipient
-			}
-		}
-		flag = hook
-		localization = SCHEME_HOOK
-	}
-	should_use_extra_icon = {
-		scope:actor = { has_usable_hook = scope:recipient }
-	}
-	extra_icon = "gfx/interface/icons/character_interactions/hook_icon.dds"
-	send_options_exclusive = no
-	
-	# ПРИГЛАШЕНИЕ ВОИТЕЛЬНИЦ СДЕЛАТЬ
-
 	cost = {
 		# sfa
 		prestige = {
 			add = {
-				value = 50
+				value = 100
 				desc = DREAD_BASE
 			}	
-			# CULTURE	
-			if = {
-				limit = { scope:actor = { NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } } } }
-				add = {
-					value = 100
-					desc = culture_hasnt_access_to_shieldmaidens
-				}
-			}
-			###DYNASTY AND LOWBORN###
-			if = {
-				limit = { exists = scope:recipient.dynasty }
-				add = {
-					value = scope:recipient.dynasty.dynasty_prestige_level #0-10
-					multiply = 15 #Max 150
-					desc = CHAR_DYNASTY_LEVEL_COST_DESC
-				}
-			}		
 			if = {
 				limit = {
 					scope:recipient = { is_lowborn = yes }
@@ -223,25 +163,11 @@ designate_shieldmaiden_interaction = {
 				add = {
 					value = minor_prestige_value
 					desc = LOWBORN_DESC
-				}
-				if = {
-					limit = { scope:recipient = { has_trait = lazy } }
-					add = {
-						value = 25
-						desc = trait_lazy
-					}
-				}		
-				if = {
-					limit = { scope:recipient = { has_trait = craven } }
-					add = {
-						value = 250
-						desc = trait_craven
-					}
-				}						
+				}					
 			}
 			###COMMANDER TRAITS###
 			if = {
-				limit = { scope:recipient = { number_of_commander_traits >= 1 } }
+				limit = { scope:recipient.number_of_commander_traits >= 1 } 
 				add = {
 					value = scope:recipient.number_of_commander_traits
 					multiply = 15
@@ -251,13 +177,42 @@ designate_shieldmaiden_interaction = {
 			}
 			###TRAITS###
 			if = {
-				limit = { scope:recipient = { has_trait = ambitious } }
+				limit = { scope:recipient.num_sinful_traits >= 1 }
 				add = {
-					value = -25
-					desc = trait_ambitious
+					value = scope:recipient.num_sinful_traits
+					multiply = 30
+					min = 0
+					desc = THEY_ARE_SINFUL
+				}
+			}
+			if = {
+				limit = { scope:recipient = { has_trait = lazy } }
+				add = {
+					value = 25
+					desc = trait_lazy
+				}
+			}		
+			if = {
+				limit = { scope:recipient = { has_trait = craven } }
+				add = {
+					value = 150
+					desc = trait_craven
 				}
 			}	
-
+			if = {
+				limit = { scope:recipient = { has_trait = dwarf } }
+				add = {
+					value = 200
+					desc = trait_craven
+				}
+			}			
+			if = {
+				limit = { scope:recipient = { has_trait = hunchbacked } }
+				add = {
+					value = 250
+					desc = trait_craven
+				}
+			}		
 			if = {
 				limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_modifier } }
 				add = {
@@ -265,22 +220,55 @@ designate_shieldmaiden_interaction = {
 					desc = WAS_BANISHED_SHIELDMAID_COST_DESC
 				}
 			}		
-			
 		}
 		gold = {
 			add = {
 				value = scope:recipient.individual_recruit_guest_interaction_cost
 				desc = DREAD_BASE
 			}
+			###DYNASTY AND LOWBORN###
 			if = {
-				limit = {
-					scope:recipient = { is_lowborn = yes }
+				limit = { exists = scope:recipient.dynasty }
+				add = {
+					value = scope:recipient.dynasty.dynasty_prestige_level #0-10
+					multiply = 10 #Max 50
+					desc = CHAR_DYNASTY_LEVEL_COST_DESC
 				}
+			}		
+			if = {
+				limit = { scope:recipient = { is_lowborn = yes } }
 				add = {
 					value = minor_gold_value
 					desc = LOWBORN_DESC
 				}
 			}
+			###COMMANDER TRAITS###
+			if = {
+				limit = { scope:recipient = { number_of_commander_traits >= 1 } }
+				add = {
+					value = scope:recipient.number_of_commander_traits
+					multiply = 5
+					min = 0
+					desc = game_concept_commander_traits
+				}
+			}
+			###TRAITS###
+			if = {
+				limit = { scope:recipient = { number_of_lifestyle_traits >= 1 } }
+				add = {
+					value = scope:recipient.number_of_lifestyle_traits
+					multiply = 5
+					min = 0
+					desc = game_concept_lifestyle_traits
+				}
+			}
+			if = {
+				limit = { scope:recipient = { has_trait = ambitious } }
+				add = {
+					value = 5
+					desc = trait_ambitious
+				}
+			}	
 		}
 	}
 	

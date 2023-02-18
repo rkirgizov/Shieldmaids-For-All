@@ -1,179 +1,180 @@
 ﻿calling_of_the_shieldmaidens = {
 	scope:actor = {
 		if = {
-			limit = { any_courtier_or_guest = { age > 0 } }
-			custom_tooltip = I_LOST_OPINION_CULTURE_NOT_ACCESS_SHIELDMAIDENS_EFFECT
+			limit = { any_courtier_or_guest = { age >= 12 } }
+			custom_tooltip = sfa_calling_shieldmaidens_effect
 		}
 	}
-
-}
-
-
-designate_shieldmaiden_culture_no_effect = {
-	scope:actor = {
+	hidden_effect = {
 		every_courtier_or_guest = {
-			hidden_effect = {
-				random = {
-					chance = {
-						value = 0
+			if = {
+				limit = {
+					age >= 12
+					NOT = { this = scope:recipient }
+				}
+				set_variable = {
+					name = calling_shieldmaiden_opinion_change
+					value = 0
+				}
+				if = {
+					limit = { has_trait = shieldmaiden }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 10
+					}
+				}
+				else_if = {
+					limit = { scope:recipient = { is_female = yes} }
+					if = { # courtier is Female
+						limit = { is_female = yes }
 						if = {
-							limit = { 
-									AND = {
-										age >= 12
-										NOT = { has_trait = shieldmaiden }
-										NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
-									}
+							faith = { has_doctrine = doctrine_gender_male_dominated }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
 							}
-							add = 50
 						}
-					}		
-					add_to_list = random_courtiers_and_guests 
-				}
-			}
-		}
-		if = {
-			limit = {
-				any_in_list = {
-					list = random_courtiers_and_guests
-					count = 1
-					always = yes
-				}
-			}
-			every_in_list = {
-				list = random_courtiers_and_guests
-				add_opinion = {
-					target = scope:actor
-					modifier = sfa_shieldmaidens_not_tradition
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				any_in_list = {
-					list = random_courtiers_and_guests
-					count > 1
-					always = yes
-				}
-			}
-			every_in_list = {
-				list = random_courtiers_and_guests
-				custom = your_courtiers_and_guests_random
-				# hidden = {
-					add_opinion = {
-						target = scope:actor
-						modifier = sfa_shieldmaidens_not_tradition
-					}
-				# }
-			}
-
-		}
-	}
-}
-
-designate_shieldmaiden_we_shieldmaidens_too = {
-	every_courtier_or_guest = {
-		hidden_effect = {
-			random = {
-				chance = {
-					value = 0
-					if = {
-						limit = {
-							has_trait = shieldmaiden
+						else = {
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = 10
+							}
 						}
-						add = 80
+						if = {
+							limit = { has_trait = ambitious }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+						}
 					}
-				}			
-				add_to_list = random_shieldmaidens 
-			}
-		}
-	}
-	if = {
-		limit = {
-			any_in_list = {
-				list = random_shieldmaidens
-				count = 1
-				always = yes
-			}
-		}
-		every_in_list = {
-			list = random_shieldmaidens
-			add_opinion = {
-				target = scope:actor
-				modifier = sfa_we_shieldmaidens_too
-			}
-		}
-	}
-	else_if = {
-		limit = {
-			any_in_list = {
-				list = random_shieldmaidens
-				count > 1
-				always = yes
-			}
-		}
-		every_in_list = {
-			list = random_shieldmaidens
-			custom = your_shieldmaidens_random
-			add_opinion = {
-				target = scope:actor
-				modifier = sfa_we_shieldmaidens_too
-			}
-		}
-	}
-}
-
-designate_shieldmaiden_its_our_tradition = {
-	every_courtier_or_guest = {
-		hidden_effect = {
-			random = {
-				chance = {
-					value = 0
-					if = {
-						limit = { 
-							AND = {
-								culture = { has_cultural_parameter = has_access_to_shieldmaidens }
-								NOT = { 
-									scope:actor = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } } 
+					else = { # courtier is Male
+						if = {
+							faith = { has_doctrine = doctrine_gender_male_dominated }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+							if = {
+								limit = { has_trait = wrathful }
+								change_variable = {
+									name = calling_shieldmaiden_opinion_change
+									add = -10
 								}
 							}
 						}
-						add = 80
 					}
-				}		
-				add_to_list = random_courtiers_and_guests_with_shieldmaidens_tradition
-			}
-		}
-	}
-	if = {
-		limit = {
-			any_in_list = {
-				list = random_courtiers_and_guests_with_shieldmaidens_tradition
-				count = 1
-				always = yes
-			}
-		}
-		every_in_list = {
-			list = random_courtiers_and_guests_with_shieldmaidens_tradition
-			add_opinion = {
-				target = scope:actor
-				modifier = sfa_we_with_shieldmaidens_tradition
-			}
-		}
-	}
-	else_if = {
-		limit = {
-			any_in_list = {
-				list = random_courtiers_and_guests_with_shieldmaidens_tradition
-				count > 1
-				always = yes
-			}
-		}
-		every_in_list = {
-			list = random_courtiers_and_guests_with_shieldmaidens_tradition
-			custom = your_courtiers_and_guests_random
-			add_opinion = {
-				target = scope:actor
-				modifier = sfa_we_with_shieldmaidens_tradition
+				}
+				else_if = {
+					limit = { scope:recipient = { is_male = yes} }
+					if = { # courtier is Male
+						limit = { is_male = yes }
+						if = {
+							faith = { has_doctrine = doctrine_gender_female_dominated }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+						}
+						else = {
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = 10
+							}
+						}
+						if = {
+							limit = { has_trait = ambitious }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+						}
+					}
+					else = { # courtier is Female
+						if = {
+							faith = { has_doctrine = doctrine_gender_female_dominated }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+							if = {
+								limit = { has_trait = wrathful }
+								change_variable = {
+									name = calling_shieldmaiden_opinion_change
+									add = -10
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = { has_trait = brave }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 5
+					}
+				}
+				if = {
+					limit = { has_trait = varangian }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 5
+					}
+				}
+				if = {
+					limit = { has_trait = adventurer }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 5
+					}
+				}
+				if = {
+					limit = { has_trait = humble }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -5
+					}
+				}
+				if = {
+					limit = { has_trait = shy }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -5
+					}
+				}
+				if = {
+					limit = { has_trait = forgiving }
+					if = {
+						limit = { var:calling_shieldmaiden_opinion_change < 0 }
+						set_variable = {
+							name = calling_shieldmaiden_opinion_change
+							value = 0
+						}
+					}
+				}
+				if = {
+					limit = { var:calling_shieldmaiden_opinion_change > 0 }
+					random = {
+						chance = 50
+						add_opinion = {
+							target = scope:actor
+							modifier = sfa_calling_shieldmaidens_opinion
+							opinion = var:calling_shieldmaiden_opinion_change
+						}
+					}
+				}
+				if = {
+					limit = { var:calling_shieldmaiden_opinion_change < 0 }
+					random = {
+						chance = 75
+						add_opinion = {
+							target = scope:actor
+							modifier = sfa_calling_shieldmaidens_opinion
+							opinion = var:calling_shieldmaiden_opinion_change
+						}
+					}
+				}
+
 			}
 		}
 	}

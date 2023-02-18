@@ -56,14 +56,10 @@
   action_can_grant_title_shieldmaiden_group_HELP:1 "\n\n#help Возможно, пришла пора наградить их землями? \n\nОднако будьте осторожны, учитывайте уровень отношения к вам, и не разбрасывайтесь владениями.#!"
 
 # interaction effects
-  culture_hasnt_access_to_shieldmaidens:0 "«[GetTrait('shieldmaiden').GetName(GetNullCharacter)]» не в традициях Вашей [Concept( 'culture', 'культуры' )|E]"
-  your_courtiers_and_guests_random:0 "Некоторые Ваши [Concept( 'courtiers', 'придворные' )|E] и [Concept( 'guests', 'гости' )|E] возможно"
-  your_shieldmaidens_random:0 "Некоторые Ваши воители возможно"
-  sfa_shieldmaidens_not_tradition:0 "Наперекор традициям"
-  sfa_we_shieldmaidens_too:0 "Радость соратника"
-  sfa_we_with_shieldmaidens_tradition:0 "Уважил наши традиции наперекор своим"
-
-  I_LOST_OPINION_CULTURE_NOT_ACCESS_SHIELDMAIDENS_EFFECT:2 "@warning_icon!# [Concept( 'opinion', 'Мнение' )|E] о вас у некоторых придворных и гостей двора может измениться ([Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'призыв в воительницы', 'призыв в щитовика' ) )|E]) "
+  sfa_calling_shieldmaidens_effect:2 "@warning_icon!# [Concept( 'opinion', 'Мнение' )|E] о вас у некоторых придворных и гостей двора может измениться ([Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Призыв воительницы', 'Призыв щитовика' ) )|E]) "
+  
+# opinion modifiers  
+  sfa_calling_shieldmaidens_opinion:0 "Призыв в [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовики' ) )|E]"
 
 # game concepts
   game_concept_sfa_shieldmaidens_traditions:0 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"

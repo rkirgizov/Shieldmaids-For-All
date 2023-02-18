@@ -20,13 +20,17 @@ sfa_shieldmaidens_not_tradition = {
 }
 
 sfa_we_shieldmaidens_too = {
-	opinion = 15
+	# opinion = 15
 	decaying = yes
-	years = 3
+	years = 5
 }
 
-sfa_we_with_shieldmaidens_tradition = {
-	opinion = 20
+sfa_calling_shieldmaidens_opinion = {
 	decaying = yes
-	years = 3
+	years = 5
 }
+
+# gift_opinion = {
+# 	monthly_change = 0.1
+# 	decaying = yes
+# }
