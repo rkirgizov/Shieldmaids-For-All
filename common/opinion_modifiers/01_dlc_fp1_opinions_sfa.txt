@@ -13,10 +13,16 @@ fp1_accepted_my_sword_opinion = {
 	years = 10
 }
 
+sfa_use_hook_on_calling_shieldmaidens_opinion = {
+	decaying = yes
+	years = 15
+}
+
 sfa_calling_shieldmaidens_opinion = {
 	decaying = yes
-	years = 5
+	years = 3
 }
+
 
 # gift_opinion = {
 # 	monthly_change = 0.1

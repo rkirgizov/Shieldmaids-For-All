@@ -1,0 +1,177 @@
+# Recipient has crime traits
+sfa_recipient_num_criminal_traits = {
+	value = 0
+	if = {
+		limit = {
+			scope:recipient = { has_trait = adulterer }
+			trait_is_criminal_in_faith_trigger = { TRAIT = adulterer FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = fornicator }
+			trait_is_criminal_in_faith_trigger = { TRAIT = fornicator FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = deviant }
+			trait_is_criminal_in_faith_trigger = { TRAIT = deviant FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = murderer }
+			trait_is_criminal_in_faith_trigger = { TRAIT = murderer FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = kinslayer_1 }
+			trait_is_criminal_in_faith_trigger = { TRAIT = kinslayer_1 FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = kinslayer_2 }
+			trait_is_criminal_in_faith_trigger = { TRAIT = kinslayer_2 FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = kinslayer_3 }
+			trait_is_criminal_in_faith_trigger = { TRAIT = kinslayer_3 FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = incestuous }
+			trait_is_criminal_in_faith_trigger = { TRAIT = incestuous FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = sodomite }
+			trait_is_criminal_in_faith_trigger = { TRAIT = sodomite FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = witch }
+			trait_is_criminal_in_faith_trigger = { TRAIT = witch FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = cannibal }
+			trait_is_criminal_in_faith_trigger = { TRAIT = cannibal FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = excommunicated }
+			trait_is_criminal_in_faith_trigger = { TRAIT = excommunicated FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+}
+
+# Recipient has shunned traits
+sfa_recipient_num_shunned_traits = {
+	value = 0
+	if = {
+		limit = {
+			scope:recipient = { has_trait = adulterer }
+			trait_is_shunned_in_faith_trigger = { TRAIT = adulterer FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = fornicator }
+			trait_is_shunned_in_faith_trigger = { TRAIT = fornicator FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = deviant }
+			trait_is_shunned_in_faith_trigger = { TRAIT = deviant FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = murderer }
+			trait_is_shunned_in_faith_trigger = { TRAIT = murderer FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = kinslayer_1 }
+			trait_is_shunned_in_faith_trigger = { TRAIT = kinslayer_1 FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = kinslayer_2 }
+			trait_is_shunned_in_faith_trigger = { TRAIT = kinslayer_2 FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = kinslayer_3 }
+			trait_is_shunned_in_faith_trigger = { TRAIT = kinslayer_3 FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = incestuous }
+			trait_is_shunned_in_faith_trigger = { TRAIT = incestuous FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = sodomite }
+			trait_is_shunned_in_faith_trigger = { TRAIT = sodomite FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = witch }
+			trait_is_shunned_in_faith_trigger = { TRAIT = witch FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = cannibal }
+			trait_is_shunned_in_faith_trigger = { TRAIT = cannibal FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			scope:recipient = { has_trait = excommunicated }
+			trait_is_shunned_in_faith_trigger = { TRAIT = excommunicated FAITH = this.faith GENDER_CHARACTER = this }
+		}
+		add = 1
+	}
+}

@@ -12,11 +12,25 @@
 					$ARMY_OWNER$ = { culture = { has_cultural_parameter = martial_custom_equal_combatant } }
 					AND = {
 						$ARMY_OWNER$ = { culture = { has_cultural_parameter = martial_custom_male_only_combatant } }
-						is_male = yes
+						OR = {
+							is_male = yes
+							AND = {
+								has_game_rule = shieldmaids_for_all
+								is_female = yes
+								has_trait = shieldmaiden
+							}
+						}
 					}
 					AND = {
 						$ARMY_OWNER$ = { culture = { has_cultural_parameter = martial_custom_female_only_combatant } }
-						is_female = yes
+						OR = {
+							is_female = yes
+							AND = {
+								has_game_rule = shieldmaids_for_all
+								is_male = yes
+								has_trait = shieldmaiden
+							}
+						}
 					}
 				}
 
@@ -26,11 +40,25 @@
 					$ARMY_OWNER$ = { faith = { has_doctrine_parameter = combatant_can_be_either_gender_if_no_roco } }
 					AND = {
 						$ARMY_OWNER$ = { faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco } }
-						is_male = yes
+						OR = {
+							is_male = yes
+							AND = {
+								has_game_rule = shieldmaids_for_all
+								is_female = yes
+								has_trait = shieldmaiden
+							}
+						}
 					}
 					AND = {
 						$ARMY_OWNER$ = { faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco } }
-						is_female = yes
+						OR = {
+							is_female = yes
+							AND = {
+								has_game_rule = shieldmaids_for_all
+								is_male = yes
+								has_trait = shieldmaiden
+							}
+						}
 					}
 				}
 			}
