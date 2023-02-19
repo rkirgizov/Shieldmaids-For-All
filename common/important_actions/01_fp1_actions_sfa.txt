@@ -44,20 +44,15 @@ action_can_grant_title_shieldmaiden = {
 				limit = {
 					has_trait = shieldmaiden
 					has_character_flag = rule_hired_shieldmaid	# нанят текущим правителем... РАБОТАЕТ ЛИ
-					NOT = {	# прошло много времени с момента назначения воительницей
-						has_opinion_modifier = {
-							target = prev
-							modifier = fp1_accepted_my_sword_opinion
-						}
-					}
+					NOT = {	has_character_flag = rule_hired_shieldmaid_period_for_award }
 					NOT = { # мнение не меньше 50
 						save_temporary_opinion_value_as = { name = target_opinion target = prev }		
 						scope:target_opinion < 50
 					}
 					NOT = { # не соперник или враг
 						OR = {
-							has_relation_rival = prev
 							has_relation_potential_rival = prev
+							has_relation_rival = prev
 							has_relation_nemesis = prev
 						}
 					}
