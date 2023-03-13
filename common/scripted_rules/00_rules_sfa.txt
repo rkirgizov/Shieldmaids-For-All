@@ -1,0 +1,24 @@
+﻿# Determines if a character is allowed to be granted specific title by another character
+# Root is the target character
+# scope:liege is the granter
+# scope:landed_title is the title in question
+allowed_to_be_granted_titles_by = {
+	trigger_if = {
+		limit = {
+			scope:landed_title = {
+				tier <= tier_county
+				title_province = { has_holding_type = church_holding }
+			}
+			scope:liege.faith = {
+				NOT = { has_doctrine_parameter = lay_clergy }
+			}
+		}
+		custom_tooltip = {
+			text = grant_title_clerical_gender_tt
+			can_be_granted_theocratic_titles_by = { RULER = scope:liege }
+		}
+	}
+	trigger_else = {
+		can_be_granted_titles_by = { RULER = scope:liege }
+	}
+}

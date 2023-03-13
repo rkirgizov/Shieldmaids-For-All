@@ -1,4 +1,5 @@
 sfa_shieldmaidens_traditions = {
 	texture = "gfx/interface/icons/traits/shieldmaiden.dds"
 	alias = { shieldmaidens }
+	requires_dlc_flag = the_northern_lords
 }

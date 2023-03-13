@@ -6,8 +6,8 @@
 
 banished_shieldmaiden_no_lowborn_modifier = {
 	icon = stress_negative
-	martial = -2
-	prowess = -4
+	martial = -3
+	prowess = -6
 	monthly_prestige = -0.1
 	stress_gain_mult = 0.1	
 	general_opinion = -10

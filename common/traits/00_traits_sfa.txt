@@ -1,4 +1,4 @@
-shieldmaiden = {
+﻿shieldmaiden = {
 	
 	fame = yes
 	martial = 3

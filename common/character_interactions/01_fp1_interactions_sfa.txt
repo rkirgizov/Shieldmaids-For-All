@@ -5,6 +5,19 @@
 # by Alexander Oltner
 # Edited by rkirgizov
 ##################
+potential_designate_shieldmaiden_interaction = {
+	is_shown = {
+		has_game_rule = shieldmaids_for_all
+		scope:actor = { can_rule_calling_shieldmaidens_trigger = yes }
+		scope:recipient = { can_be_potential_shieldmaiden_trigger = yes }
+	}
+}
+
+##################
+# Designate a Shieldmaiden
+# by Alexander Oltner
+# Edited by rkirgizov
+##################
 designate_shieldmaiden_interaction = {
 	category = interaction_category_vassal
 	common_interaction = yes
@@ -25,230 +38,14 @@ designate_shieldmaiden_interaction = {
 	}
 
 	is_shown = {
-		scope:actor = {
-			has_fp1_dlc_trigger = yes
-			is_physically_able_adult = yes
-			#Has access to the appropriate cultural parameter.
-			# sfa
-			OR = { 
-				culture = { has_cultural_parameter = has_access_to_shieldmaidens }
-				has_game_rule = shieldmaids_for_all	
-			}
-			NOT = {
-				AND = { 
-					NOT = { has_game_rule = shieldmaids_for_all	}
-					faith = { has_doctrine = doctrine_gender_equal }
-				}
-				AND = { 
-					has_game_rule = shieldmaids_for_all
-					OR = {
-						# faith = { has_doctrine = doctrine_gender_male_dominated }
-						AND = { # Has the Royal Court and thus can modify pillars
-							has_dlc_feature = diverge_culture 
-							culture = { has_cultural_parameter = martial_custom_equal_combatant }
-						}
-						AND = {
-							NOT = { has_dlc_feature = diverge_culture  }
-							faith = { has_doctrine_parameter = combatant_can_be_either_gender_if_no_roco }
-						}
-					}
-				}
-			}
-		}
-		scope:recipient = {
-			is_courtier_of = scope:actor
-			# OR = { 
-			# 	has_game_rule = shieldmaids_for_all	
-			# 	is_close_family_of = scope:actor
-			# }
-			NOT = { has_trait = blind }
-			NOT = { has_trait = incapable }
-			NOT = { has_trait = shieldmaiden }
-			OR = {
-				AND = {
-					NOT = { has_game_rule = shieldmaids_for_all	}
-					OR = {
-						AND = {
-							is_female = yes
-							faith = { has_doctrine = doctrine_gender_male_dominated }
-						}
-						AND = {
-							is_male = yes
-							faith = { has_doctrine = doctrine_gender_female_dominated }
-						}
-					}
-				}
-				AND = {
-					has_game_rule = shieldmaids_for_all
-					is_female = yes
-					OR = {
-						AND = { # Has the Royal Court and thus can modify pillars
-							has_dlc_feature = diverge_culture 
-							culture = { has_cultural_parameter = martial_custom_male_only_combatant }
-						}
-						AND = {
-							NOT = { has_dlc_feature = diverge_culture  }
-							faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco }
-						}
-					}
-				}
-				AND = {
-					has_game_rule = shieldmaids_for_all
-					is_male = yes
-					OR = {
-						AND = { # Has the Royal Court and thus can modify pillars
-							has_dlc_feature = diverge_culture 
-							culture = { has_cultural_parameter = martial_custom_female_only_combatant }
-						}
-						AND = {
-							NOT = { has_dlc_feature = diverge_culture  }
-							faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco }
-						}
-					}					
-				}
-			}
-			# OR = {
-			# 	NOT = { has_game_rule = shieldmaids_for_all }
-			# 	AND = {
-			# 		has_game_rule = shieldmaids_for_all
-			# 		OR = { # sfa
-			# 			martial >= 10
-			# 			has_trait = brave
-			# 			has_trait = ambitious
-			# 			has_trait = diligent
-			# 			has_trait = just
-			# 			has_trait = blademaster_1
-			# 			has_trait = blademaster_2
-			# 			has_trait = blademaster_3
-			# 			has_trait = hunter_1
-			# 			has_trait = hunter_2
-			# 			has_trait = hunter_3
-			# 			has_trait = gallant
-			# 			has_trait = varangian
-			# 			has_trait = berserker
-			# 			has_trait = strong
-			# 			has_trait = athletic
-			# 			has_trait = education_martial_prowess_1
-			# 			has_trait = education_martial_prowess_2
-			# 			has_trait = education_martial_prowess_3
-			# 			has_trait = education_martial_prowess_4
-			# 			has_trait = education_martial_1
-			# 			has_trait = education_martial_2
-			# 			has_trait = education_martial_3
-			# 			has_trait = education_martial_4
-			# 		}			
-			# 	}
-			# }
-		}
+		scope:actor = { can_rule_calling_shieldmaidens_trigger = yes }
+		scope:recipient = { can_be_shieldmaiden_trigger = yes }
 	}
-
 	is_valid_showing_failures_only = {
-		scope:recipient = {
-			# prowess >= decent_skill_rating
-			is_adult = yes
-			is_imprisoned = no
-			OR = {
-				AND = {
-					has_game_rule = shieldmaids_for_all
-					NOT = { has_trait = pregnant }		
-				}
-				NOT = { has_game_rule = shieldmaids_for_all }
-			}			
-		}
+		scope:recipient = { can_be_shieldmaiden_valid_trigger = yes }
 	}
 
-	on_send = {
-		scope:recipient = {
-			if = {
-				limit = { has_character_flag = rule_fired_shieldmaid }
-				remove_character_flag = rule_fired_shieldmaid
-			}
-			add_character_flag = rule_hired_shieldmaid
-			add_character_flag = {
-				flag = rule_hired_shieldmaid_period_for_award
-				years = 15
-			}
-		}
-	}
-
-	on_accept = {
-		scope:recipient = {
-			add_trait = shieldmaiden
-			hidden_effect = {
-				if = {
-					limit = {
-						has_opinion_modifier = {
-							target = scope:actor
-							modifier = fp1_accepted_my_sword_opinion
-						}
-					}
-					remove_opinion = {
-						target = scope:actor
-						modifier = fp1_accepted_my_sword_opinion
-					}			
-				}
-			}
-			add_opinion = {
-				target = scope:actor
-				modifier = fp1_accepted_my_sword_opinion
-			}
-		}
-		scope:actor = {
-			if = {
-				limit = { scope:recipient = { is_lowborn = no } }
-				stress_impact = {
-					arrogant = medium_stress_impact_gain
-				}
-			}
-			stress_impact = {
-				paranoid = minor_stress_impact_gain
-			}
-			if = {
-				limit = { has_game_rule = shieldmaids_for_all }
-				calling_of_the_shieldmaidens = yes
-				if = {
-					limit = {
-						AND = {
-							scope:recipient = { is_lowborn = no }
-							scope:recipient = { can_set_relation_potential_friend_trigger = { CHARACTER = scope:actor } }
-						}
-					}
-					scope:recipient = {
-						set_relation_potential_friend = scope:actor
-					}
-				}	
-			}		
-			if = {
-				limit = { 
-					has_game_rule = shieldmaids_for_all
-					scope:hook = yes 
-					scope:actor = { has_weak_hook = scope:recipient }
-				}	
-				remove_hook  =  { target = scope:recipient }
-				scope:recipient = {
-					add_opinion = {
-						target = scope:actor
-						modifier = sfa_use_hook_on_calling_shieldmaidens_opinion
-						opinion = -40
-					}
-				}
-			}					
-			else_if = {
-				limit = { 
-					has_game_rule = shieldmaids_for_all
-					scope:hook = yes 
-					scope:actor = { has_strong_hook = scope:recipient }
-				}	
-				remove_hook  =  { target = scope:recipient }
-				scope:recipient = {
-					add_opinion = {
-						target = scope:actor
-						modifier = sfa_use_hook_on_calling_shieldmaidens_opinion
-						opinion = -80
-					}
-				}
-			}		
-		}
+	on_accept = {		
 		hidden_effect = {
 			scope:actor = {
 				send_interface_toast = {
@@ -260,216 +57,327 @@ designate_shieldmaiden_interaction = {
 							add_trait_force_tooltip = shieldmaiden
 						}
 						if = {
-							limit = { scope:recipient = { is_lowborn = no } }
+							limit = { has_game_rule = shieldmaids_for_all }
+							if = {
+								limit = { scope:recipient = { is_lowborn = no } }
+								stress_impact = {
+									arrogant = medium_stress_impact_gain
+								}
+							}
+							if = {
+								limit = { 
+									scope:recipient = { has_character_modifier = banished_shieldmaiden_no_lowborn_modifier } 
+								}
+								stress_impact = {
+									base = sub_medium_stress_impact_gain
+								}
+							}
+							if = {
+								limit = { 
+									scope:recipient = { has_character_modifier = banished_shieldmaiden_lowborn_modifier } 
+								}
+								stress_impact = {
+									base = minor_stress_impact_gain
+								}
+							}
 							stress_impact = {
-								arrogant = medium_stress_impact_gain
+								paranoid = minor_stress_impact_gain
 							}
 						}
-						stress_impact = {
-							paranoid = minor_stress_impact_gain
+						else = {
+							stress_impact = {
+								arrogant = medium_stress_impact_gain
+								paranoid = minor_stress_impact_gain
+							}							
 						}
 					}
 				}
 			}	
 		}
-	}
-
-	cost = {
-		prestige = {
+		scope:recipient = {
+			add_trait = shieldmaiden
+			# sfa
 			if = {
 				limit = { has_game_rule = shieldmaids_for_all }
-				add = {
-					value = scope:actor.medium_prestige_value
-					desc = DREAD_BASE
-				}	
+				try_to_add_shieldmaiden_to_rule = { RULER = scope:actor }
+				try_to_add_shieldmaiden_on_designate_opinions = { RULER = scope:actor }
+			}
+			else = {
+				add_opinion = {
+					target = scope:actor
+					modifier = fp1_accepted_my_sword_opinion
+				}				
+			}
+		}
+		scope:actor = {
+			if = {
+				limit = { has_game_rule = shieldmaids_for_all }
 				if = {
 					limit = {
-						scope:recipient = { is_lowborn = yes }
+						AND = {
+							scope:recipient = { is_lowborn = no }
+							scope:recipient = { can_set_relation_potential_friend_trigger = { CHARACTER = scope:actor } }
+						}
 					}
-					add = {
-						value = minor_prestige_value
-						desc = LOWBORN_DESC
-					}					
-				}
-				###COMMANDER TRAITS###
+					scope:recipient = {
+						set_relation_potential_friend = scope:actor
+					}
+				}	
+				# calling_of_the_shieldmaidens_effect = { RULER = scope:actor }
 				if = {
-					limit = { scope:recipient.number_of_commander_traits >= 1 } 
-					add = {
-						value = scope:recipient.number_of_commander_traits
-						multiply = 15
-						min = 0
-						desc = game_concept_commander_traits
-					}
-				}
-				###TRAITS###
-				if = { # sinful traits
-					limit = { scope:recipient.num_sinful_traits > 0 }
-					add = {
-						value = 70
-						multiply = scope:recipient.num_sinful_traits
-						min = 0
-						desc = CHAR_IS_SINFUL
-					}
-				}
-				if = { # crime traits
 					limit = { 
-						scope:actor.sfa_recipient_num_criminal_traits > 0 
+						scope:hook = yes 
+						scope:actor = { has_weak_hook = scope:recipient }
+					}	
+					remove_hook  =  { target = scope:recipient }
+					scope:recipient = {
+						add_opinion = {
+							target = scope:actor
+							modifier = sfa_use_hook_on_calling_shieldmaidens_opinion
+							opinion = -40
+						}
 					}
-					add = {
-						value = 100
-						multiply = scope:actor.sfa_recipient_num_criminal_traits
-						min = 0
-						desc = CHAR_IS_CRIME
-					}
-				}
-				if = { # shunned traits
+				}					
+				else_if = {
 					limit = { 
-						scope:actor.sfa_recipient_num_shunned_traits > 0 
-					}
-					add = {
-						value = 35
-						multiply = scope:actor.sfa_recipient_num_shunned_traits
-						min = 0
-						desc = CHAR_IS_SHUNNED
-					}
-				}
-				if = {
-					limit = { scope:recipient = { has_trait = lazy } }
-					add = {
-						value = 25
-						desc = trait_lazy
-					}
-				}		
-				if = {
-					limit = { scope:recipient = { has_trait = craven } }
-					add = {
-						value = 150
-						desc = trait_craven
+						scope:hook = yes 
+						scope:actor = { has_strong_hook = scope:recipient }
+					}	
+					remove_hook  =  { target = scope:recipient }
+					scope:recipient = {
+						add_opinion = {
+							target = scope:actor
+							modifier = sfa_use_hook_on_calling_shieldmaidens_opinion
+							opinion = -80
+						}
 					}
 				}	
 				if = {
-					limit = { scope:recipient = { has_trait = dwarf } }
-					add = {
-						value = 200
-						desc = trait_dwarf
+					limit = { scope:recipient = { is_lowborn = no } }
+					stress_impact = {
+						arrogant = medium_stress_impact_gain
 					}
-				}			
+				}
 				if = {
-					limit = { scope:recipient = { has_trait = hunchbacked } }
-					add = {
-						value = 250
-						desc = trait_hunchbacked
+					limit = { 
+						scope:recipient = { has_character_modifier = banished_shieldmaiden_no_lowborn_modifier } 
 					}
-				}		
+					stress_impact = {
+						base = sub_medium_stress_impact_gain
+					}
+				}
 				if = {
-					limit = { scope:recipient = { has_trait = hunchbacked } }
-					add = {
-						value = 250
-						desc = trait_hunchbacked
+					limit = { 
+						scope:recipient = { has_character_modifier = banished_shieldmaiden_lowborn_modifier } 
 					}
-				}					
-				if = {
-					limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_lowborn_modifier } }
-					add = {
-						value = 100
-						desc = WAS_BANISHED_SHIELDMAID_COST_DESC
+					stress_impact = {
+						base = minor_stress_impact_gain
 					}
-				}				
-				if = {
-					limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_no_lowborn_modifier } }
-					add = {
-						value = 200
-						desc = WAS_BANISHED_SHIELDMAID_COST_DESC
-					}
+				}
+				stress_impact = {
+					paranoid = minor_stress_impact_gain
 				}	
 			}
 			else = {
-				add = {
-					value = scope:actor.major_prestige_value
-				}	 
-			}	
-		}
-		gold = {
-			if = {
-				limit = { has_game_rule = shieldmaids_for_all }
-				add = {
-					value = scope:recipient.individual_recruit_guest_interaction_cost
-					desc = DREAD_BASE
-				}
-				###DYNASTY AND LOWBORN###
-				if = {
-					limit = { exists = scope:recipient.dynasty }
-					add = {
-						value = scope:recipient.dynasty.dynasty_prestige_level #0-10
-						multiply = 10 #Max 50
-						desc = CHAR_DYNASTY_LEVEL_COST_DESC
-					}
-				}		
-				if = {
-					limit = { scope:recipient = { is_lowborn = yes } }
-					add = {
-						value = minor_gold_value
-						desc = LOWBORN_DESC
-					}
-				}
-				if = {
-					limit = { scope:recipient = { has_trait = education_martial_1 } }
-					add = {
-						value = 5
-						desc = trait_education_martial_1
-					}
-				}
-				else_if = {
-					limit = { scope:recipient = { has_trait = education_martial_2 } }
-					add = {
-						value = 10
-						desc = trait_education_martial_2
-					}
-				}	
-				else_if = {
-					limit = { scope:recipient = { has_trait = education_martial_3 } }
-					add = {
-						value = 15
-						desc = trait_education_martial_3
-					}
-				}	
-				else_if = {
-					limit = { scope:recipient = { has_trait = education_martial_4 } }
-					add = {
-						value = 20
-						desc = trait_education_martial_4
-					}
-				}		
-				###COMMANDER TRAITS###
-				if = {
-					limit = { scope:recipient = { number_of_commander_traits >= 1 } }
-					add = {
-						value = scope:recipient.number_of_commander_traits
-						multiply = 5
-						min = 0
-						desc = game_concept_commander_traits
-					}
-				}
-				###TRAITS###
-				if = {
-					limit = { scope:recipient = { number_of_lifestyle_traits >= 1 } }
-					add = {
-						value = scope:recipient.number_of_lifestyle_traits
-						multiply = 5
-						min = 0
-						desc = game_concept_lifestyle_traits
-					}
-				}
-				if = {
-					limit = { scope:recipient = { has_trait = ambitious } }
-					add = {
-						value = 5
-						desc = trait_ambitious
-					}
-				}		
+				stress_impact = {
+					arrogant = medium_stress_impact_gain
+					paranoid = minor_stress_impact_gain
+				}				
 			}
 		}
 	}
+
+	# cost = {
+	# 	# !!! При изменении не забывать про recruit_shieldmaiden_interaction_prestige_cost, должно быть одинаковое
+	# 	# prestige = {
+	# 	# 	if = {
+	# 	# 		limit = { has_game_rule = shieldmaids_for_all }
+	# 	# 		add = {
+	# 	# 			value = scope:actor.medium_prestige_value
+	# 	# 			desc = DREAD_BASE
+	# 	# 		}	
+	# 	# 		if = {
+	# 	# 			limit = {
+	# 	# 				scope:recipient = { is_lowborn = yes }
+	# 	# 			}
+	# 	# 			add = {
+	# 	# 				value = minor_prestige_value
+	# 	# 				desc = LOWBORN_DESC
+	# 	# 			}					
+	# 	# 		}
+	# 	# 		###COMMANDER TRAITS###
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient.number_of_commander_traits >= 1 } 
+	# 	# 			add = {
+	# 	# 				value = scope:recipient.number_of_commander_traits
+	# 	# 				multiply = 15
+	# 	# 				min = 0
+	# 	# 				desc = game_concept_commander_traits
+	# 	# 			}
+	# 	# 		}
+	# 	# 		###TRAITS###
+	# 	# 		if = { # sinful traits
+	# 	# 			limit = { scope:recipient.num_sinful_traits > 0 }
+	# 	# 			add = {
+	# 	# 				value = 70
+	# 	# 				multiply = scope:recipient.num_sinful_traits
+	# 	# 				min = 0
+	# 	# 				desc = CHAR_IS_SINFUL
+	# 	# 			}
+	# 	# 		}
+	# 	# 		if = { # crime traits
+	# 	# 			limit = { 
+	# 	# 				scope:actor.sfa_recipient_num_criminal_traits > 0 
+	# 	# 			}
+	# 	# 			add = {
+	# 	# 				value = 100
+	# 	# 				multiply = scope:actor.sfa_recipient_num_criminal_traits
+	# 	# 				min = 0
+	# 	# 				desc = CHAR_IS_CRIME
+	# 	# 			}
+	# 	# 		}
+	# 	# 		if = { # shunned traits
+	# 	# 			limit = { 
+	# 	# 				scope:actor.sfa_recipient_num_shunned_traits > 0 
+	# 	# 			}
+	# 	# 			add = {
+	# 	# 				value = 35
+	# 	# 				multiply = scope:actor.sfa_recipient_num_shunned_traits
+	# 	# 				min = 0
+	# 	# 				desc = CHAR_IS_SHUNNED
+	# 	# 			}
+	# 	# 		}
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient = { has_trait = lazy } }
+	# 	# 			add = {
+	# 	# 				value = 25
+	# 	# 				desc = trait_lazy
+	# 	# 			}
+	# 	# 		}		
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient = { has_trait = craven } }
+	# 	# 			add = {
+	# 	# 				value = 150
+	# 	# 				desc = trait_craven
+	# 	# 			}
+	# 	# 		}	
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient = { has_trait = dwarf } }
+	# 	# 			add = {
+	# 	# 				value = 200
+	# 	# 				desc = trait_dwarf
+	# 	# 			}
+	# 	# 		}			
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient = { has_trait = hunchbacked } }
+	# 	# 			add = {
+	# 	# 				value = 250
+	# 	# 				desc = trait_hunchbacked
+	# 	# 			}
+	# 	# 		}					
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_lowborn_modifier } }
+	# 	# 			add = {
+	# 	# 				value = 100
+	# 	# 				desc = WAS_BANISHED_SHIELDMAID_COST_DESC
+	# 	# 			}
+	# 	# 		}				
+	# 	# 		if = {
+	# 	# 			limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_no_lowborn_modifier } }
+	# 	# 			add = {
+	# 	# 				value = 200
+	# 	# 				desc = WAS_BANISHED_SHIELDMAID_COST_DESC
+	# 	# 			}
+	# 	# 		}	
+	# 	# 	}
+	# 	# 	else = {
+	# 	# 		add = {
+	# 	# 			value = scope:actor.major_prestige_value
+	# 	# 		}	 
+	# 	# 	}	
+	# 	# }
+	# 	gold = {
+	# 		# !!! При изменении не забывать про recruit_shieldmaiden_interaction_gold_cost, должно быть одинаковое
+	# 		if = {
+	# 			limit = { has_game_rule = shieldmaids_for_all }
+	# 			add = {
+	# 				value = scope:recipient.individual_recruit_guest_interaction_cost
+	# 				desc = DREAD_BASE
+	# 			}
+	# 			###DYNASTY AND LOWBORN###
+	# 			if = {
+	# 				limit = { exists = scope:recipient.dynasty }
+	# 				add = {
+	# 					value = scope:recipient.dynasty.dynasty_prestige_level #0-10
+	# 					multiply = 10 #Max 50
+	# 					desc = CHAR_DYNASTY_LEVEL_COST_DESC
+	# 				}
+	# 			}		
+	# 			if = {
+	# 				limit = { scope:recipient = { is_lowborn = yes } }
+	# 				add = {
+	# 					value = minor_gold_value
+	# 					desc = LOWBORN_DESC
+	# 				}
+	# 			}
+	# 			if = {
+	# 				limit = { scope:recipient = { has_trait = education_martial_1 } }
+	# 				add = {
+	# 					value = 5
+	# 					desc = trait_education_martial_1
+	# 				}
+	# 			}
+	# 			else_if = {
+	# 				limit = { scope:recipient = { has_trait = education_martial_2 } }
+	# 				add = {
+	# 					value = 10
+	# 					desc = trait_education_martial_2
+	# 				}
+	# 			}	
+	# 			else_if = {
+	# 				limit = { scope:recipient = { has_trait = education_martial_3 } }
+	# 				add = {
+	# 					value = 15
+	# 					desc = trait_education_martial_3
+	# 				}
+	# 			}	
+	# 			else_if = {
+	# 				limit = { scope:recipient = { has_trait = education_martial_4 } }
+	# 				add = {
+	# 					value = 20
+	# 					desc = trait_education_martial_4
+	# 				}
+	# 			}		
+	# 			###COMMANDER TRAITS###
+	# 			if = {
+	# 				limit = { scope:recipient = { number_of_commander_traits >= 1 } }
+	# 				add = {
+	# 					value = scope:recipient.number_of_commander_traits
+	# 					multiply = 5
+	# 					min = 0
+	# 					desc = game_concept_commander_traits
+	# 				}
+	# 			}
+	# 			###TRAITS###
+	# 			if = {
+	# 				limit = { scope:recipient = { number_of_lifestyle_traits >= 1 } }
+	# 				add = {
+	# 					value = scope:recipient.number_of_lifestyle_traits
+	# 					multiply = 5
+	# 					min = 0
+	# 					desc = game_concept_lifestyle_traits
+	# 				}
+	# 			}
+	# 			if = {
+	# 				limit = { scope:recipient = { has_trait = ambitious } }
+	# 				add = {
+	# 					value = 5
+	# 					desc = trait_ambitious
+	# 				}
+	# 			}		
+	# 		}
+	# 	}
+	# }
 	ai_accept = {
 		base = 0
 		# Weight up for personality values.
@@ -612,7 +520,7 @@ designate_shieldmaiden_interaction = {
 			desc = INTERACTION_HUMBLE
 		}
 		modifier = {
-			add = -50
+			add = -100
 			has_trait = lazy
 			desc = INTERACTION_LAZY
 		}
@@ -686,21 +594,16 @@ designate_shieldmaiden_interaction = {
 
 	ai_potential = {
 		#Has access to the appropriate cultural parameter.
-		OR = { 
-			culture = { has_cultural_parameter = has_access_to_shieldmaidens }
-			has_game_rule = shieldmaids_for_all
-		}
-		prestige > major_prestige_value
-		has_fp1_dlc_trigger = yes
-		is_physically_able_adult = yes
+		can_rule_calling_shieldmaidens_trigger
 	}
 	
-	auto_accept = no
-
 	ai_will_do = {
 		base = 100
 	}
 }
+
+
+
 
 ##################
 # Reject a Shieldmaiden
@@ -716,6 +619,7 @@ reject_shieldmaiden_interaction = {
 	auto_accept = yes
 
     is_shown = {
+		has_game_rule = shieldmaids_for_all	
         scope:recipient = {
             NOT = { 
                 this = scope:actor
@@ -732,20 +636,6 @@ reject_shieldmaiden_interaction = {
             }
         }
     }
-
-	on_send = {
-		scope:recipient = {
-			if = {
-				limit = { has_character_flag = rule_hired_shieldmaid }
-				remove_character_flag = rule_hired_shieldmaid
-			}
-			if = {
-				limit = { has_character_flag = rule_hired_shieldmaid_period_for_award }
-				remove_character_flag = rule_hired_shieldmaid_period_for_award
-			}
-			add_character_flag = rule_fired_shieldmaid
-		}
-	}
 
 	cost = {
 		prestige = {
@@ -775,119 +665,7 @@ reject_shieldmaiden_interaction = {
 		# Если благородный, можно откуп запросить
 	}
 
-    on_accept = {
-        scope:recipient = {
-			remove_trait = shieldmaiden
-			if = {
-				limit = {
-					OR = {
-						is_lowborn = no
-						has_trait = ambitious
-					}
-				}
-				hidden_effect = {
-					if = {
-						limit = { has_character_modifier = banished_shieldmaiden_no_lowborn_modifier }
-						remove_character_modifier = banished_shieldmaiden_no_lowborn_modifier
-					}
-					if = {
-						limit = { has_character_modifier = banished_shieldmaiden_lowborn_modifier }
-						remove_character_modifier = banished_shieldmaiden_lowborn_modifier
-					}
-				}
-				if = {
-					limit = { is_lowborn = no }
-					add_character_modifier = {
-						modifier = banished_shieldmaiden_no_lowborn_modifier
-						years = 20
-					}	
-				}
-				else = {
-					add_character_modifier = {
-						modifier = banished_shieldmaiden_lowborn_modifier
-						years = 10
-					}	
-				}
-			}
-			hidden_effect = {
-				if = {
-					limit = {
-						has_opinion_modifier = {
-							target = scope:actor
-							modifier = fp1_rejected_my_sword_opinion
-						}
-					}
-					remove_opinion = {
-						target = scope:actor
-						modifier = fp1_rejected_my_sword_opinion
-					}			
-				}
-			}
-			add_opinion = {
-				target = scope:actor
-				modifier = fp1_rejected_my_sword_opinion
-			}	
-        }
-		scope:actor = {
-			if = {
-				limit = { scope:recipient = { is_lowborn = no } }
-				stress_impact = {
-					arrogant = minor_stress_impact_loss
-					paranoid = medium_stress_impact_gain
-				}
-			}
-			if = {
-				limit = { scope:recipient = { is_lowborn = yes } }
-				stress_impact = {
-					arrogant = medium_stress_impact_loss
-				}
-			}
-			if = { # crime traits
-				limit = { scope:actor.sfa_recipient_num_criminal_traits >= 1 }
-				stress_impact = {
-					base = medium_stress_loss
-				}		
-			}
-			if = { # shunned traits
-				limit = { scope:actor.sfa_recipient_num_shunned_traits >= 1 }
-				stress_impact = {
-					base = minor_stress_loss
-				}		
-			}
-			if = { # commander traits
-				limit = { scope:recipient.number_of_commander_traits >= 1 }
-				stress_impact = {
-					base = minor_stress_gain
-				}	
-			}
-			if = { # education_martial traits
-				limit = { scope:recipient = { has_trait = education_martial } }
-				stress_impact = {
-					base = medium_stress_gain
-				}	
-			}
-			if = { # education_martial_prowess traits
-				limit = { scope:recipient = { has_trait = education_martial_prowess } }
-				stress_impact = {
-					base = medium_stress_gain
-				}	
-			}
-			if = {
-				limit = {
-					AND = {
-						scope:recipient = { is_lowborn = no }
-						scope:recipient = { has_trait = ambitious }
-						scope:recipient = { can_set_relation_potential_rival_trigger = { CHARACTER = scope:actor } }
-					}
-				}
-				scope:recipient = {
-					set_relation_potential_rival = scope:actor
-				}
-				stress_impact = {
-					paranoid = minor_stress_impact_gain
-				}
-			}				
-		}		
+    on_accept = {		
 		hidden_effect = {
 			scope:actor = {
 				send_interface_toast = {
@@ -914,7 +692,7 @@ reject_shieldmaiden_interaction = {
 						if = { # crime traits
 							limit = { scope:actor.sfa_recipient_num_criminal_traits >= 1 }
 							stress_impact = {
-								base = medium_stress_loss
+								base = sub_medium_stress_impact_loss
 							}		
 						}
 						if = { # shunned traits
@@ -932,94 +710,89 @@ reject_shieldmaiden_interaction = {
 						if = { # education_martial traits
 							limit = { scope:recipient = { has_trait = education_martial } }
 							stress_impact = {
-								base = medium_stress_gain
+								base = sub_medium_stress_impact_gain
 							}	
 						}
 						if = { # education_martial_prowess traits
 							limit = { scope:recipient = { has_trait = education_martial_prowess } }
 							stress_impact = {
-								base = medium_stress_gain
+								base = sub_medium_stress_impact_gain
 							}	
 						}
 					}
 				}
 			}
 		}
-		
+        scope:recipient = {
+			remove_trait = shieldmaiden
+			try_to_add_shieldmaiden_on_reject_opinions = { RULER = scope:actor }
+			hidden_effect = { 
+				try_to_remove_shieldmaiden_from_rule = { RULER = scope:actor }
+			}
+        }
+		scope:actor = {
+			if = {
+				limit = { scope:recipient = { is_lowborn = no } }
+				stress_impact = {
+					arrogant = minor_stress_impact_loss
+					paranoid = medium_stress_impact_gain
+				}
+			}
+			if = {
+				limit = { scope:recipient = { is_lowborn = yes } }
+				stress_impact = {
+					arrogant = medium_stress_impact_loss
+				}
+			}
+			if = { # crime traits
+				limit = { scope:actor.sfa_recipient_num_criminal_traits >= 1 }
+				stress_impact = {
+					base = sub_medium_stress_impact_loss
+				}		
+			}
+			if = { # shunned traits
+				limit = { scope:actor.sfa_recipient_num_shunned_traits >= 1 }
+				stress_impact = {
+					base = minor_stress_loss
+				}		
+			}
+			if = { # commander traits
+				limit = { scope:recipient.number_of_commander_traits >= 1 }
+				stress_impact = {
+					base = minor_stress_gain
+				}	
+			}
+			if = { # education_martial traits
+				limit = { scope:recipient = { has_trait = education_martial } }
+				stress_impact = {
+					base = sub_medium_stress_impact_gain
+				}	
+			}
+			if = { # education_martial_prowess traits
+				limit = { scope:recipient = { has_trait = education_martial_prowess } }
+				stress_impact = {
+					base = sub_medium_stress_impact_gain
+				}	
+			}
+			if = {
+				limit = {
+					AND = {
+						scope:recipient = { is_lowborn = no }
+						scope:recipient = { has_trait = ambitious }
+						scope:recipient = { can_set_relation_potential_rival_trigger = { CHARACTER = scope:actor } }
+					}
+				}
+				scope:recipient = {
+					set_relation_potential_rival = scope:actor
+				}
+				stress_impact = {
+					paranoid = minor_stress_impact_gain
+				}
+			}				
+		}		
     }
-
-	ai_accept = {
-		base = 0
-
-		modifier = {
-			desc = SKILL_DIPLOMACY_AI_ACCEPT_DESC
-			add = {
-				value = scope:actor.diplomacy
-			}
-		}
-		modifier = {
-			add = -50
-			scope:recipient = { has_weak_hook = scope:actor }
-			desc = CHAR_HAS_HOOK_ON_ME_AI_ACCEPT_DESC
-		}
-		modifier = {
-			add = -100
-			scope:recipient = { has_strong_hook = scope:actor }
-			desc = CHAR_HAS_STRONG_HOOK_ON_ME_AI_ACCEPT_DESC
-		}
-		modifier = {
-			scope:hook = yes
-			add = 100
-			scope:actor = { has_weak_hook = scope:recipient }
-			desc = SCHEME_WEAK_HOOK_USED
-		}
-		modifier = {
-			scope:hook = yes
-			add = 1000
-			scope:actor = { has_strong_hook = scope:recipient }
-			desc = SCHEME_STRONG_HOOK_USED
-		}
-		modifier = {
-			add = -20
-			has_trait = ambitious
-			desc = INTERACTION_AMBITIOUS
-		}
-		modifier = {
-			add = -30
-			scope:recipient = { is_lowborn = no }
-			desc = CHAR_NO_LOWBORN_DESC_AI_ACCEPT_DESC
-		}
-		modifier = {
-			add = intimidated_reason_value
-			scope:recipient = {
-				has_dread_level_towards = {
-					target = scope:actor
-					level = 1
-				}
-			}
-			desc = INTIMIDATED_REASON
-		}
-		modifier = {
-			add = cowed_reason_value
-			scope:recipient = {
-				has_dread_level_towards = {
-					target = scope:actor
-					level = 2
-				}
-			}
-			desc = COWED_REASON
-		}
-		opinion_modifier = { # Opinion Factor
-			who = scope:recipient
-			opinion_target = scope:actor
-			multiplier = 1.0
-			desc = AI_OPINION_REASON
-		}
-	}
 
 	ai_will_do = {
 		base = 100
 	}
 }
-}
-

@@ -1,3 +1,196 @@
+﻿# Recipient recruit to shieldmaiden cost
+recruit_shieldmaiden_interaction_prestige_cost = {
+	value = 0
+	if = {
+		limit = { has_game_rule = shieldmaids_for_all }
+		add = {
+			value = scope:actor.medium_prestige_value
+			desc = DREAD_BASE
+		}	
+		if = {
+			limit = {
+				scope:recipient = { is_lowborn = yes }
+			}
+			add = {
+				value = minor_prestige_value
+				desc = LOWBORN_DESC
+			}					
+		}
+		###COMMANDER TRAITS###
+		if = {
+			limit = { scope:recipient.number_of_commander_traits >= 1 } 
+			add = {
+				value = scope:recipient.number_of_commander_traits
+				multiply = 15
+				min = 0
+				desc = game_concept_commander_traits
+			}
+		}
+		###TRAITS###
+		if = { # sinful traits
+			limit = { scope:recipient.num_sinful_traits > 0 }
+			add = {
+				value = 70
+				multiply = scope:recipient.num_sinful_traits
+				min = 0
+				desc = CHAR_IS_SINFUL
+			}
+		}
+		if = { # crime traits
+			limit = { 
+				scope:actor.sfa_recipient_num_criminal_traits > 0 
+			}
+			add = {
+				value = 100
+				multiply = scope:actor.sfa_recipient_num_criminal_traits
+				min = 0
+				desc = CHAR_IS_CRIME
+			}
+		}
+		if = { # shunned traits
+			limit = { 
+				scope:actor.sfa_recipient_num_shunned_traits > 0 
+			}
+			add = {
+				value = 35
+				multiply = scope:actor.sfa_recipient_num_shunned_traits
+				min = 0
+				desc = CHAR_IS_SHUNNED
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_trait = lazy } }
+			add = {
+				value = 25
+				desc = trait_lazy
+			}
+		}		
+		if = {
+			limit = { scope:recipient = { has_trait = craven } }
+			add = {
+				value = 150
+				desc = trait_craven
+			}
+		}	
+		if = {
+			limit = { scope:recipient = { has_trait = dwarf } }
+			add = {
+				value = 200
+				desc = trait_dwarf
+			}
+		}			
+		if = {
+			limit = { scope:recipient = { has_trait = hunchbacked } }
+			add = {
+				value = 250
+				desc = trait_hunchbacked
+			}
+		}					
+		if = {
+			limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_lowborn_modifier } }
+			add = {
+				value = 100
+				desc = WAS_BANISHED_SHIELDMAID_COST_DESC
+			}
+		}				
+		if = {
+			limit = { scope:recipient = { has_character_modifier = banished_shieldmaiden_no_lowborn_modifier } }
+			add = {
+				value = 200
+				desc = WAS_BANISHED_SHIELDMAID_COST_DESC
+			}
+		}	
+	}
+	else = {
+		add = {
+			value = scope:actor.major_prestige_value
+		}	 
+	}
+}
+
+# Recipient recruit to shieldmaiden cost
+recruit_shieldmaiden_interaction_gold_cost = {
+	value = 0
+	if = {
+		limit = { has_game_rule = shieldmaids_for_all }
+		add = {
+			value = scope:recipient.individual_recruit_guest_interaction_cost
+			desc = DREAD_BASE
+		}
+		###DYNASTY AND LOWBORN###
+		if = {
+			limit = { exists = scope:recipient.dynasty }
+			add = {
+				value = scope:recipient.dynasty.dynasty_prestige_level #0-10
+				multiply = 10 #Max 50
+				desc = CHAR_DYNASTY_LEVEL_COST_DESC
+			}
+		}		
+		if = {
+			limit = { scope:recipient = { is_lowborn = yes } }
+			add = {
+				value = minor_gold_value
+				desc = LOWBORN_DESC
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_trait = education_martial_1 } }
+			add = {
+				value = 5
+				desc = trait_education_martial_1
+			}
+		}
+		else_if = {
+			limit = { scope:recipient = { has_trait = education_martial_2 } }
+			add = {
+				value = 10
+				desc = trait_education_martial_2
+			}
+		}	
+		else_if = {
+			limit = { scope:recipient = { has_trait = education_martial_3 } }
+			add = {
+				value = 15
+				desc = trait_education_martial_3
+			}
+		}	
+		else_if = {
+			limit = { scope:recipient = { has_trait = education_martial_4 } }
+			add = {
+				value = 20
+				desc = trait_education_martial_4
+			}
+		}		
+		###COMMANDER TRAITS###
+		if = {
+			limit = { scope:recipient = { number_of_commander_traits >= 1 } }
+			add = {
+				value = scope:recipient.number_of_commander_traits
+				multiply = 5
+				min = 0
+				desc = game_concept_commander_traits
+			}
+		}
+		###TRAITS###
+		if = {
+			limit = { scope:recipient = { number_of_lifestyle_traits >= 1 } }
+			add = {
+				value = scope:recipient.number_of_lifestyle_traits
+				multiply = 5
+				min = 0
+				desc = game_concept_lifestyle_traits
+			}
+		}
+		if = {
+			limit = { scope:recipient = { has_trait = ambitious } }
+			add = {
+				value = 5
+				desc = trait_ambitious
+			}
+		}		
+	}
+}
+
 # Recipient has crime traits
 sfa_recipient_num_criminal_traits = {
 	value = 0

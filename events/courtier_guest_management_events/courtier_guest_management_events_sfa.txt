@@ -1,0 +1,15 @@
+﻿#COURTIERS/GUESTS LEAVING
+# 0001 - Courtier is planning to leave
+# 0102 - Courtier with claim is wanting to leave
+# 0500 - Guests leaves
+# 0999 - Maintenance - Force move to pool
+
+#GUESTS ARRIVING
+# 1001 - Guest arriving, message if they're great
+
+#POOL CHARACTERS
+# 2001 - "Develops" the character and gives those without location a location
+# 2002 - Pool repopulation
+
+#COURTIERS AND GUESTS DOING STUFF
+# 3001 - Sets relationships and other secrets

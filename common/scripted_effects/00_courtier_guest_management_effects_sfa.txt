@@ -1,0 +1,43 @@
+﻿# уход со двора
+move_to_pool_effect = {
+	save_temporary_scope_as = mover
+    # sfa
+    scope:mover.host = { save_temporary_scope_as = ex_court_owner }
+
+	###TOOLTIP FOR HOST###
+	show_as_tooltip = {
+		scope:mover = { move_to_pool = yes }
+	}
+
+	###MOVE OR FIND FALLBACK DESTINATION###
+	if = {
+		limit = {
+			exists = scope:destination
+		}
+		set_variable = {
+			name = last_visited_ruler
+			value = this.host
+			days = 3650
+		}
+
+		every_traveling_family_member = {
+			limit = {
+				NOT = { is_in_pool_at = scope:destination }
+				is_ruler = no
+				trigger_if = {
+					limit = {
+						exists = scope:mover.host
+						is_child_of = scope:mover.host
+						is_adult = no
+					}
+					NOT = { dynasty = scope:mover.host.dynasty }
+				}
+			}
+			hidden_effect = { move_to_pool_at = scope:destination }
+		}
+        
+        # sfa
+		hidden_effect = { try_to_remove_shieldmaiden_from_rule = { RULER = scope:ex_court_owner } }
+
+	}
+}

@@ -1,20 +1,29 @@
 ﻿l_russian:
 # Rules
   rule_shieldmaids_for_all:0 "#X SFA:#! Доступность воительниц"
-  setting_shieldmaids_default:0 "Отключено"
-  setting_shieldmaids_default_desc:0 "Как в оригинальной игре. SFA отключен."
-  setting_shieldmaids_for_all:0 "Во всех культурах"
-  setting_shieldmaids_for_all_desc:0 "Воительницы могут быть во всех культурах."
+  setting_shieldmaids_default:0 "Оригинал"
+  setting_shieldmaids_default_desc:0 "Как в оригинальной игре"
+  setting_shieldmaids_for_all:0 "Все культуры"
+  setting_shieldmaids_for_all_desc:0 "Воительницы доступны всем культурам"
 
 # Designate Interaction
   designate_shieldmaiden_interaction:0 "Призвать в [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовики' )]"
   designate_shieldmaiden_interaction_sfa_desc:0 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [Concept( 'shieldmaidens', recipient.Custom('ShieldPersonFemaleMale') )|E] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName] [schemes|E]."
+
+# Event Opinions
+  fp1_rejected_my_sword_opinion_lowborn:0 "Отвергает мой меч"
+  fp1_rejected_my_sword_opinion_no_lowborn:0 "Отвергает мой меч"
+  fp1_accepted_my_sword_opinion_lowborn:0 "Принимает мой меч"
+  fp1_accepted_my_sword_opinion_no_lowborn:0 "Принимает мой меч"
 
 # Regect Interaction
   reject_shieldmaiden_interaction_extra_icon: "$hook_extra_icon$"
   reject_shieldmaiden_interaction:0 "Изгнать из воителей"
   reject_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] больше не может быть [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )] в вашем войске."
   reject_shieldmaiden_interaction_notification:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')|l]!"
+
+# Kick from Court Interaction
+  kick_from_court_shieldmaiden_warning_tt:2 "@warning_icon!#X [kicked.GetShortUIName] — [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E]#!"
 
 # Interaction Cost Desc
   CHAR_DYNASTY_LEVEL_COST_DESC:0 "[dynasty_prestige_level|E] династии персонажа"
@@ -34,12 +43,11 @@
   SFA_I_OPINION_REASON:1 "[CHARACTER.GetNamePossessiveOrMy|U]е мнение о персонаже #V [TARGET_CHARACTER.GetNamePossessiveOrMy]#!: $VALUE|=+0$"
   SFA_I_OPINION_REASON_REVERSE:1 "Мнение персонажа #V [CHARACTER.GetNamePossessiveOrMy|U]#!о вас: $VALUE|=+0$"
 
-
 # Modifiers
-  banished_shieldmaiden_no_lowborn_modifier:0 "Сломанный щит благородного"
+  banished_shieldmaiden_no_lowborn_modifier:0 "Сломанный щит"
   banished_shieldmaiden_no_lowborn_modifier_desc:0 "Этот благородный персонаж был с позором изгнан из воителей и в каждом шелесте ему теперь мерещатся насмешки."
-  banished_shieldmaiden_lowborn_modifier:0 "Сломанный щит худородного"
-  banished_shieldmaiden_lowborn_modifier_desc:0 "Этот персонаж был изгнан из воителей, и несмотря на худородность, он тяжело это переносит."
+  banished_shieldmaiden_lowborn_modifier:0 "Сломанный щит"
+  banished_shieldmaiden_lowborn_modifier_desc:0 "Этот персонаж был изгнан из воителей, и, несмотря на худородность, он тяжело это переносит."
 
 # Actions
 # can_make_shieldmaiden
@@ -79,3 +87,11 @@
   trait_shieldmaiden_desc:0 "[Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E] отвергает устои своего общества и сражается в стене щитов наравне с другими воинами наравне с другими воинами."
   trait_shieldmaiden_female_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'shieldmaidens', 'воительница')|E]. Она отвергает устои своего общества и сражается в стене щитов наравне с мужчинами."
   trait_shieldmaiden_male_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'shieldmaidens', 'шитовик')|E]. Он отвергает устои своего общества и сражается в стене щитов наравне с женщинами."
+
+# relations
+  shieldmaiden_rule:1 "Покровитель [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' ) )|E]"
+
+# GUI
+  CV_TAB_SHIELDMAIDENS:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
+  MV_TAB_SHIELDMAIDENS:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
+  SHIELDMAIDENS_LABEL:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"

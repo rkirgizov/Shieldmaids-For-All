@@ -43,7 +43,7 @@ action_can_grant_title_shieldmaiden = {
 			every_courtier = {
 				limit = {
 					has_trait = shieldmaiden
-					has_character_flag = rule_hired_shieldmaid	# нанят текущим правителем... РАБОТАЕТ ЛИ
+					# has_character_flag = rule_hired_shieldmaid	# нанят текущим правителем... РАБОТАЕТ ЛИ
 					NOT = {	has_character_flag = rule_hired_shieldmaid_period_for_award }
 					NOT = { # мнение не меньше 50
 						save_temporary_opinion_value_as = { name = target_opinion target = prev }		
