@@ -1,5 +1,7 @@
 ﻿namespace = fp1_shieldmaiden
 
+# DON RENAME FILE to _sfa
+
 scripted_trigger wrong_gender_for_fighting_in_faith_trigger = {
 	#Has access to the appropriate cultural parameter.
 	OR = { 

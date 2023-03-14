@@ -168,7 +168,7 @@ try_to_remove_accepted_my_sword_opinion = {
 
 # эффект мнения двора при призыве воительницы
 calling_of_the_shieldmaidens_effect = {
-	$RULER$ = {
+	scope:actor = {
 		if = {
 			limit = { any_courtier_or_guest = { age >= 12 } }
 			custom_tooltip = sfa_calling_shieldmaidens_effect
@@ -176,13 +176,17 @@ calling_of_the_shieldmaidens_effect = {
 	}
 	every_courtier_or_guest = {
 		if = {
-			limit = {
-				age >= 12
-				NOT = { this = scope:recipient }
-			}
+			limit = { NOT = { exists = var:calling_shieldmaiden_opinion_change } }
 			set_variable = {
 				name = calling_shieldmaiden_opinion_change
 				value = 0
+			}
+		}		
+		if = {
+			limit = {
+				exists = var:calling_shieldmaiden_opinion_change
+				age >= 12
+				NOT = { this = scope:recipient }
 			}
 			if = {
 				limit = { has_trait = shieldmaiden }
@@ -430,7 +434,7 @@ calling_of_the_shieldmaidens_effect = {
 				random = {
 					chance = 50
 					add_opinion = {
-						target = $RULER$
+						target = scope:actor
 						modifier = sfa_calling_shieldmaidens_opinion
 						opinion = var:calling_shieldmaiden_opinion_change
 					}
@@ -441,7 +445,7 @@ calling_of_the_shieldmaidens_effect = {
 				random = {
 					chance = 75
 					add_opinion = {
-						target = $RULER$
+						target = scope:actor
 						modifier = sfa_calling_shieldmaidens_opinion
 						opinion = var:calling_shieldmaiden_opinion_change
 					}

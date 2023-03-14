@@ -1092,7 +1092,7 @@ window = {
 						item = {
 							widget = {
 								# потенциальная воительница, в том числе гость, и потенциальный Сломанный щит
-								# visible = "[Or(Character.IsPlayerInteractionShown( 'reject_shieldmaiden_interaction' ), Character.IsPlayerInteractionShown( 'potential_designate_shieldmaiden_interaction' ) )]"
+								# visible = "[Character.IsPlayerInteractionShown( 'reject_shieldmaiden_interaction' )]"
 								visible = "[Or( Or( Character.IsPlayerInteractionShown( 'potential_designate_shieldmaiden_interaction' ), Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction' ) ), And( Character.IsGuest, Character.IsPlayerInteractionShown( 'potential_designate_shieldmaiden_interaction' ) ) ) ]"
 								layoutpolicy_horizontal = expanding
 

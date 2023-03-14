@@ -8,7 +8,7 @@
 
 # Designate Interaction
   designate_shieldmaiden_interaction:0 "Призвать в [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовики' )]"
-  designate_shieldmaiden_interaction_sfa_desc:0 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [Concept( 'shieldmaidens', recipient.Custom('ShieldPersonFemaleMale') )|E] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName] [schemes|E]."
+  designate_shieldmaiden_interaction_sfa_desc:0 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [Concept( 'sfa_shieldmaidens', recipient.Custom('ShieldPersonFemaleMale') )|E] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName] [schemes|E]."
 
 # Event Opinions
   fp1_rejected_my_sword_opinion_lowborn:0 "Отвергает мой меч"
@@ -23,7 +23,7 @@
   reject_shieldmaiden_interaction_notification:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')|l]!"
 
 # Kick from Court Interaction
-  kick_from_court_shieldmaiden_warning_tt:2 "@warning_icon!#X [kicked.GetShortUIName] — [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E]#!"
+  kick_from_court_shieldmaiden_warning_tt:2 "@warning_icon!#X [kicked.GetShortUIName] — [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E]#!"
 
 # Interaction Cost Desc
   CHAR_DYNASTY_LEVEL_COST_DESC:0 "[dynasty_prestige_level|E] династии персонажа"
@@ -32,6 +32,7 @@
   CHAR_IS_SINFUL:0 "Греховные свойства"
   CHAR_IS_CRIME:0 "Преступные свойства"
   CHAR_IS_SHUNNED:0 "Порицаемые свойства"
+  CHAR_IS_MARTIAL_EDUCATION:0 "Военное образование"
 
 # Interaction AI Accept Desc
   SKILL_DIPLOMACY_AI_ACCEPT_DESC:0 "Ваш навык «[diplomacy|El]»: $VALUE|=+0$"
@@ -58,7 +59,7 @@
   action_can_make_shieldmaiden_combined_group_label:0 "Можно призвать в [Select_CString(recipient.IsFemale, 'воительницы', 'щитовики' )]"
   action_can_make_shieldmaiden_combined_group_name:0 "Можно призвать в [Select_CString(recipient.IsFemale, 'воительницы', 'щитовики' )]"
   action_can_make_shieldmaiden_combined_group_description:0 "[skill|E] «[prowess|E]» у нескольких  [Concept( 'courtier', 'придворных' )|E] высок, и они готовы согласиться стать [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницами', 'щитовиками' )].$action_can_make_shieldmaiden_HELP$"
-  action_can_make_shieldmaiden_HELP:1 "\n\n#help Даже в одиночестве [Concept( 'shieldmaidens', recipient.Custom('ShieldPersonFemaleMale') )|E] может принести заметную пользу. Их навыки постоянно совершенствуются, и они даже могут спасти вас от [Concept( 'scheme', 'покушения' )|E] на [GetScheme('murder').GetTypeName] [schemes|E].\n\nОни получают равные права и могут занимать должности при вашем дворе..\n\nОднако постарайтесь не растратить весь [prestige|E].#!"
+  action_can_make_shieldmaiden_HELP:1 "\n\n#help Даже в одиночестве [Concept( 'sfa_shieldmaidens', recipient.Custom('ShieldPersonFemaleMale') )|E] может принести заметную пользу. Их навыки постоянно совершенствуются, и они даже могут спасти вас от [Concept( 'scheme', 'покушения' )|E] на [GetScheme('murder').GetTypeName] [schemes|E].\n\nОни получают равные права и могут занимать должности при вашем дворе..\n\nОднако постарайтесь не растратить весь [prestige|E].#!"
 # can_grant_title_shieldmaiden
   action_can_grant_title_shieldmaiden:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительницу', 'щитовика' )]"
   action_can_grant_title_shieldmaiden_label:0 "Можно наградить [Select_CString(recipient.IsFemale, 'воительницу', 'щитовика' )] [recipient.GetShortUINameNoTooltip]"
@@ -72,24 +73,25 @@
   action_can_grant_title_shieldmaiden_group_HELP:1 "\n\n#help Возможно, пришла пора наградить их землями? \n\nОднако будьте осторожны, учитывайте уровень отношения к вам, и не разбрасывайтесь владениями.#!"
 
 # interaction effects
-  sfa_calling_shieldmaidens_effect:2 "@warning_icon!# [Concept( 'opinion', 'Мнение' )|E] о вас у некоторых придворных и гостей двора может измениться ([Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Призыв воительницы', 'Призыв щитовика' ) )|E]) "
+  sfa_calling_shieldmaidens_effect:2 "@warning_icon!# [Concept( 'opinion', 'Мнение' )|E] о вас у некоторых придворных и гостей двора может измениться ([Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Призыв воительницы', 'Призыв щитовика' ) )|E]) "
   
 # opinion modifiers  
-  sfa_calling_shieldmaidens_opinion:0 "Призыв новой [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовики' ) )|E]"
-  sfa_use_hook_on_calling_shieldmaidens_opinion:0 "Заставили меня стать [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницей', 'щитовиком' ) )|E]"
+  sfa_calling_shieldmaidens_opinion:0 "Призыв новой [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовики' ) )|E]"
+  sfa_use_hook_on_calling_shieldmaidens_opinion:0 "Заставили меня стать [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницей', 'щитовиком' ) )|E]"
 
 # game concepts
-  game_concept_sfa_shieldmaidens_traditions:0 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
+  game_concept_sfa_shieldmaidens_traditions:0 "Традиции Воительниц"
   game_concept_sfa_shieldmaidens_traditions_desc:3 "#E $[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]$#! — такой образ встречается в культурах многих народов: от греческих амазонок до Хуа Мулань в Китае, от германских и скандинавских воительниц до онна-бугэйся в Японии.\n\nПо разным причинам они отвергали [Concept( 'culture', 'устои' )|E] своего общества и брали в руки оружие, чтобы сражаться наравне с другими [Concept( 'knights', 'воинами' )|E].\n\nЕстественно, что в обществе, в котором отсутствовала [Concept( 'gender_doctrines', 'доктрина' )|E] равноправия полов, к такому явлению отношение было неоднозначным, а порой и строго отрицательным, поэтому при призыве [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовика' )], оглядывайтесь на [Concept( 'opinion', 'мнение' )|E] подданных:\n\n$EFFECT_LIST_BULLET$ #N может ухудшиться#! у тех, чья культура не приветствует равноправие полов\n$EFFECT_LIST_BULLET$ #P может улучшиться#! у тех, чья культура, наоборот, приветствует равноправие полов, а также у тех, кого вы уже призвали в ряды своего войска\n\n[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' )] получает равные права и может занимать должности при вашем дворе."
+  game_concept_sfa_shieldmaidens:0 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"  
 
 # traits
   trait_shieldmaiden:0 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' )]"
-  trait_shieldmaiden_desc:0 "[Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E] отвергает устои своего общества и сражается в стене щитов наравне с другими воинами наравне с другими воинами."
-  trait_shieldmaiden_female_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'shieldmaidens', 'воительница')|E]. Она отвергает устои своего общества и сражается в стене щитов наравне с мужчинами."
-  trait_shieldmaiden_male_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'shieldmaidens', 'шитовик')|E]. Он отвергает устои своего общества и сражается в стене щитов наравне с женщинами."
+  trait_shieldmaiden_desc:0 "[Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E] отвергает устои своего общества и сражается в стене щитов наравне с другими воинами наравне с другими воинами."
+  trait_shieldmaiden_female_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'sfa_shieldmaidens', 'воительница')|E]. Она отвергает устои своего общества и сражается в стене щитов наравне с мужчинами."
+  trait_shieldmaiden_male_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'sfa_shieldmaidens', 'шитовик')|E]. Он отвергает устои своего общества и сражается в стене щитов наравне с женщинами."
 
 # relations
-  shieldmaiden_rule:1 "Покровитель [Concept( 'shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' ) )|E]"
+  shieldmaiden_rule:1 "Покровитель [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' ) )|E]"
 
 # GUI
   CV_TAB_SHIELDMAIDENS:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
