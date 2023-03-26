@@ -1,0 +1,6 @@
+stress_impact_critical = {
+	first = I_STRESS_IMPACT_GAIN_CRITICAL
+    first_past = I_PAST_STRESS_IMPACT_GAIN_CRITICAL
+	third = THEY_STRESS_IMPACT_GAIN_CRITICAL
+	global = STRESS_IMPACT_GAIN_CRITICAL
+}

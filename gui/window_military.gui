@@ -137,13 +137,15 @@ window = {
 					###############################
 					button_tab = {
 
-						datacontext = "[AccessGameRules]"
-						datacontext = "[JominiGameRules.AccessNamedGameRule( 'shieldmaids_for_all' )]"
-						datacontext = "[GuiGameRule.GetRule]"
-						datacontext = "[GuiGameRule.GetSetting]"
-						datacontext = "[GuiGameRulePreset.GetSettingForRule( 'shieldmaids_for_all' )]"
+						# datacontext = "[AccessGameRules]"
+						# datacontext = "[JominiGameRules.AccessNamedGameRule( 'shieldmaids_for_all' )]"
+						# datacontext = "[GuiGameRule.GetRule]"
+						# datacontext = "[GuiGameRule.GetSetting]"
+						# datacontext = "[GuiGameRulePreset.GetSettingForRule( 'shieldmaids_for_all' )]"
+						# visible = "[GameRuleSetting.HasFlag( 'shieldmaids_for_all' )]"
 
-						visible = "[GameRuleSetting.HasFlag( 'shieldmaids_for_all' )]"
+						datacontext = "[GetScriptedGui('sfa_shieldmaidens_tab')]"
+						visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
 
 						layoutpolicy_horizontal = expanding
 						onclick = "[GetVariableSystem.Set( 'military_view_tabs', 'shieldmaidens' )]"
@@ -1052,26 +1054,28 @@ window = {
 				###############################
 				#### SFA 
 				###############################
-				scrollbox = {
+				vbox = {
 					name = "tab_shieldmaidens"
 					visible = "[GetVariableSystem.HasValue( 'military_view_tabs', 'shieldmaidens' )]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 
-					datacontext = "[GetScriptedGui(GetVariableSystem.Get( 'sfa_current_list' ))]"
+					datacontext = "[GetScriptedGui('sfa_shieldmaidens_list')]"
 
 					state = {
 						name = _show
 						next = _execute_scripted_gui
 						using = Animation_FadeIn_Quick
-						on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'sfa_shieldmaidens_list_all' )]"
+						on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'shieldmaidens_list_all' )]"
 					}
 					state = {
 						name = _hide
 						next = _execute_scripted_gui
 						alpha = 0
-						on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'sfa_shieldmaidens_list_all' )]"
+						on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'shieldmaidens_list_all' )]"
+						on_finish = "[GetVariableSystem.Clear( 'forgotten_scrollbox_show')]"
 					}
+					# обновление по таймауту
 					state = {
 						name = _execute_scripted_gui
 						next = _timeout
@@ -1087,324 +1091,528 @@ window = {
 						duration = 0.5
 					}
 
-					background = {
-						texture = "gfx/interface/illustrations/sfa_back1.dds"
-						margin = { -5 0 }
-						fittype = end
-						alpha = 0.3
-						framesize = { 1200 848 }
+					vbox = {
+						name = "toggles_shieldmaidens"
+						layoutpolicy_horizontal = expanding
+						margin = { 25 15 }
+						spacing = 5
+						# переключатели
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							maximumsize = { -1 40}
+							margin = { 0 -10 }
+							button_radio_label = {
+								name = "sfa_checkbox_all_shieldmaidens"
+								enabled = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_all')), '(int32)0')]"
+								state = {
+									name = _mouse_press
+									on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'shieldmaidens_list_all' )]"
+								}
+								state = {
+									name = _mouse_release
+									on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}							
+								blockoverride "text" { text = "MV_BUTTON_ALL_SHIELDMAIDENS" }
+								blockoverride "radio" { frame = "[BoolTo1And2(GetVariableSystem.HasValue( 'sfa_current_list', 'shieldmaidens_list_all' ))]" }
+							}
+							button_radio_label = {
+								name = "sfa_checkbox_active_shieldmaidens"
+								enabled = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_active')), '(int32)0')]"
+								state = {
+									name = _mouse_press
+									on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'shieldmaidens_list_active' )]"
+								}
+								state = {
+									name = _mouse_release
+									on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}					
+								blockoverride "text" { text = "MV_BUTTON_ACTIVE_SHIELDMAIDENS" }
+								blockoverride "radio" { frame = "[BoolTo1And2(GetVariableSystem.HasValue( 'sfa_current_list', 'shieldmaidens_list_active' ))]" }
+							}
+							button_radio_label = {
+								name = "sfa_checkbox_potential_shieldmaidens"
+								enabled = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_potential')), '(int32)0')]"
+								state = {
+									name = _mouse_press
+									on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'shieldmaidens_list_potential' )]"
+								}
+								state = {
+									name = _mouse_release
+									on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+								}					
+								blockoverride "text" { text = "MV_BUTTON_POTENTIAL_SHIELDMAIDENS" }
+								blockoverride "radio" { frame = "[BoolTo1And2(GetVariableSystem.HasValue( 'sfa_current_list', 'shieldmaidens_list_potential' ))]" }
+							}
+						}		
+					}
 
-						modify_texture = {
-							texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-							blend_mode = alphamultiply
-							mirror = vertical
+					scrollbox = {
+						name = "scrollbox_shieldmaidens"
+						# visible = "[GetVariableSystem.HasValue( 'military_view_tabs', 'shieldmaidens' )]"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						
+						background = {
+							texture = "gfx/interface/illustrations/sfa_back1.dds"
+							margin = { -5 0 }
+							fittype = end
+							alpha = 0.3
+							framesize = { 1200 848 }
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+								blend_mode = alphamultiply
+								mirror = vertical
+							}
+						}
+						
+						blockoverride "scrollbox_content" {
+							name = "shieldmaidens"
+							datamodel = "[GetPlayer.MakeScope.GetList(GetVariableSystem.Get( 'sfa_current_list' ))]"
+							spacing = 5
+							maximumsize = { -1 100 }
+							# margin_top = 40
+
+							item = {
+								widget = {
+									datacontext = "[Scope.GetCharacter]"
+									layoutpolicy_horizontal = expanding
+									size = { -1 130 }
+									using = Background_Guest
+									blockoverride "Background_Guest_pattern_visible"
+									{
+										visible = "[Or(Character.IsGuest, Character.IsPlayerInteractionShown('potential_designate_shieldmaiden_interaction'))]"
+										margin_bottom = -5
+										margin_right = 5
+									}
+									blockoverride "Background_Guest_frame_visible"
+									{
+										visible = "[Or(Character.IsGuest, Character.IsPlayerInteractionShown('potential_designate_shieldmaiden_interaction'))]"
+										margin_left = 3
+										margin_bottom = -5
+										margin_top = 1
+										margin_right = 5
+									}
+
+									button_icon = {
+										name = "delete_from_potential_shieldmaidens"
+										datacontext = "[GetScriptedGui('sfa_shieldmaidens_delete_from_potential')]"
+										visible = "[Character.IsPlayerInteractionShown('potential_designate_shieldmaiden_interaction')]"
+										parentanchor = vtop|right
+										size = { 30 30 }
+										position = { 10 -7 }
+										texture = "gfx/interface/icons/symbols/icon_cross.dds"
+										onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End)]"
+										tooltip = "MV_TOOLTIP_FORGET_THIS_CHARACTER"
+										background = {
+											texture = "gfx/interface/window_county/building_status_circle.dds"
+											framesize = { 120 120 }
+											using = Master_Button_Modify_Texture
+											blockoverride "master_color_frame" { frame = 3 }
+										}
+									}
+
+									vbox = {
+										spacing = 7
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											layoutpolicy_vertical = expanding
+											margin_right = 5
+											spacing = 10
+											portrait_head = {
+												alpha = "[Select_float( Character.IsKnight, '(float)1.0', '(float)0.6' )]"
+											}
+
+											vbox = {
+												layoutpolicy_vertical = expanding
+												layoutpolicy_horizontal = expanding
+												spacing = 10
+												margin_top = 15
+
+												hbox = {
+													layoutpolicy_horizontal = expanding
+
+													hbox = {
+														layoutpolicy_horizontal = expanding
+														layoutpolicy_vertical = expanding
+
+														icon = {
+															visible = "[Character.IsKnight]"
+															texture = "gfx/interface/icons/icon_knight_small.dds"
+															size = { 40 40 }
+														}
+
+														vbox = {
+															layoutpolicy_horizontal = expanding
+															layoutpolicy_vertical = expanding
+
+															text_single = {
+																layoutpolicy_horizontal = expanding
+																text = "[Character.GetNameNoTooltip]"
+																using = Font_Size_Medium
+																autoresize = no
+															}
+
+
+															text_single = {
+																layoutpolicy_horizontal = expanding
+																text = "[Character.GetRelationToString( GetPlayer )]"
+																tooltip = "EXTENDED_RELATIONS_TOOLTIP"
+																default_format = "#low"
+																autoresize = no
+																align = nobaseline
+															}
+
+															expand = {}
+														}
+													}
+												}
+
+												hbox = {
+													visible = "[Character.IsGuest]"
+													layoutpolicy_horizontal = expanding
+													spacing = 10
+
+													button_standard = {
+														visible = "[Character.IsPlayerInteractionShown('recruit_guest_interaction')]"
+														enabled = "[Character.IsPlayerInteractionValid('recruit_guest_interaction')]"
+														onclick = "[Character.OpenPlayerInteraction('recruit_guest_interaction')]"
+														text = "[Character.GetPlayerInteractionName('recruit_guest_interaction')]"
+														tooltip = "[Character.GetPlayerInteractionTooltip('recruit_guest_interaction')]"
+														using = tooltip_se
+													}
+													expand = {}
+												}
+
+												hbox = {
+													visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
+													layoutpolicy_horizontal = expanding
+													spacing = 10
+
+													button_standard = {
+														visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
+														enabled = "[Character.IsPlayerInteractionValid('reject_shieldmaiden_interaction')]"
+														onclick = "[Character.OpenPlayerInteraction('reject_shieldmaiden_interaction')]"
+														text = "[Character.GetPlayerInteractionName('reject_shieldmaiden_interaction')]"
+														tooltip = "[Character.GetPlayerInteractionTooltip('reject_shieldmaiden_interaction')]"
+														using = tooltip_se
+													}
+													expand = {}
+												}
+
+												hbox = {
+													visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
+													layoutpolicy_horizontal = expanding
+													spacing = 10
+
+													button_standard = {
+														visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
+														# enabled = "[Character.IsPlayerInteractionValid('designate_shieldmaiden_interaction')]"
+														onclick = "[Character.OpenPlayerInteraction('designate_shieldmaiden_interaction')]"
+														text = "[Character.GetPlayerInteractionName('designate_shieldmaiden_interaction')]"
+														tooltip = "[Character.GetPlayerInteractionTooltip('designate_shieldmaiden_interaction')]"
+														using = tooltip_se
+													}
+													expand = {}
+												}
+
+												expand = {}
+											}
+											vbox = {
+												margin = { 5 0 }
+
+												vbox = {
+													layoutpolicy_vertical = expanding
+													text_label_center  = {
+														text = "[prowess_i][Character.GetSkill( 'prowess' )]"
+														using = Font_Size_Big
+														default_format = "#high"
+													}
+													expand = {}
+												}
+												vbox = {
+													layoutpolicy_vertical = expanding
+													text_label_center  = {
+														text = "[martial_i][Character.GetSkill( 'martial' )]"
+														using = Font_Size_Small
+														default_format = "#high"
+													}
+													expand = {}
+												}
+												expand = {}
+											}
+											vbox = {
+												expand = {}
+											}		
+										}
+
+										divider = {
+											layoutpolicy_horizontal = expanding
+										}
+									}
+								}
+							}
+						}
+					}
+
+					vbox_collapsed_row_item = {
+						name = "forgotten_info"
+						layoutpolicy_horizontal = expanding
+						margin_top = 3
+						margin_bottom = 3
+						spacing = 1
+						minimumsize = { -1 25 }
+						maximumsize = { -1 290 }
+						datacontext = "[GetScriptedGui('shieldmaidens_list_forgotten')]"
+						blockoverride "header_text" { text = "MV_FORGOTTEN_POTENTIAL_SHIELDMAIDENS" }
+						blockoverride "remaining_items" {
+							visible = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten')), '(int32)0' )]"
+							text = "[GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten'))|=]"
+						}
+						blockoverride "expand_button_inside" {
+							visible = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten')), '(int32)0' )]"
+							onclick = "[GetVariableSystem.Toggle( 'forgotten_scrollbox_show' )]"
+						}	
+						scrollbox = {
+							name = "forgotten_scrollbox"
+							visible = "[GetVariableSystem.Exists( 'forgotten_scrollbox_show' )]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							minimumsize = { -1 290 }
+							maximumsize = { -1 290 }
+							blockoverride "scrollbox_content" {
+								datamodel = "[GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten')]"
+								maximumsize = { -1 20 }
+
+								item = {
+									widget = {
+										datacontext = "[Scope.GetCharacter]"
+										layoutpolicy_horizontal = expanding
+										size = { -1 90 }
+										vbox = {
+											spacing = -1
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+												margin_right = 5
+												spacing = 10
+												portrait_head_small = {
+													alpha = "[Select_float( Character.IsKnight, '(float)1.0', '(float)0.6' )]"
+												}
+												vbox = {
+													layoutpolicy_vertical = expanding
+													layoutpolicy_horizontal = expanding
+													margin_top = 3
+													hbox = {
+														layoutpolicy_horizontal = expanding
+														hbox = {
+															layoutpolicy_horizontal = expanding
+															layoutpolicy_vertical = expanding
+															vbox = {
+																layoutpolicy_horizontal = expanding
+																layoutpolicy_vertical = expanding
+																text_single = {
+																	layoutpolicy_horizontal = expanding
+																	text = "[Character.GetNameNoTooltip]"
+																	using = Font_Size_Small
+																	autoresize = no
+																}
+																text_single = {
+																	layoutpolicy_horizontal = expanding
+																	text = "[Character.GetRelationToString( GetPlayer )]"
+																	tooltip = "EXTENDED_RELATIONS_TOOLTIP"
+																	default_format = "#low"
+																	using = Font_Size_Small
+																	autoresize = no
+																	align = nobaseline
+																}
+																expand = {}
+															}
+														}
+													}
+
+													hbox = {
+														layoutpolicy_horizontal = expanding
+														margin = { 1 3 }
+														button_standard = {
+															size = { 125 27 }
+															datacontext = "[GetScriptedGui('sfa_shieldmaidens_delete_from_forgotten')]"
+															onclick = "[ScriptedGui.Execute( GuiScope.SetRoot( Character.MakeScope ).End)]"
+															text = "MV_BUTTON_REMEMBER_THIS_CHARACTER"
+														}
+														expand = {}
+													}
+													expand = {}
+												}
+												vbox = {
+													margin = { 5 0 }
+													vbox = {
+														layoutpolicy_vertical = expanding
+														text_label_center  = {
+															text = "[prowess_i][Character.GetSkill( 'prowess' )]"
+															using = Font_Size_Medium
+															default_format = "#high"
+														}
+														expand = {}
+													}
+													vbox = {
+														layoutpolicy_vertical = expanding
+														text_label_center  = {
+															text = "[martial_i][Character.GetSkill( 'martial' )]"
+															using = Font_Size_Small
+															default_format = "#high"
+														}
+														expand = {}
+													}
+													expand = {}
+												}
+												vbox = {
+													expand = {}
+												}		
+											}
+											divider = {
+												layoutpolicy_horizontal = expanding
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 
 					hbox = {
-						maximumsize = { -1 50}	
-						button_radio_label = {
-							name = "sfa_checkbox_all_shieldmaidens"
-
-							datacontext = "[GetScriptedGui(GetVariableSystem.Get( 'sfa_current_list' ))]"
-							enabled = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list')), '(int32)0')]"
-
-							state = {
-								name = _mouse_press
-								on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'sfa_shieldmaidens_list_all' )]"
+						margin_top = 3
+						margin_bottom = 5
+						spacing = 50
+						button_standard_clean = {
+							name = "knights_box"
+							datacontext = "[MilitaryItem.GetComposition]"
+							layoutpolicy_horizontal = expanding
+							size = { 165 90 }
+							onclick = "[MilitaryView.ShowKnights]"
+							tooltip = "MV_KNIGHTS_TT"
+							background = {
+								texture = "gfx/interface/skinned/illustrations/men_at_arms/knights.dds"
+								alpha = 0.7
 							}
-							state = {
-								name = _mouse_release
-								on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
-							}							
-							blockoverride "text" { text = "MV_BUTTON_ALL_SHIELDMAIDENS" }
-							blockoverride "radio" { frame = "[BoolTo1And2(GetVariableSystem.HasValue( 'sfa_current_list', 'sfa_shieldmaidens_list_all' ))]" }
-						}
-						button_radio_label = {
-							name = "sfa_checkbox_active_shieldmaidens"
-							enabled = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list')), '(int32)0')]"
-							# "[GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list'))]"
-							state = {
-								name = _mouse_press
-								on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'sfa_shieldmaidens_list_active' )]"
+							background = {
+								using = Background_Button_Illustration
+								visible = "[MilitaryView.AreKnightsShown]"
 							}
-							state = {
-								name = _mouse_release
-								on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
-							}					
-							blockoverride "text" { text = "MV_BUTTON_ACTIVE_SHIELDMAIDENS" }
-							blockoverride "radio" { frame = "[BoolTo1And2(GetVariableSystem.HasValue( 'sfa_current_list', 'sfa_shieldmaidens_list_active' ))]" }
-						}
-						button_radio_label = {
-							name = "sfa_checkbox_potential_shieldmaidens"
-							state = {
-								name = _mouse_press
-								on_start = "[GetVariableSystem.Set( 'sfa_current_list', 'sfa_shieldmaidens_list_potential' )]"
+							background = {
+								texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+								spriteType = Corneredtiled
+								spriteborder = { 5 5 }
+								margin = { -2 -2 }
 							}
-							state = {
-								name = _mouse_release
-								on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
-							}					
-							blockoverride "text" { text = "MV_BUTTON_POTENTIAL_SHIELDMAIDENS" }
-							# blockoverride "text" { text = "[GetPlayer.MakeScope.GetList('shieldmaidens_list').Count]" }
-							blockoverride "radio" { frame = "[BoolTo1And2(GetVariableSystem.HasValue( 'sfa_current_list', 'sfa_shieldmaidens_list_potential' ))]" }
-						}
+							using = Background_Vignette_Button
 
-					
-					}			
-
-
-
-					blockoverride "scrollbox_content" {
-						name = "shieldmaidens"
-						datamodel = "[GetPlayer.MakeScope.GetList('shieldmaidens_list')]"
-						spacing = 10
-						maximumsize = { -1 100 }
-						margin_top = 40
-
-						hbox = {
-							maximumsize = { -1 100}	
-							# visible = "[Not(DataModelHasItems(MilitaryView.GetAllHolyOrders ))]"
-							text_single = {
-								name = "character_countqqq"
-								datacontext = "[Scope]"
-								text = "[GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list'))]"
-								# default_format = "#weak""
-							}	
-						}
-						
-						item = {
-							widget = {
-								datacontext = "[Scope.GetCharacter]"
-								
-								# потенциальная воительница, в том числе гость, и потенциальный Сломанный щит
-								# visible = "[Character.IsPlayerInteractionShown( 'reject_shieldmaiden_interaction' )]"
-								# visible = "[Or( Or( Character.IsPlayerInteractionShown( 'potential_designate_shieldmaiden_interaction' ), Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction' ) ), And( Character.IsGuest, Character.IsPlayerInteractionShown( 'potential_designate_shieldmaiden_interaction' ) ) ) ]"
-								layoutpolicy_horizontal = expanding
-
-								size = { -1 130 }
-
-								using = Background_Guest
-								blockoverride "Background_Guest_pattern_visible"
-								{
-									visible = "[Or(Character.IsGuest, Character.IsPlayerInteractionShown('potential_designate_shieldmaiden_interaction'))]"
-									margin_bottom = -5
-									margin_right = 5
+							vbox = {
+								tooltip = "MV_KNIGHTS_TOOLTIP"
+								using = tooltip_se
+								expand = {}
+								margin = { 8 10 }
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									text = "MV_KNIGHTS"
+									margin = { 5 4 }
+									alwaystransparent = yes
 								}
-								blockoverride "Background_Guest_frame_visible"
-								{
-									visible = "[Or(Character.IsGuest, Character.IsPlayerInteractionShown('potential_designate_shieldmaiden_interaction'))]"
-									margin_left = 3
-									margin_bottom = -5
-									margin_top = 1
-									margin_right = 5
-								}
-
-								vbox = {
-									spacing = 7
-									
-									hbox = {
-										layoutpolicy_horizontal = expanding
-										layoutpolicy_vertical = expanding
-										margin_right = 5
-										spacing = 10
-
-										portrait_head = {
-											alpha = "[Select_float( Character.IsKnight, '(float)1.0', '(float)0.6' )]"
-										}
-
-										vbox = {
-											layoutpolicy_vertical = expanding
-											layoutpolicy_horizontal = expanding
-											spacing = 10
-											margin_top = 15
-
-											hbox = {
-												layoutpolicy_horizontal = expanding
-
-												hbox = {
-													layoutpolicy_horizontal = expanding
-													layoutpolicy_vertical = expanding
-
-													icon = {
-														visible = "[Character.IsKnight]"
-														texture = "gfx/interface/icons/icon_knight_small.dds"
-														size = { 40 40 }
-													}
-
-													vbox = {
-														layoutpolicy_horizontal = expanding
-														layoutpolicy_vertical = expanding
-
-														text_single = {
-															layoutpolicy_horizontal = expanding
-															text = "[Character.GetNameNoTooltip]"
-															using = Font_Size_Medium
-															autoresize = no
-														}
-
-
-														text_single = {
-															layoutpolicy_horizontal = expanding
-															text = "[Character.GetRelationToString( GetPlayer )]"
-															tooltip = "EXTENDED_RELATIONS_TOOLTIP"
-															default_format = "#low"
-															autoresize = no
-															align = nobaseline
-														}
-
-														expand = {}
-													}
-												}
-											}
-
-											# hbox = {
-											# 	visible = "[And(Not(Character.IsGuest), Not(Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')))]"
-											# 	layoutpolicy_horizontal = expanding
-											# 	spacing = 10
-
-											# 	button_standard = {
-											# 		size = { 90 33 }
-											# 		onclick = "[MilitaryView.SetKnightForced( Character.Self )]"
-											# 		down = "[Character.IsKnightForced]"
-											# 		alwaystransparent = "[Character.IsKnightForced]"
-
-											# 		text = "KNIGHTS_VIEW_FORCE"
-
-											# 		tooltip = "KNIGHTS_VIEW_TITLE_FORCE_TT"
-											# 		using = tooltip_se
-											# 	}
-
-											# 	button_standard = {
-											# 		size = { 90 33 }
-											# 		onclick = "[MilitaryView.SetKnightDefault( Character.Self )]"
-											# 		down = "[Character.IsKnightDefault]"
-											# 		alwaystransparent = "[Character.IsKnightDefault]"
-
-											# 		text = "KNIGHTS_VIEW_ALLOW"
-
-											# 		tooltip = "KNIGHTS_VIEW_TITLE_BY_PROWESS_TT"
-											# 		using = tooltip_se
-											# 	}
-
-											# 	button_standard = {
-											# 		size = { 90 33 }
-											# 		onclick = "[MilitaryView.SetKnightDisallowed( Character.Self )]"
-											# 		down = "[Character.IsKnightDisallowed]"
-											# 		alwaystransparent = "[Character.IsKnightDisallowed]"
-
-											# 		text = "KNIGHTS_VIEW_FORBID"
-
-											# 		tooltip = "KNIGHTS_VIEW_TITLE_FORBID_TT"
-											# 		using = tooltip_se
-											# 	}
-
-											# 	expand = {}
-											# }
-
-											hbox = {
-												visible = "[Character.IsGuest]"
-												layoutpolicy_horizontal = expanding
-												spacing = 10
-
-												button_standard = {
-													visible = "[Character.IsPlayerInteractionShown('recruit_guest_interaction')]"
-													enabled = "[Character.IsPlayerInteractionValid('recruit_guest_interaction')]"
-													onclick = "[Character.OpenPlayerInteraction('recruit_guest_interaction')]"
-													text = "[Character.GetPlayerInteractionName('recruit_guest_interaction')]"
-													tooltip = "[Character.GetPlayerInteractionTooltip('recruit_guest_interaction')]"
-													using = tooltip_se
-												}
-												expand = {}
-											}
-
-											hbox = {
-												visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
-												layoutpolicy_horizontal = expanding
-												spacing = 10
-
-												button_standard = {
-													visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
-													enabled = "[Character.IsPlayerInteractionValid('reject_shieldmaiden_interaction')]"
-													onclick = "[Character.OpenPlayerInteraction('reject_shieldmaiden_interaction')]"
-													text = "[Character.GetPlayerInteractionName('reject_shieldmaiden_interaction')]"
-													tooltip = "[Character.GetPlayerInteractionTooltip('reject_shieldmaiden_interaction')]"
-													using = tooltip_se
-												}
-												widget = {
-													icon = {
-														# visible = "[GreaterThan_int32(GetDataModelSize(UnitMapIcon.GetUnitItems), GetPlayer.GetGold|0]"
-														visible = "[Not(Character.IsPlayerInteractionValid('reject_shieldmaiden_interaction'))]"
-														texture = "gfx/interface/icons/symbols/icon_cross.dds"
-														parentanchor = vcenter|right
-														size = { 40 40 }
-														position = { 32 }
-													}
-												}
-
-												expand = {}
-											}
-
-											hbox = {
-												visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
-												layoutpolicy_horizontal = expanding
-												spacing = 10
-
-												button_standard = {
-													visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
-													# enabled = "[Character.IsPlayerInteractionValid('designate_shieldmaiden_interaction')]"
-													onclick = "[Character.OpenPlayerInteraction('designate_shieldmaiden_interaction')]"
-													text = "[Character.GetPlayerInteractionName('designate_shieldmaiden_interaction')]"
-													tooltip = "[Character.GetPlayerInteractionTooltip('designate_shieldmaiden_interaction')]"
-													using = tooltip_se
-												}
-												widget = {
-													icon = {
-														# visible = "[GreaterThan_int32(GetDataModelSize(UnitMapIcon.GetUnitItems), GetPlayer.GetGold|0]"
-														visible = "[Not(Character.IsPlayerInteractionValid('designate_shieldmaiden_interaction'))]"
-														texture = "gfx/interface/icons/symbols/icon_cross.dds"
-														parentanchor = vcenter|right
-														size = { 40 40 }
-														position = { 32 }
-													}
-												}
-
-												expand = {}
-											}
-
-											expand = {}
-										}
-										vbox = {
-											margin = { 5 0 }
-											vbox = {
-												layoutpolicy_vertical = expanding
-												text_label_center  = {
-													text = "[prowess_i][Character.GetSkill( 'prowess' )]"
-													using = Font_Size_Big
-													default_format = "#high"
-												}
-												expand = {}
-											}
-											vbox = {
-												layoutpolicy_vertical = expanding
-												text_label_center  = {
-													text = "[martial_i][Character.GetSkill( 'martial' )]"
-													using = Font_Size_Small
-													default_format = "#high"
-												}
-												expand = {}
-											}
-										}
+								hbox = {
+									spacing = 3
+									layoutpolicy_horizontal = expanding
+									icon = {
+										name = "icon_knight"
+										texture = "gfx/interface/icons/icon_knight_small.dds"
+										size = { 25 25 }
 									}
-
-									divider = {
+									text_single = {
 										layoutpolicy_horizontal = expanding
+										text = "KNIGHTS_CURRENT_MAX"
+										using = Font_Size_Medium
+										default_format = "#high"
+										align = nobaseline
+									}
+									expand = {}
+									text_label_center = {
+										layoutpolicy_horizontal = expanding
+										fontsize = 13
+										text = "MV_MANAGE_KNIGHTS"
+									}
+								}
+							}
+						}
+
+						button_standard_clean = {
+							name = "invite_knights_decision"
+							layoutpolicy_horizontal = expanding
+							size = { 165 90 }
+							datacontext = "[GetDecisionWithKey('invite_knights_decision')]"
+							visible = "[Decision.IsShownForPlayer]"
+							enabled = "[Decision.IsPossibleForPlayer]"
+							onclick = "[OpenDecisionDetailView( Decision.Self )]"
+
+							background = {
+								texture = "gfx/interface/illustrations/sfa_invite_knights_decision.dds"
+								alpha = 0.7
+							}
+							background = {
+								texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+								spriteType = Corneredtiled
+								spriteborder = { 5 5 }
+								margin = { -2 -2 }
+							}
+
+							using = Background_Vignette_Button
+
+							vbox = {
+								tooltip = "SHOW_DECISION_TOOLTIP"
+								using = tooltip_se
+								expand = {}
+								margin = { 8 8 }
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									text = "MV_INVITE_KNIGHTS_DECISION1"
+									visible = "[Decision.IsPossibleForPlayer]"
+									margin = { 3 0 }
+									alwaystransparent = yes
+								}
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									text = "MV_INVITE_KNIGHTS_DECISION1"
+									visible = "[Not(Decision.IsPossibleForPlayer)]"
+									block "default_format" {
+										default_format = "#low"
+									}
+									margin = { 3 0 }
+									alwaystransparent = yes
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									margin = { 3 4 }
+									text_single = {
+										layoutpolicy_horizontal = growing
+										name = "title"
+										text = "MV_INVITE_KNIGHTS_DECISION2"
+										visible = "[Decision.IsPossibleForPlayer]"
+										default_format = "#clickable"
+										align = nobaseline
+									}
+									text_single = {
+										layoutpolicy_horizontal = growing
+										name = "title2"
+										text = "MV_INVITE_KNIGHTS_DECISION2"
+										visible = "[Not(Decision.IsPossibleForPlayer)]"
+										block "default_format" {
+											default_format = "#low"
+										}
+										align = nobaseline
 									}
 								}
 							}
 						}
 					}
 				}
+
 
 				scrollbox = {
 					name = "tab_mercenaries"
@@ -1752,6 +1960,59 @@ types MilitaryView
 			}
 		}
 	}
+
+type vbox_collapsed_row_item = vbox {
+	spacing = -3
+
+	widget = {
+		layoutpolicy_horizontal = expanding
+		size = { 0 30 }
+		min_width = 110
+
+		block "expand_button" {
+			button_standard_hover = {
+				size = { 100% 100% }
+
+				block "expand_button_inside" {}
+			}
+		}
+
+		hbox = {
+			margin = { 10 0 }
+
+			background = {
+				using = Text_Label_Background
+				# alpha = 0.5
+				margin = { 0 -2 }
+			}
+
+			text_single = {
+				align = nobaseline
+				fontsize = 16
+
+				block "header_text"
+				{
+					raw_text = "#D NEEDS TEXT#!"
+				}
+			}
+
+			expand = {}
+
+			text_single = {
+				align = nobaseline
+				fontsize = 16
+				default_format = "#weak"
+
+				block "remaining_items" {
+					visible = no
+				}
+			}
+		}
+	}
+
+	expand = {}
+}
+
 }
 
 types HiredTroops

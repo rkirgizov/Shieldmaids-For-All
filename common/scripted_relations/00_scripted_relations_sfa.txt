@@ -1,11 +1,11 @@
 ﻿shieldmaiden = {
 	corresponding = shieldmaiden_rule
 	opinion = 5
-	# hidden = yes
+	hidden = yes
 }
 
 shieldmaiden_rule = {
 	corresponding = shieldmaiden
 	opinion = 10
-	# hidden = yes
+	hidden = yes
 }

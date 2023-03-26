@@ -174,280 +174,282 @@ calling_of_the_shieldmaidens_effect = {
 			custom_tooltip = sfa_calling_shieldmaidens_effect
 		}
 	}
-	every_courtier_or_guest = {
-		if = {
-			limit = { NOT = { exists = var:calling_shieldmaiden_opinion_change } }
-			set_variable = {
-				name = calling_shieldmaiden_opinion_change
-				value = 0
-			}
-		}		
-		if = {
-			limit = {
-				exists = var:calling_shieldmaiden_opinion_change
-				age >= 12
-				NOT = { this = scope:recipient }
-			}
+	hidden_effect = {
+		every_courtier_or_guest = {
 			if = {
-				limit = { has_trait = shieldmaiden }
-				change_variable = {
+				limit = { NOT = { exists = var:calling_shieldmaiden_opinion_change } }
+				set_variable = {
 					name = calling_shieldmaiden_opinion_change
-					add = 25
+					value = 0
 				}
-			}
-			else_if = {
-				limit = { scope:recipient = { is_female = yes} }
-				if = { # courtier is Female
-					limit = { is_female = yes }
-					if = {
-						limit = { faith = { has_doctrine = doctrine_gender_male_dominated } }
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-					}
-					else = {
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = 5
-						}
-					}
-					if = { 
-						limit = { 
-							OR = {
-								AND = { # Has the Royal Court and thus can modify pillars
-									has_dlc_feature = diverge_culture 
-									culture = { has_cultural_parameter = martial_custom_male_only_combatant }
-								}
-								AND = {
-									NOT = { has_dlc_feature = diverge_culture  }
-									faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco }
-								}
-							}
-						}
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-					}
-					else = {
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = 5
-						}
-					}
-					if = {
-						limit = { has_trait = ambitious }
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-					}
-				}
-				else = { # courtier is Male
-					if = {
-						limit = { faith = { has_doctrine = doctrine_gender_male_dominated } }
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -10
-						}
-					}
-					if = { 
-						limit = { 
-							OR = {
-								AND = { # Has the Royal Court and thus can modify pillars
-									has_dlc_feature = diverge_culture 
-									culture = { has_cultural_parameter = martial_custom_male_only_combatant }
-								}
-								AND = {
-									NOT = { has_dlc_feature = diverge_culture  }
-									faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco }
-								}
-							}
-						}
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-						if = {
-							limit = { has_trait = wrathful }
-							change_variable = {
-								name = calling_shieldmaiden_opinion_change
-								add = -10
-							}
-						}
-					}
-				}
-			}
-			else_if = {
-				limit = { scope:recipient = { is_male = yes} }
-				if = { # courtier is Male
-					limit = { is_male = yes }
-					if = {
-						limit = { faith = { has_doctrine = doctrine_gender_female_dominated } }
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-					}
-					else = {
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = 10
-						}
-					}
-					if = { 
-						limit = { 
-							OR = {
-								AND = { # Has the Royal Court and thus can modify pillars
-									has_dlc_feature = diverge_culture 
-									culture = { has_cultural_parameter = martial_custom_female_only_combatant }
-								}
-								AND = {
-									NOT = { has_dlc_feature = diverge_culture  }
-									faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco }
-								}
-							}
-						}
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-					}
-					else = {
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = 5
-						}
-					}
-					if = {
-						limit = { has_trait = ambitious }
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -10
-						}
-					}
-				}
-				else = { # courtier is Female
-					if = {
-						limit = { faith = { has_doctrine = doctrine_gender_female_dominated } }
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -10
-						}
-					}
-					if = { 
-						limit = { 
-							OR = {
-								AND = { # Has the Royal Court and thus can modify pillars
-									has_dlc_feature = diverge_culture 
-									culture = { has_cultural_parameter = martial_custom_female_only_combatant }
-								}
-								AND = {
-									NOT = { has_dlc_feature = diverge_culture  }
-									faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco }
-								}
-							}
-						}
-						change_variable = {
-							name = calling_shieldmaiden_opinion_change
-							add = -5
-						}
-						if = {
-							limit = { has_trait = wrathful }
-							change_variable = {
-								name = calling_shieldmaiden_opinion_change
-								add = -10
-							}
-						}
-					}
-				}
-			}
-			if = {
-				limit = { has_trait = brave }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = 5
-				}
-			}
-			if = {
-				limit = { has_trait = varangian }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = 5
-				}
-			}
-			if = {
-				limit = { has_trait = adventurer }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = 5
-				}
-			}
-			if = {
-				limit = { has_trait = humble }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = -5
-				}
-			}
-			if = {
-				limit = { has_trait = shy }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = -5
-				}
-			}
-			if = { # sinful traits
-				limit = { scope:recipient.num_sinful_traits > 0 }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = -10
-				}		
-			}
-			if = { # crime traits
-				limit = { this.sfa_recipient_num_criminal_traits > 0 }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = -15
-				}		
-			}
-			if = { # shunned traits
-				limit = { this.sfa_recipient_num_shunned_traits > 0 }
-				change_variable = {
-					name = calling_shieldmaiden_opinion_change
-					add = -5
-				}		
 			}		
 			if = {
-				limit = { has_trait = forgiving }
+				limit = {
+					exists = var:calling_shieldmaiden_opinion_change
+					age >= 12
+					NOT = { this = scope:recipient }
+				}
+				if = {
+					limit = { has_trait = shieldmaiden }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 25
+					}
+				}
+				else_if = {
+					limit = { scope:recipient = { is_female = yes} }
+					if = { # courtier is Female
+						limit = { is_female = yes }
+						if = {
+							limit = { faith = { has_doctrine = doctrine_gender_male_dominated } }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+						}
+						else = {
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = 5
+							}
+						}
+						if = { 
+							limit = { 
+								OR = {
+									AND = { # Has the Royal Court and thus can modify pillars
+										has_dlc_feature = diverge_culture 
+										culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+									}
+									AND = {
+										NOT = { has_dlc_feature = diverge_culture  }
+										faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco }
+									}
+								}
+							}
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+						}
+						else = {
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = 5
+							}
+						}
+						if = {
+							limit = { has_trait = ambitious }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+						}
+					}
+					else = { # courtier is Male
+						if = {
+							limit = { faith = { has_doctrine = doctrine_gender_male_dominated } }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+						}
+						if = { 
+							limit = { 
+								OR = {
+									AND = { # Has the Royal Court and thus can modify pillars
+										has_dlc_feature = diverge_culture 
+										culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+									}
+									AND = {
+										NOT = { has_dlc_feature = diverge_culture  }
+										faith = { has_doctrine_parameter = combatant_must_be_male_if_no_roco }
+									}
+								}
+							}
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+							if = {
+								limit = { has_trait = wrathful }
+								change_variable = {
+									name = calling_shieldmaiden_opinion_change
+									add = -10
+								}
+							}
+						}
+					}
+				}
+				else_if = {
+					limit = { scope:recipient = { is_male = yes} }
+					if = { # courtier is Male
+						limit = { is_male = yes }
+						if = {
+							limit = { faith = { has_doctrine = doctrine_gender_female_dominated } }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+						}
+						else = {
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = 10
+							}
+						}
+						if = { 
+							limit = { 
+								OR = {
+									AND = { # Has the Royal Court and thus can modify pillars
+										has_dlc_feature = diverge_culture 
+										culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+									}
+									AND = {
+										NOT = { has_dlc_feature = diverge_culture  }
+										faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco }
+									}
+								}
+							}
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+						}
+						else = {
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = 5
+							}
+						}
+						if = {
+							limit = { has_trait = ambitious }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+						}
+					}
+					else = { # courtier is Female
+						if = {
+							limit = { faith = { has_doctrine = doctrine_gender_female_dominated } }
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -10
+							}
+						}
+						if = { 
+							limit = { 
+								OR = {
+									AND = { # Has the Royal Court and thus can modify pillars
+										has_dlc_feature = diverge_culture 
+										culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+									}
+									AND = {
+										NOT = { has_dlc_feature = diverge_culture  }
+										faith = { has_doctrine_parameter = combatant_must_be_female_if_no_roco }
+									}
+								}
+							}
+							change_variable = {
+								name = calling_shieldmaiden_opinion_change
+								add = -5
+							}
+							if = {
+								limit = { has_trait = wrathful }
+								change_variable = {
+									name = calling_shieldmaiden_opinion_change
+									add = -10
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = { has_trait = brave }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 5
+					}
+				}
+				if = {
+					limit = { has_trait = varangian }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 5
+					}
+				}
+				if = {
+					limit = { has_trait = adventurer }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = 5
+					}
+				}
+				if = {
+					limit = { has_trait = humble }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -5
+					}
+				}
+				if = {
+					limit = { has_trait = shy }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -5
+					}
+				}
+				if = { # sinful traits
+					limit = { scope:recipient.num_sinful_traits > 0 }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -10
+					}		
+				}
+				if = { # crime traits
+					limit = { this.sfa_recipient_num_criminal_traits > 0 }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -15
+					}		
+				}
+				if = { # shunned traits
+					limit = { this.sfa_recipient_num_shunned_traits > 0 }
+					change_variable = {
+						name = calling_shieldmaiden_opinion_change
+						add = -5
+					}		
+				}		
+				if = {
+					limit = { has_trait = forgiving }
+					if = {
+						limit = { var:calling_shieldmaiden_opinion_change < 0 }
+						set_variable = {
+							name = calling_shieldmaiden_opinion_change
+							value = 0
+						}
+					}
+				}
+				if = {
+					limit = { var:calling_shieldmaiden_opinion_change > 0 }
+					random = {
+						chance = 75
+						add_opinion = {
+							target = scope:actor
+							modifier = sfa_calling_shieldmaidens_opinion
+							opinion = var:calling_shieldmaiden_opinion_change
+						}
+					}
+				}
 				if = {
 					limit = { var:calling_shieldmaiden_opinion_change < 0 }
-					set_variable = {
-						name = calling_shieldmaiden_opinion_change
-						value = 0
-					}
-				}
-			}
-			if = {
-				limit = { var:calling_shieldmaiden_opinion_change > 0 }
-				random = {
-					chance = 50
-					add_opinion = {
-						target = scope:actor
-						modifier = sfa_calling_shieldmaidens_opinion
-						opinion = var:calling_shieldmaiden_opinion_change
-					}
-				}
-			}
-			if = {
-				limit = { var:calling_shieldmaiden_opinion_change < 0 }
-				random = {
-					chance = 75
-					add_opinion = {
-						target = scope:actor
-						modifier = sfa_calling_shieldmaidens_opinion
-						opinion = var:calling_shieldmaiden_opinion_change
+					random = {
+						chance = 50
+						add_opinion = {
+							target = scope:actor
+							modifier = sfa_calling_shieldmaidens_opinion
+							opinion = var:calling_shieldmaiden_opinion_change
+						}
 					}
 				}
 			}

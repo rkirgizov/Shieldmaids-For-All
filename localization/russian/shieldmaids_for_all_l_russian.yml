@@ -9,6 +9,8 @@
 # Designate Interaction
   designate_shieldmaiden_interaction:0 "Призвать в [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительницы', 'щитовики' )]"
   designate_shieldmaiden_interaction_sfa_desc:0 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] может присоединиться к вашему войску в качестве [Select_CString(recipient.IsFemale, 'воительницы', 'щитовика' )].\n\n#weak [Concept( 'sfa_shieldmaidens', recipient.Custom('ShieldPersonFemaleMale') )|E] — это [actor.Custom('KnightCulture')|l] или [commander|El], [Select_CString(recipient.IsFemale, 'которая', 'который' )] к тому же может при случае спасти вас от [GetScheme('murder').GetTypeName] [schemes|E]."
+  designate_shieldmaiden_interaction_message_header:0 "[recipient.GetTitledFirstName] становится [Select_CString(recipient.IsFemale, 'Воительницей', 'Щитовиком' )]"
+  designate_shieldmaiden_interaction_message_desc:0 "#V [recipient.GetTitledFirstName]#! получает свойство #V [GetTrait('shieldmaiden').GetName( GetNullCharacter )]#! и может служить в войске или занимать должности в Совете"
 
 # Event Opinions
   fp1_rejected_my_sword_opinion_lowborn:0 "Отвергает мой меч"
@@ -18,9 +20,10 @@
 
 # Regect Interaction
   reject_shieldmaiden_interaction_extra_icon: "$hook_extra_icon$"
-  reject_shieldmaiden_interaction:0 "Изгнать из воителей"
+  reject_shieldmaiden_interaction:0 "Изгнать из [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' )]"
   reject_shieldmaiden_interaction_desc:1 "Сообщите персонажу [recipient.GetFirstNameNoTooltip], что [recipient.GetSheHe] больше не может быть [Select_CString(recipient.IsFemale, 'воительницей', 'щитовиком' )] в вашем войске."
-  reject_shieldmaiden_interaction_notification:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')|l]!"
+  reject_shieldmaiden_interaction_message_header:0 "[recipient.GetShortUIName] больше не [recipient.Custom('ShieldPersonFemaleMale')]"
+  reject_shieldmaiden_interaction_message_desc:0 "#V [recipient.GetTitledFirstName]#! теряет свойство #V [GetTrait('shieldmaiden').GetName( GetNullCharacter )]#! и больше не сможет служить в войске или занимать должности в Совете"
 
 # Kick from Court Interaction
   kick_from_court_shieldmaiden_warning_tt:2 "@warning_icon!#X [kicked.GetShortUIName] — [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E]#!"
@@ -86,7 +89,7 @@
 
 # traits
   trait_shieldmaiden:0 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' )]"
-  trait_shieldmaiden_desc:0 "[Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E] отвергает устои своего общества и сражается в стене щитов наравне с другими воинами наравне с другими воинами."
+  trait_shieldmaiden_desc:0 "[Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительница', 'Щитовик' ) )|E] отвергает устои своего общества и сражается в стене щитов наравне с другими воинами."
   trait_shieldmaiden_female_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'sfa_shieldmaidens', 'воительница')|E]. Она отвергает устои своего общества и сражается в стене щитов наравне с мужчинами."
   trait_shieldmaiden_male_character_desc:0 "[ROOT.GetCharacter.GetFirstNameNoTooltip] - [Concept( 'sfa_shieldmaidens', 'шитовик')|E]. Он отвергает устои своего общества и сражается в стене щитов наравне с женщинами."
 
@@ -94,6 +97,16 @@
   shieldmaiden_rule:1 "Покровитель [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' ) )|E]"
 
 # GUI
+  SHIELDMAIDENS_LABEL:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
   CV_TAB_SHIELDMAIDENS:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
   MV_TAB_SHIELDMAIDENS:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
-  SHIELDMAIDENS_LABEL:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"
+  MV_BUTTON_ALL_SHIELDMAIDENS:1 "Все ([GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_all'))])"
+  MV_BUTTON_ACTIVE_SHIELDMAIDENS:1 "Действующие ([GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_active'))])"
+  MV_BUTTON_POTENTIAL_SHIELDMAIDENS:1 "Потенциальные ([GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_potential'))])"
+  MV_TOOLTIP_FORGET_THIS_CHARACTER:1 "Исключить персонажа из потенциальных [Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' )]"
+  MV_BUTTON_REMEMBER_THIS_CHARACTER:1 "Убрать из списка"
+  MV_FORGOTTEN_POTENTIAL_SHIELDMAIDENS:1 "Чёрный список"
+  MV_INVITE_KNIGHTS_DECISION1:1 "$knight_culture_player_plural_no_tooltip$"
+  MV_INVITE_KNIGHTS_DECISION2:1 "Пригласить"
+# invite_knights_decision:1 "$knight_culture_player_plural_no_tooltip$ — пригласить"
+  I_PAST_STRESS_IMPACT_GAIN_CRITICAL:0 "Вы получили [stress_critical_i]$VALUE|-0$ [Concept( 'stress', 'стресса' )|E] (критический уровень) $TRAITS$"

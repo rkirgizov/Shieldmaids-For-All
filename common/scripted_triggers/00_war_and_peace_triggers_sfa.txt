@@ -100,6 +100,7 @@ can_be_potential_shieldmaiden_trigger = {
 	NOT = { has_trait = blind }
 	NOT = { has_trait = incapable }
 	NOT = { has_trait = shieldmaiden }
+	NOT = { has_character_flag = forgotten_potential_shieldmaiden_flag }
 	OR = {
 		AND = {
 			NOT = { has_game_rule = shieldmaids_for_all	}
@@ -234,4 +235,25 @@ can_be_shieldmaiden_valid_trigger = {
 		}
 		NOT = { has_game_rule = shieldmaids_for_all }
 	}			
+}
+
+# sfa
+# Правитель может изгнать воительницу
+can_ruler_reject_shieldmaiden_trigger = { 
+	has_fp1_dlc_trigger = yes
+	is_ruler = yes
+	OR = {
+		is_ai = no
+		highest_held_title_tier >= 2
+	}
+}
+
+# sfa
+# Может быть изгнана из воительниц
+can_be_rejected_from_shieldmaiden_trigger = { 
+	NOT = { 
+		this = scope:actor
+	}
+	is_courtier_of = scope:actor
+	has_trait = shieldmaiden
 }

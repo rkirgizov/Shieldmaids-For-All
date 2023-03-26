@@ -1,0 +1,153 @@
+﻿sfa_shieldmaidens_tab = {
+	scope = character 		# the root scope, i.e. the target of the effects
+	is_shown = {	# is it visible on the UI?
+		has_game_rule = shieldmaids_for_all
+		root = { 
+			can_rule_calling_shieldmaidens_trigger = yes 
+		}
+	}	
+}
+
+sfa_shieldmaidens_delete_from_potential = {
+	scope = character 		# the root scope, i.e. the target of the effects
+	saved_scope = {
+		target
+	}	
+	effect = {	# what it does
+		root = {
+			add_character_flag = forgotten_potential_shieldmaiden_flag
+		}	
+	}	
+}
+
+sfa_shieldmaidens_delete_from_forgotten = {
+	scope = character 		# the root scope, i.e. the target of the effects
+	saved_scope = {
+		target
+	}	
+	effect = {	# what it does
+		root = {
+			remove_character_flag = forgotten_potential_shieldmaiden_flag
+		}	
+	}	
+}
+
+sfa_shieldmaidens_list = {
+	scope = character 		# the root scope, i.e. the target of the effects
+	effect = {			# what it does
+		clear_variable_list = shieldmaidens_list_all
+		clear_variable_list = shieldmaidens_list_active
+		clear_variable_list = shieldmaidens_list_potential
+		clear_variable_list = shieldmaidens_list_forgotten
+		ordered_courtier_or_guest = {
+			limit = {
+				OR = {
+					root = {
+						prev = { 
+							has_character_flag = forgotten_potential_shieldmaiden_flag 
+						}
+					}
+					root = {
+						is_character_interaction_potentially_accepted = {
+							recipient = prev
+							interaction = potential_designate_shieldmaiden_interaction
+						}
+					}
+					root = {
+						is_character_interaction_potentially_accepted = {
+							recipient = prev
+							interaction = reject_shieldmaiden_interaction
+						}
+					}
+				}
+			}
+			min = 0
+			order_by = {
+				value = prowess
+				if = {
+					limit = { has_trait = brave }
+					add = 10
+				}
+				if = {
+					limit = { number_of_commander_traits >= 1 }
+					add = {
+						value = 5
+						multiply = number_of_commander_traits
+						min = 0
+					}
+				}
+				if = {
+					limit = { has_trait = education_martial_1 }
+					add = 5
+				}
+				else_if = {
+					limit = { has_trait = education_martial_2 }
+					add = 10
+				}	
+				else_if = {
+					limit = { has_trait = education_martial_3 }
+					add = 15
+				}	
+				else_if = {
+					limit = { has_trait = education_martial_4 }
+					add = 20
+				}	
+				if = {
+					limit = { has_trait = craven }
+					add = -15
+				}
+				if = {
+					limit = { has_trait = lazy }
+					add = -5
+				}
+				if = {
+					limit = { has_trait = brave }
+					add = 10
+				}
+			}
+			root = {
+				if = {
+					limit = {
+						prev = { 
+							has_character_flag = forgotten_potential_shieldmaiden_flag 
+						}				
+					}
+					add_to_variable_list = {
+						name = shieldmaidens_list_forgotten
+						target = prev
+					}	
+				}
+				else = {	
+					add_to_variable_list = {
+						name = shieldmaidens_list_all
+						target = prev
+					}
+					if = {
+						limit = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = reject_shieldmaiden_interaction
+							}
+						}
+						add_to_variable_list = {
+							name = shieldmaidens_list_active
+							target = prev
+						}	
+					}
+					else_if = {
+						limit = {
+							is_character_interaction_potentially_accepted = {
+								recipient = prev
+								interaction = potential_designate_shieldmaiden_interaction
+							}
+						}	
+						add_to_variable_list = {
+							name = shieldmaidens_list_potential
+							target = prev
+						}	
+					}
+				}
+			}
+		}		
+	}
+}
