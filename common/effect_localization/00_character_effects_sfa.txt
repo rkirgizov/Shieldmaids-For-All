@@ -4,3 +4,17 @@ stress_impact_critical = {
 	third = THEY_STRESS_IMPACT_GAIN_CRITICAL
 	global = STRESS_IMPACT_GAIN_CRITICAL
 }
+
+# set_relation_shieldmaiden_rule = {
+# 	first = I_GAIN_SHIELDMAIDEN
+# 	first_past = I_GAINED_SHIELDMAIDEN
+# 	global = GAINS_SHIELDMAIDEN
+# 	global_past = GAINED_SHIELDMAIDEN
+# 	third = THEY_GAIN_SHIELDMAIDEN
+# 	third_past = THEY_GAINED_SHIELDMAIDEN
+# }
+
+# remove_relation_shieldmaiden_rule = {
+# 	first = I_LOSE_SHIELDMAIDEN
+# 	global = LOSES_SHIELDMAIDEN
+# }

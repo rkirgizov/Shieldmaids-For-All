@@ -1,0 +1,18 @@
+
+# Called from code once a year for all characters, at a random point that year (individually for each character)
+# Root is the character
+random_yearly_everyone_pulse = {
+	on_actions = {
+		sfa_shieldmaiden_yearly_maintenance_pulse
+	}
+}
+
+sfa_shieldmaiden_yearly_maintenance_pulse = {
+	trigger = {
+        is_ai = yes
+		has_trait = shieldmaiden
+	}
+	events = {
+        fp1_shieldmaiden.0041
+	}
+}

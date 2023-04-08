@@ -158,6 +158,9 @@ window = {
 							default_format = "#low"
 						}
 					}
+					###############################
+					#### SFA 
+					###############################
 
 					button_tab = {
 						layoutpolicy_horizontal = expanding
@@ -1148,7 +1151,6 @@ window = {
 
 					scrollbox = {
 						name = "scrollbox_shieldmaidens"
-						# visible = "[GetVariableSystem.HasValue( 'military_view_tabs', 'shieldmaidens' )]"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 						
@@ -1170,8 +1172,6 @@ window = {
 							datamodel = "[GetPlayer.MakeScope.GetList(GetVariableSystem.Get( 'sfa_current_list' ))]"
 							spacing = 5
 							maximumsize = { -1 100 }
-							# margin_top = 40
-
 							item = {
 								widget = {
 									datacontext = "[Scope.GetCharacter]"
@@ -1266,55 +1266,67 @@ window = {
 														}
 													}
 												}
-
 												hbox = {
-													visible = "[Character.IsGuest]"
 													layoutpolicy_horizontal = expanding
-													spacing = 10
-
-													button_standard = {
-														visible = "[Character.IsPlayerInteractionShown('recruit_guest_interaction')]"
-														enabled = "[Character.IsPlayerInteractionValid('recruit_guest_interaction')]"
-														onclick = "[Character.OpenPlayerInteraction('recruit_guest_interaction')]"
-														text = "[Character.GetPlayerInteractionName('recruit_guest_interaction')]"
-														tooltip = "[Character.GetPlayerInteractionTooltip('recruit_guest_interaction')]"
-														using = tooltip_se
+													hbox = {
+														visible = "[Character.IsGuest]"
+														spacing = 10
+														button_standard = {
+															visible = "[Character.IsPlayerInteractionShown('recruit_guest_interaction')]"
+															enabled = "[Character.IsPlayerInteractionValid('recruit_guest_interaction')]"
+															onclick = "[Character.OpenPlayerInteraction('recruit_guest_interaction')]"
+															text = "[Character.GetPlayerInteractionName('recruit_guest_interaction')]"
+															tooltip = "[Character.GetPlayerInteractionTooltip('recruit_guest_interaction')]"
+															using = tooltip_se
+														}
+														expand = {}
 													}
-													expand = {}
-												}
 
-												hbox = {
-													visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
-													layoutpolicy_horizontal = expanding
-													spacing = 10
-
-													button_standard = {
+													hbox = {
 														visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
-														enabled = "[Character.IsPlayerInteractionValid('reject_shieldmaiden_interaction')]"
-														onclick = "[Character.OpenPlayerInteraction('reject_shieldmaiden_interaction')]"
-														text = "[Character.GetPlayerInteractionName('reject_shieldmaiden_interaction')]"
-														tooltip = "[Character.GetPlayerInteractionTooltip('reject_shieldmaiden_interaction')]"
-														using = tooltip_se
+														spacing = 10
+														button_standard = {
+															visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
+															enabled = "[Character.IsPlayerInteractionValid('reject_shieldmaiden_interaction')]"
+															onclick = "[Character.OpenPlayerInteraction('reject_shieldmaiden_interaction')]"
+															text = "[Character.GetPlayerInteractionName('reject_shieldmaiden_interaction')]"
+															tooltip = "[Character.GetPlayerInteractionTooltip('reject_shieldmaiden_interaction')]"
+															using = tooltip_se
+														}
+														expand = {}
 													}
-													expand = {}
-												}
 
-												hbox = {
-													visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
-													layoutpolicy_horizontal = expanding
-													spacing = 10
-
-													button_standard = {
+													hbox = {
 														visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
-														# enabled = "[Character.IsPlayerInteractionValid('designate_shieldmaiden_interaction')]"
-														onclick = "[Character.OpenPlayerInteraction('designate_shieldmaiden_interaction')]"
-														text = "[Character.GetPlayerInteractionName('designate_shieldmaiden_interaction')]"
-														tooltip = "[Character.GetPlayerInteractionTooltip('designate_shieldmaiden_interaction')]"
-														using = tooltip_se
+														spacing = 10
+														button_standard = {
+															visible = "[Character.IsPlayerInteractionShown('designate_shieldmaiden_interaction')]"
+															# enabled = "[Character.IsPlayerInteractionValid('designate_shieldmaiden_interaction')]"
+															onclick = "[Character.OpenPlayerInteraction('designate_shieldmaiden_interaction')]"
+															text = "[Character.GetPlayerInteractionName('designate_shieldmaiden_interaction')]"
+															tooltip = "[Character.GetPlayerInteractionTooltip('designate_shieldmaiden_interaction')]"
+															using = tooltip_se
+														}
+														expand = {}
+													}
+
+													hbox = {
+														name = "shieldmaiden_liege_years_counter"
+														visible = "[Character.IsPlayerInteractionShown('reject_shieldmaiden_interaction')]"
+														tooltip = SV_LIEGE_YEARS_COUNTER
+														icon = {
+															size = { 35 35 }
+															texture = "gfx/interface/icons/traits/shieldmaiden.dds"
+														}
+														text_single = {
+															text = "[Character.MakeScope.Var( 'shieldmaiden_liege_years_counter' ).GetValue|0]"
+															default_format = "#high"
+															align = center|nobaseline
+														}	
+														expand = {}
 													}
 													expand = {}
 												}
-
 												expand = {}
 											}
 											vbox = {
@@ -1353,7 +1365,7 @@ window = {
 							}
 						}
 					}
-
+					# чёрный список
 					vbox_collapsed_row_item = {
 						name = "forgotten_info"
 						layoutpolicy_horizontal = expanding
@@ -1369,7 +1381,7 @@ window = {
 							text = "[GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten'))|=]"
 						}
 						blockoverride "expand_button_inside" {
-							visible = "[GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten')), '(int32)0' )]"
+							visible = "[Or(GetVariableSystem.Exists( 'forgotten_scrollbox_show' ), GreaterThan_int32( GetDataModelSize(GetPlayer.MakeScope.GetList('shieldmaidens_list_forgotten')), '(int32)0' ))]"
 							onclick = "[GetVariableSystem.Toggle( 'forgotten_scrollbox_show' )]"
 						}	
 						scrollbox = {
@@ -1478,7 +1490,7 @@ window = {
 							}
 						}
 					}
-
+					# кнопки
 					hbox = {
 						margin_top = 3
 						margin_bottom = 5
@@ -1612,7 +1624,9 @@ window = {
 						}
 					}
 				}
-
+				###############################
+				#### SFA 
+				###############################
 
 				scrollbox = {
 					name = "tab_mercenaries"
@@ -1961,57 +1975,57 @@ types MilitaryView
 		}
 	}
 
-type vbox_collapsed_row_item = vbox {
-	spacing = -3
+	type vbox_collapsed_row_item = vbox {
+		spacing = -3
 
-	widget = {
-		layoutpolicy_horizontal = expanding
-		size = { 0 30 }
-		min_width = 110
+		widget = {
+			layoutpolicy_horizontal = expanding
+			size = { 0 30 }
+			min_width = 110
 
-		block "expand_button" {
-			button_standard_hover = {
-				size = { 100% 100% }
+			block "expand_button" {
+				button_standard_hover = {
+					size = { 100% 100% }
 
-				block "expand_button_inside" {}
-			}
-		}
-
-		hbox = {
-			margin = { 10 0 }
-
-			background = {
-				using = Text_Label_Background
-				# alpha = 0.5
-				margin = { 0 -2 }
-			}
-
-			text_single = {
-				align = nobaseline
-				fontsize = 16
-
-				block "header_text"
-				{
-					raw_text = "#D NEEDS TEXT#!"
+					block "expand_button_inside" {}
 				}
 			}
 
-			expand = {}
+			hbox = {
+				margin = { 10 0 }
 
-			text_single = {
-				align = nobaseline
-				fontsize = 16
-				default_format = "#weak"
+				background = {
+					using = Text_Label_Background
+					# alpha = 0.5
+					margin = { 0 -2 }
+				}
 
-				block "remaining_items" {
-					visible = no
+				text_single = {
+					align = nobaseline
+					fontsize = 16
+
+					block "header_text"
+					{
+						raw_text = "#D NEEDS TEXT#!"
+					}
+				}
+
+				expand = {}
+
+				text_single = {
+					align = nobaseline
+					fontsize = 16
+					default_format = "#weak"
+
+					block "remaining_items" {
+						visible = no
+					}
 				}
 			}
 		}
+
+		expand = {}
 	}
-
-	expand = {}
-}
 
 }
 

@@ -389,3 +389,20 @@ sfa_recipient_num_shunned_traits = {
 		add = 1
 	}
 }
+
+# для окна персонажа
+sfa_shieldmaidens_list_size = {
+	value = 0
+	every_courtier_or_guest = {
+		if = {
+			limit = { has_trait = shieldmaiden }
+			add = 1
+		}
+	}
+	every_vassal = {
+		if = {
+			limit = { has_trait = shieldmaiden }
+			add = 1
+		}
+	}
+}

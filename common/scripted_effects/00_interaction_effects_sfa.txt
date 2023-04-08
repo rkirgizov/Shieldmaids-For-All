@@ -36,11 +36,14 @@ kick_from_court_interaction_warning_tooltip_effect = {
 		limit = { is_knight_of = scope:actor }
 		custom_tooltip = kick_from_court_knight_warning_tt
 	}
-	# sfa
+	
+	# sfa предупреждение о воительнице
 	if = {
 		limit = { has_trait = shieldmaiden }
 		custom_tooltip = kick_from_court_shieldmaiden_warning_tt
 	}
+	# sfa
+
 	if = {
 		limit = {
 			scope:kicked = {
@@ -52,37 +55,7 @@ kick_from_court_interaction_warning_tooltip_effect = {
 	}
 }
 
-# sfa
-try_to_add_shieldmaiden_to_rule = {
-	if = {
-		limit = {
-			AND = {
-				has_trait = shieldmaiden
-				$RULER$  = { can_rule_calling_shieldmaidens_trigger = yes }
-				NOT = { has_relation_shieldmaiden_rule = $RULER$  }
-			}
-		}
-		set_relation_shieldmaiden_rule = $RULER$ 
-		add_character_flag = {
-			flag = rule_hired_shieldmaid_period_for_award
-			years = 15
-		}                
-	}
-}
-
-# sfa
-try_to_remove_shieldmaiden_from_rule = {
-	if = {
-		limit = { has_relation_shieldmaiden_rule = $RULER$ }
-		remove_relation_shieldmaiden_rule = $RULER$
-		if = {
-			limit = { has_character_flag = rule_hired_shieldmaid_period_for_award }
-			remove_character_flag = rule_hired_shieldmaid_period_for_award
-		}		
-	}
-}
-
-# sfa
+# sfa 
 try_to_add_shieldmaiden_on_designate_opinions = {
 	if = {
 		limit = { is_lowborn = no }

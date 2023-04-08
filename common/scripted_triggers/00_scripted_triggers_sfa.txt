@@ -6,7 +6,19 @@
 			is_ruler = no #Rulers can always get additional titles
 			is_theocratic_lessee = no #Theocratic lessees use other gender checks
 			NOR = {
-				has_trait = shieldmaiden	# kelamor
+				AND {    	# sfa
+					has_trait = shieldmaiden	
+					liege = var:shieldmaiden_liege
+					var:shieldmaiden_liege_years_counter >= 15
+					OR = {
+						# повысила уровень воительницы
+						has_character_modifier = shieldmaiden_level_martial_1_fp1_modifier
+						has_character_modifier = shieldmaiden_level_prowess_1_fp1_modifier
+						has_character_modifier = shieldmaiden_level_intrigue_1_fp1_modifier
+						# участвовала в более 5 битвах
+						var:shieldmaiden_veterancy >= 3
+					}					
+				}
 				$RULER$.faith = {
 					has_dominant_ruling_gender = scope:title_grantee
 				}

@@ -1,4 +1,5 @@
-﻿sfa_shieldmaidens_tab = {
+﻿# вкладка Воительницы в окне армий
+sfa_shieldmaidens_tab = {
 	scope = character 		# the root scope, i.e. the target of the effects
 	is_shown = {	# is it visible on the UI?
 		has_game_rule = shieldmaids_for_all
@@ -8,11 +9,9 @@
 	}	
 }
 
+# удаление из потенциальных
 sfa_shieldmaidens_delete_from_potential = {
 	scope = character 		# the root scope, i.e. the target of the effects
-	saved_scope = {
-		target
-	}	
 	effect = {	# what it does
 		root = {
 			add_character_flag = forgotten_potential_shieldmaiden_flag
@@ -20,11 +19,9 @@ sfa_shieldmaidens_delete_from_potential = {
 	}	
 }
 
+# возврат в потенциальные
 sfa_shieldmaidens_delete_from_forgotten = {
 	scope = character 		# the root scope, i.e. the target of the effects
-	saved_scope = {
-		target
-	}	
 	effect = {	# what it does
 		root = {
 			remove_character_flag = forgotten_potential_shieldmaiden_flag
@@ -32,14 +29,16 @@ sfa_shieldmaidens_delete_from_forgotten = {
 	}	
 }
 
+# формирование списков воительниц для окна Армий
 sfa_shieldmaidens_list = {
 	scope = character 		# the root scope, i.e. the target of the effects
 	effect = {			# what it does
+		clear_variable_list = tempo_shieldmaidens_list
 		clear_variable_list = shieldmaidens_list_all
 		clear_variable_list = shieldmaidens_list_active
 		clear_variable_list = shieldmaidens_list_potential
 		clear_variable_list = shieldmaidens_list_forgotten
-		ordered_courtier_or_guest = {
+		every_courtier_or_guest = {
 			limit = {
 				OR = {
 					root = {
@@ -56,11 +55,51 @@ sfa_shieldmaidens_list = {
 					root = {
 						is_character_interaction_potentially_accepted = {
 							recipient = prev
-							interaction = reject_shieldmaiden_interaction
+							interaction = potential_reject_shieldmaiden_interaction
 						}
 					}
 				}
 			}
+			root = {
+				add_to_variable_list = {
+					name = tempo_shieldmaidens_list
+					target = prev
+				}
+			}	
+		}		
+		every_vassal = {
+			limit = {
+				OR = {
+					root = {
+						prev = { 
+							has_character_flag = forgotten_potential_shieldmaiden_flag 
+						}
+					}
+					root = {
+						is_character_interaction_potentially_accepted = {
+							recipient = prev
+							interaction = potential_designate_shieldmaiden_interaction
+						}
+					}
+					root = {
+						is_character_interaction_potentially_accepted = {
+							recipient = prev
+							interaction = potential_reject_shieldmaiden_interaction
+						}
+					}
+				}
+			}
+			root = {
+				add_to_variable_list = {
+					name = tempo_shieldmaidens_list
+					target = prev
+				}
+			}	
+		}		
+
+
+		ordered_in_list = {
+			variable = tempo_shieldmaidens_list
 			min = 0
 			order_by = {
 				value = prowess
@@ -126,7 +165,7 @@ sfa_shieldmaidens_list = {
 						limit = {
 							is_character_interaction_potentially_accepted = {
 								recipient = prev
-								interaction = reject_shieldmaiden_interaction
+								interaction = potential_reject_shieldmaiden_interaction
 							}
 						}
 						add_to_variable_list = {
@@ -149,5 +188,153 @@ sfa_shieldmaidens_list = {
 				}
 			}
 		}		
+	}
+}
+
+# формирование списков воительниц для окна персонажа
+sfa_character_window_shieldmaidens_list = {
+	scope = character 		# the root scope, i.e. the target of the effects
+	effect = {			# what it does
+		clear_variable_list = tempo_shieldmaidens_list_active
+		clear_global_variable_list = character_window_shieldmaidens_list_active
+		every_courtier_or_guest = {
+			if = {
+				limit = { has_trait = shieldmaiden }
+				root = {
+					add_to_variable_list = {
+						name = tempo_shieldmaidens_list_active
+						target = prev
+					}
+				}	
+			}
+		}
+		every_vassal = {
+			if = {
+				limit = { has_trait = shieldmaiden }
+				root = {
+					add_to_variable_list = {
+						name = tempo_shieldmaidens_list_active
+						target = prev
+					}
+				}	
+			}
+		}
+		ordered_in_list = {
+			variable = tempo_shieldmaidens_list_active
+			min = 0
+			order_by = {
+				value = prowess
+				if = {
+					limit = { has_trait = brave }
+					add = 10
+				}
+				if = {
+					limit = { number_of_commander_traits >= 1 }
+					add = {
+						value = 5
+						multiply = number_of_commander_traits
+						min = 0
+					}
+				}
+				if = {
+					limit = { has_trait = education_martial_1 }
+					add = 5
+				}
+				else_if = {
+					limit = { has_trait = education_martial_2 }
+					add = 10
+				}	
+				else_if = {
+					limit = { has_trait = education_martial_3 }
+					add = 15
+				}	
+				else_if = {
+					limit = { has_trait = education_martial_4 }
+					add = 20
+				}	
+				if = {
+					limit = { has_trait = craven }
+					add = -15
+				}
+				if = {
+					limit = { has_trait = lazy }
+					add = -5
+				}
+				if = {
+					limit = { has_trait = brave }
+					add = 10
+				}
+			}
+			add_to_global_variable_list = {
+				name = character_window_shieldmaidens_list_active
+				target = this
+			}
+		}
+	}
+}
+
+
+# иконка авторитета вождя/короны для окна персонажа
+sfa_character_window_authority_level = {
+	scope = character 		# the root scope, i.e. the target of the effects
+	effect = {			# what it does
+		root = { 
+			if = {
+				limit = { has_realm_law = crown_authority_3 }
+				set_variable = {
+					name = authority_level
+					value = 4
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = crown_authority_2 }
+				set_variable = {
+					name = authority_level
+					value = 3
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = crown_authority_1 }
+				set_variable = {
+					name = authority_level
+					value = 2
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = crown_authority_0 }
+				set_variable = {
+					name = authority_level
+					value = 1
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = tribal_authority_3 }
+				set_variable = {
+					name = authority_level
+					value = 4
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = tribal_authority_2 }
+				set_variable = {
+					name = authority_level
+					value = 3
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = tribal_authority_1 }
+				set_variable = {
+					name = authority_level
+					value = 2
+				}
+			}
+			else_if = {
+				limit = { has_realm_law = tribal_authority_0 }
+				set_variable = {
+					name = authority_level
+					value = 1
+				}
+			}
+		}
 	}
 }

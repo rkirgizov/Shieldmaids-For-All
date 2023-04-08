@@ -608,6 +608,15 @@ invite_to_court_interaction = {
 				}
 			}
 		}		
+
+        # sfa
+ 		scope:recipient = {
+            hidden_effect = { 
+				try_to_remove_shieldmaiden_from_rule = { RULER = scope:recipient.court_owner } 
+				try_to_add_shieldmaiden_to_rule = { RULER = scope:actor } 
+			}
+        }
+		
 		scope:actor = {
 			send_interface_message = {
 				type = event_generic_neutral
@@ -637,11 +646,6 @@ invite_to_court_interaction = {
 				}
 			}
 		}
-
-        # sfa
- 		scope:recipient = {
-            hidden_effect = { try_to_add_shieldmaiden_to_rule = { RULER = scope:actor } }
-        }
 		
 		if = {
 			limit = { always = scope:cover_travel_expenses }

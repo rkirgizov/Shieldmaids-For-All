@@ -13,7 +13,6 @@ potential_designate_shieldmaiden_interaction = {
 	}
 }
 
-
 ##################
 # Designate a Shieldmaiden
 # by Alexander Oltner
@@ -43,6 +42,17 @@ designate_shieldmaiden_interaction = {
 		scope:recipient = { can_be_shieldmaiden_trigger = yes }
 	}
 	is_valid_showing_failures_only = {
+		scope:actor = { 			
+				# trigger_if = {
+				# 	limit = { 
+				# 		NOT = { has_realm_law = crown_authority_0 } 
+				# 	}
+				# 	custom_description = {
+						# text = "any_unequipped_artifact_tt"
+						can_rule_calling_shieldmaidens_valid_trigger = yes
+				# 	}					
+				# }
+			}
 		scope:recipient = { can_be_shieldmaiden_valid_trigger = yes }
 	}
 
@@ -241,13 +251,11 @@ designate_shieldmaiden_interaction = {
 		hidden_effect = {
 			scope:actor = {
 				send_interface_message = {
-					type = event_generic_neutral
+					type = event_prowess_good_with_text
 					title = designate_shieldmaiden_interaction_message_header
-					
+					desc = designate_shieldmaiden_interaction_message_desc
 					right_icon = scope:recipient
-
 					show_as_tooltip = {
-						custom_tooltip = designate_shieldmaiden_interaction_message_desc
 						if = {
 							limit = { has_game_rule = shieldmaids_for_all }
 							if = {
@@ -292,7 +300,6 @@ designate_shieldmaiden_interaction = {
 			# sfa
 			if = {
 				limit = { has_game_rule = shieldmaids_for_all }
-				try_to_add_shieldmaiden_to_rule = { RULER = scope:actor }
 				try_to_add_shieldmaiden_on_designate_opinions = { RULER = scope:actor }
 			}
 			else = {
@@ -576,11 +583,17 @@ designate_shieldmaiden_interaction = {
 		}
 	}
 
+	# цели для AI сюзерена
 	ai_targets = {
-		ai_recipients = courtiers	
+		ai_recipients = courtiers	# Which characters does the ai consider as recipient for the interaction, can be scripted multiple times to combine
+		chance = 0.50		# A low chance, such as 0.25, randomly excludes that number of characters from being checked - this is useful for
+	}
+	ai_target_quick_trigger = {			# Quick triggers for the ai_targets
+		can_be_potential_shieldmaiden_trigger = yes
 	}
 
-	ai_frequency = 60
+	# TODO ЧАСТОТУ ПЕРЕСМОТРЕТЬ
+	ai_frequency = 12			# How often should the ai consider doing this interaction
 
 	ai_potential = {
 		#Has access to the appropriate cultural parameter.
@@ -598,6 +611,14 @@ designate_shieldmaiden_interaction = {
 # Reject a Shieldmaiden
 # by kelamor
 ##################
+potential_reject_shieldmaiden_interaction = {
+	is_shown = {
+		has_game_rule = shieldmaids_for_all
+		scope:actor = { can_ruler_reject_shieldmaiden_trigger = yes }
+		scope:recipient = { can_be_rejected_from_shieldmaiden_trigger = yes }
+	}
+}
+
 reject_shieldmaiden_interaction = {
     category = interaction_category_vassal
 	common_interaction = yes
@@ -612,7 +633,9 @@ reject_shieldmaiden_interaction = {
 		scope:actor = { can_ruler_reject_shieldmaiden_trigger = yes }
 		scope:recipient = { can_be_rejected_from_shieldmaiden_trigger = yes }
 	}
-	
+	is_valid_showing_failures_only = {
+		scope:recipient = { NOT = { is_vassal_of = scope:actor } }
+	}	
 	cost = {
 		prestige = {
 			add = {
@@ -645,10 +668,11 @@ reject_shieldmaiden_interaction = {
 		hidden_effect = {
 			scope:actor = {
 				send_interface_message = {
+					type = event_prowess_bad_with_text
 					title = reject_shieldmaiden_interaction_message_header
+					desc = reject_shieldmaiden_interaction_message_desc
 					right_icon = scope:recipient
 					show_as_tooltip = {
-						custom_tooltip = reject_shieldmaiden_interaction_message_desc
 						if = {
 							limit = { scope:recipient = { is_lowborn = no } }
 							stress_impact = {
@@ -699,9 +723,9 @@ reject_shieldmaiden_interaction = {
         scope:recipient = {
 			remove_trait = shieldmaiden
 			try_to_add_shieldmaiden_on_reject_opinions = { RULER = scope:actor }
-			hidden_effect = { 
-				try_to_remove_shieldmaiden_from_rule = { RULER = scope:actor }
-			}
+			# hidden_effect = { 
+			# 	try_to_remove_shieldmaiden_from_rule = { RULER = scope:actor }
+			# }
         }
 		scope:actor = {
 			if = {

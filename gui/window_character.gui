@@ -4,8 +4,6 @@
 
 window = {
 	name = "character_window"
-	datacontext = "[GetVariableSystem]"
-	datacontext = "[CharacterWindow.GetCharacter]"
 	movable = no
 	layer = middle
 	allow_outside = yes
@@ -29,7 +27,14 @@ window = {
 		position_x = -60
 
 		on_start = "[GetVariableSystem.Clear( 'hide_bottom_left_HUD' )]"
+
+		# sfa закрываем окно воительниц
+		on_start = "[ExecuteConsoleCommand( 'gui.ClearWidgets shieldmaidens_view' )]"
+		on_start = "[GetVariableSystem.Clear('shieldmaidens_window_open')]"
 	}
+
+	datacontext = "[GetVariableSystem]"
+	datacontext = "[CharacterWindow.GetCharacter]"
 
 	vbox = {
 		name = "main_content"
@@ -1421,6 +1426,9 @@ window = {
 			### Realm, external info
 
 			widget = {
+
+
+				
 				datacontext = "[GetIllustration( 'character_location_exterior' )]"
 				layoutpolicy_horizontal = expanding
 				size = { 0 232 }
@@ -1472,7 +1480,7 @@ window = {
 								tooltip = "[Character.GetDefaultRealmFlagTooltipPrimaryTitleClickInfo]"
 								onclick = "[DefaultOnCoatOfArmsClick(Character.GetPrimaryTitle.GetID)]"
 							}
-						}
+						}						
 
 						vbox = {
 							datacontext = "[CharacterWindow.GetCharacter]"
@@ -1545,6 +1553,7 @@ window = {
 						layoutpolicy_vertical = expanding
 						margin_left = 5
 
+
 						## Realm name and stats
 						hbox = {
 							name = "name_and_stats"
@@ -1557,7 +1566,7 @@ window = {
 								visible = "[Not(Character.HasLandedTitles)]"
 								layoutpolicy_horizontal = expanding
 								margin = { 10 0 }
-								max_width = 280
+								max_width = 240
 
 								text_single = {
 									name = "character_title"
@@ -1571,6 +1580,8 @@ window = {
 									name = "government_type"
 									layoutpolicy_horizontal = expanding
 									text = "[Character.GetLocationDesc]"
+									# sfa
+									tooltip = "[Character.GetLocationDesc]"
 									default_format = "#low"
 									format_override = { high medium }
 									format_override = { V medium }
@@ -1581,15 +1592,18 @@ window = {
 
 							realm_name_and_type_vbox = {
 								visible = "[Character.HasLandedTitles]"
-								datacontext = "[Character.GetPrimaryTitle]"
-								max_width = 250
+								datacontext = "[Character.GetPrimaryTitle]"		
+								blockoverride "title_max_width"
+								{
+									max_width = 245 # SFA ширина поля с титулом, идиотизм, но от наличия воительниц криво работает
+								}					
 							}
 
 							expand = {}
 
 							hbox = {
 								name = "stats"
-								spacing = 8
+								spacing = 4
 								margin_bottom = 6
 								margin_top = 3
 								visible = "[Character.IsAlive]"
@@ -1597,7 +1611,7 @@ window = {
 								vbox = {
 									visible = "[Character.HasLandedTitles]"
 									spacing = -2
-									min_width = 40
+									min_width = 35
 									tooltip = "[Character.GetDreadBreakdown]"
 
 									icon = {
@@ -1618,7 +1632,7 @@ window = {
 
 								vbox = {
 									tooltip = "[Character.GetGoldTooltipWithBalance]"
-									min_width = 40
+									min_width = 35
 									spacing = -2
 
 									icon = {
@@ -1639,7 +1653,7 @@ window = {
 
 								vbox = {
 									tooltip = "[Character.GetPrestigeTooltipWithBalance]"
-									min_width = 40
+									min_width = 35
 									spacing = -2
 
 									icon = {
@@ -1660,7 +1674,7 @@ window = {
 
 								vbox = {
 									tooltip = "[Character.GetPietyTooltipWithBalance]"
-									min_width = 40
+									min_width = 35
 									spacing = -2
 
 									icon = {
@@ -1679,6 +1693,84 @@ window = {
 									}
 								}
 
+
+
+
+
+								###############################
+								#### SFA 
+								###############################
+								# spacer = {
+								# 	size = { 0 3 }
+								# }
+
+								# sfa обработка авторитета вождя/короны
+								widget = {
+									name = "authority_level_maintenance"	
+									datacontext = "[GetScriptedGui('sfa_character_window_authority_level')]"							
+									state = {
+										name = "if_change_character_in_characterwindow"
+										trigger_when = "[And( Character.IsIndependentRuler, Not( EqualTo_string(Character.GetUIName, GetVariableSystem.Get( 'current_independent_ruler' ) ) ) )]"
+										on_start = "[GetVariableSystem.Set( 'current_independent_ruler', Character.GetUIName )]"
+										on_finish = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)]"
+									}				
+								}
+
+								widget = {
+									name = "shieldmaidens_maintenance"	
+									datacontext = "[GetScriptedGui('sfa_character_window_shieldmaidens_list')]"							
+									state = {
+										name = "if_change_character_in_characterwindow"
+										trigger_when = "[And( Character.IsRuler, Not( EqualTo_string(Character.GetUIName, GetVariableSystem.Get( 'current_ruler' ) ) ) )]"
+										# запоминаем текущего правителя
+										on_start = "[GetVariableSystem.Set( 'current_ruler', Character.GetUIName )]"
+										# обновляем список воительниц	
+										on_finish = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)]"
+									}
+									state = {
+										name = "if_change_data_model_size"
+										trigger_when = "[And( Character.IsRuler, NotEqualTo_int32( FixedPointToInt(GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).ScriptValue( 'sfa_shieldmaidens_list_size' ) ), GetDataModelSize( GetGlobalList( 'character_window_shieldmaidens_list_active' ) ) ) )]"
+										# обновляем список воительниц	
+										on_start = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)]"
+									}							
+								}
+								button_standard_hover = {
+									size = { 40 48 }
+									tooltip = "CV_TOOLTIP_ICON_SHIELDMAIDENS"
+									spacing = -2
+									visible = "[And( Character.IsRuler, GreaterThan_int32( FixedPointToInt( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).ScriptValue( 'sfa_shieldmaidens_list_size' ) ), '(int32)0' ) )]"
+									# открываем окно воительниц
+									onclick = "[ExecuteConsoleCommand( Select_CString( GetVariableSystem.Exists('shieldmaidens_window_open'), 'gui.ClearWidgets shieldmaidens_view', 'gui.createwidget gui/custom_windows/window_shieldmaidens.gui shieldmaidens_view' ) )]"
+									onclick = "[GetVariableSystem.Toggle('shieldmaidens_window_open')]"
+									down = "[GetVariableSystem.Exists( 'shieldmaidens_window_open' )]"
+									background = {
+										using = Background_Frame
+										margin = { 5 5 }
+										margin_bottom = 7
+										alpha = 0.7
+									}
+									vbox = {
+										icon = {
+											name = "icon_shieldmaidens_total"
+											size = { 30 30 }
+											texture = "gfx/interface/icons/traits/shieldmaiden.dds"
+										}
+										text_single = {
+											name = "shieldmaidens_total"
+											# text = "[GetDataModelSize( GetGlobalList( 'character_window_shieldmaidens_list_active' ) )]"
+											text = "[FixedPointToInt( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).ScriptValue( 'sfa_shieldmaidens_list_size' ) )]"
+											default_format = "#high"
+											align = center|nobaseline
+											fontsize_min = 12
+											max_width = 20
+										}	
+									}
+									expand = {}
+								}
+								###############################
+								#### SFA 
+								###############################
+
 								spacer = {
 									size = { 0 3 }
 								}
@@ -1687,7 +1779,7 @@ window = {
 									visible = "[Character.HasLandedTitles]"
 									tooltip = "[CharacterWindow.GetMilitaryStrengthTooltip]"
 									spacing = -2
-									min_width = 40
+									min_width = 35
 
 									background = {
 										using = Background_Frame
@@ -1980,9 +2072,8 @@ window = {
 					datacontext = "[CharacterWindow.GetCharacter]"
 					layoutpolicy_horizontal = expanding
 
-                    onclick = "[GetVariableSystem.Set( 'sfa_shieldmaidens_tab_shown', 'false' )]"
 					onclick = "[CharacterWindow.SetTab('family')]"
-					down = "[And(CharacterWindow.IsTabShown('family'), GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'false' ))]"
+					down = "[CharacterWindow.IsTabShown('family')]"
 
 					using = tooltip_above
 
@@ -2011,9 +2102,8 @@ window = {
 					datacontext = "[CharacterWindow.GetCharacter]"
 					layoutpolicy_horizontal = expanding
 
-                    onclick = "[GetVariableSystem.Set( 'sfa_shieldmaidens_tab_shown', 'false' )]"
 					onclick = "[CharacterWindow.SetTab('relations')]"
-					down = "[And(CharacterWindow.IsTabShown('relations'), GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'false' ))]"
+					down = "[CharacterWindow.IsTabShown('relations')]"
 
 					using = tooltip_above
 
@@ -2038,48 +2128,13 @@ window = {
 				}
 
 				button_tab = {
-					name = "shieldmaidens_button"
-					datacontext = "[CharacterWindow.GetCharacter]"
-                    # visible = "[Character.IsRuler]"
-                    visible = "[And(Character.IsRuler, GreaterThan_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )), '(int32)0' ))]"
-					layoutpolicy_horizontal = expanding
-
-                    onclick = "[GetVariableSystem.Set( 'sfa_shieldmaidens_tab_shown', 'true' )]"
-                    onclick = "[CharacterWindow.SetTab('shieldmaidens_tab')]"
-                    down = "[GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'true' )]"
-
-
-					using = tooltip_above
-
-					hbox = {
-						text_single = {
-							layoutpolicy_horizontal = expanding
-							align = center
-							text = "CV_TAB_SHIELDMAIDENS"
-							default_format = "#low"
-						}
-
-						text_single = {
-							align = center
-							text = "[CharacterWindow.GetTabItemsCount('shieldmaidens_tab')]"
-							default_format = "#low"
-							margin_right = 15
-							min_width = 30
-
-							using = Animation_Character_Window_Refresh
-						}
-					}
-				}
-
-				button_tab = {
 					name = "court_button"
 					datacontext = "[CharacterWindow.GetCharacter]"
 					#	visible = "[Not(Character.IsPlayer)]"
 					layoutpolicy_horizontal = expanding
 
-                    onclick = "[GetVariableSystem.Set( 'sfa_shieldmaidens_tab_shown', 'false' )]"
 					onclick = "[CharacterWindow.SetTab('court')]"
-					down = "[And(CharacterWindow.IsTabShown('court'), GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'false' ))]"
+					down = "[CharacterWindow.IsTabShown('court')]"
 
 					using = tooltip_above
 
@@ -2110,9 +2165,8 @@ window = {
 					#	visible = "[And(Character.IsRuler, Not(Character.IsPlayer))]"
 					layoutpolicy_horizontal = expanding
 
-                    onclick = "[GetVariableSystem.Set( 'sfa_shieldmaidens_tab_shown', 'false' )]"
 					onclick = "[CharacterWindow.SetTab('vassals')]"
-					down = "[And(CharacterWindow.IsTabShown('vassals'), GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'false' ))]"
+					down = "[CharacterWindow.IsTabShown('vassals')]"
 
 					using = tooltip_above
 
@@ -2154,8 +2208,7 @@ window = {
 
 				widget = {
 					name = "family"
-					# visible = "[CharacterWindow.IsTabShown('family')]"
-                    visible = "[And(CharacterWindow.IsTabShown('family'), GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'false' ))]" # sfa
+					visible = "[CharacterWindow.IsTabShown('family')]"
 					size = { 100% 100% }
 
 					using = Animation_Tab_Switch
@@ -2645,10 +2698,16 @@ window = {
 										text = "LOVERS_LABEL"
 									}
 
+									# sfa
+									blockoverride "gridbox_wrap"
+									{
+										datamodel_wrap = 5
+									}
+
 									blockoverride "remaining_items"
 									{
 										visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'lover' ) ) ), '(int32)5' ) )]"
-										margin = { 167 }
+										# margin = { 167 }
 										text = "[GetNumberAbove_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'lover' ) ) ), '(int32)5' )|=]"
 
 									}
@@ -2794,17 +2853,61 @@ window = {
 										text = "FRIENDS_LABEL"
 									}
 
+									# sfa
+									maximumsize = { 255 -1 }
+									blockoverride "gridbox_wrap"
+									{
+										datamodel_wrap = 3
+									}
+
 									blockoverride "remaining_items"
 									{
-										visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)7' ) )]"
-										text = "[GetNumberAbove_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)7' )|=]"
+										visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)3' ) )]"
+										text = "[GetNumberAbove_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)3' )|=]"
 									}
 
 									blockoverride "expand_button_inside" {
-										visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)7' )]"
+										visible = "[GreaterThan_int32( GetDataModelSize( CharacterWindow.GetRelationsOfType( GetRelation( 'friend' ) ) ), '(int32)3' )]"
 										onclick = "[CharacterWindow.ToggleExpandedRelation( 'friends' )]"
 									}
 								}
+
+								vbox_character_row_relationship_item = {
+									name = "rivals"
+									layoutpolicy_vertical = expanding
+									layoutpolicy_horizontal = expanding
+
+									visible = no
+
+									blockoverride "portrait_datamodel" {
+										datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'rival' ) )]"
+									}
+
+									blockoverride "header_text"
+									{
+										text = "RIVALS_LABEL"
+									}
+
+									# sfa
+									# maximumsize = { 255 -1 }
+									blockoverride "gridbox_wrap"
+									{
+										datamodel_wrap = 4
+									}
+
+									blockoverride "remaining_items"
+									{
+										visible = "[GreaterThan_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'rival' ) )), '(int32)4' ))]"
+										text = "[GetNumberAbove_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'rival' ) )), '(int32)4' )|=]"
+									}
+
+									blockoverride "expand_button_inside" {
+										visible = "[GreaterThan_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'rival' ) )), '(int32)4' )]"
+										onclick = "[CharacterWindow.ToggleExpandedRelation( 'rivals' )]"
+									}
+								}
+
+
 
 								expand = {}
 							}
@@ -2981,114 +3084,6 @@ window = {
 						}
 					}
 				}
-
-
-
-
-
-
-
-				####################################
-				######## SHIELDMAIDENS TAB #########
-				####################################
-
-				widget = {
-					name = "shieldmaidens_tab"
-					# visible = "[CharacterWindow.IsTabShown('shieldmaidens_tab')]"
-                    # visible = "[And(CharacterWindow.IsTabShown('family'), GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'false' ))]" # sfa
-                	visible = "[And(Character.IsRuler, And(GetVariableSystem.HasValue( 'sfa_shieldmaidens_tab_shown', 'true' ), GreaterThan_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )), '(int32)0' )))]"
-                    # visible = "[Character.IsRuler]"
-
-					size = { 100% 100% }
-
-					using = Animation_Tab_Switch
-
-					vbox = {
-						name = "shieldmaidens_main_view"
-						# visible = "[Not(CharacterWindow.AreRelationsExpanded( 'shieldmaidens' ) ) ]"
-						visible = "[Not(CharacterWindow.AreRelationsExpanded( 'friends', 'rivals', 'lovers' ) ) ]"
-
-						widget = {
-							name = "first_row"
-							layoutpolicy_horizontal = expanding
-							layoutpolicy_vertical = expanding
-							maximumsize = { -1 110 }
-							scissor = yes
-
-							hbox = {
-								vbox_character_row_relationship_item = {
-									name = "shieldmaidens"
-									layoutpolicy_vertical = expanding
-									layoutpolicy_horizontal = expanding
-
-									blockoverride "portrait_datamodel" {
-										datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )]"
-									}
-
-									blockoverride "header_text"
-									{
-										text = "SHIELDMAIDENS_LABEL"
-									}
-
-									blockoverride "remaining_items"
-									{
-										visible = "[GreaterThan_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )), '(int32)7' ))]"
-										text = "[GetNumberAbove_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )), '(int32)7' )|=]"
-									}
-
-									blockoverride "expand_button_inside" {
-										visible = "[GreaterThan_int32( GetDataModelSize(CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )), '(int32)7' )]"
-										onclick = "[CharacterWindow.ToggleExpandedRelation( 'shieldmaidens' )]"
-									}
-								}
-
-								expand = {}
-							}
-						}
-
-						expand = {}
-					}
-					### SHIELDMAIDENS EXPANDED
-					scrollbox = {
-						name = "shieldmaidens_expanded"
-						visible = "[CharacterWindow.IsRelationExpanded( 'shieldmaidens' )]"
-						size = { 100% 100% }
-
-						blockoverride "scrollbox_replace_vbox" {
-							vbox_character_row_relationship_item = {
-								name = "shieldmaidens"
-								margin_top = 10
-								spacing = 5
-
-
-								blockoverride "portrait_datamodel" {
-									datamodel = "[CharacterWindow.GetRelationsOfType( GetRelation( 'shieldmaiden' ) )]"
-								}
-
-								blockoverride "header_text"
-								{
-									text = "SHIELDMAIDENS_LABEL"
-								}
-
-								blockoverride "expand_button_inside" {
-									onclick = "[CharacterWindow.ToggleExpandedRelation( 'shieldmaidens' )]"
-									down = "[CharacterWindow.IsRelationExpanded( 'shieldmaidens' )]"
-								}
-
-								blockoverride "gridbox_slots" {}
-							}
-						}
-					}
-
-				}
-
-
-
-
-
-
-
-
 
 				####################################
 				############ COURT TAB #############
@@ -3487,6 +3482,7 @@ window = {
 			scrollbox = {
 				name = "diplomacy_expanded"
 				visible = "[CharacterWindow.AreDiplomacyExpanded]"
+
 				layoutpolicy_vertical = expanding
 				layoutpolicy_horizontal = expanding
 
@@ -3983,7 +3979,13 @@ window = {
 						flipdirection = yes
 						addcolumn = 85
 						addrow = 90
-						datamodel_wrap = 7
+
+						# sfa
+						# datamodel_wrap = 3
+						block "gridbox_wrap"
+						{
+							datamodel_wrap = 7
+						}
 
 						block "gridbox_slots"
 						{
@@ -4383,12 +4385,17 @@ window = {
 					text = "[Title.GetNameNoTooltip|U]"
 					default_format = "#medium"
 					using = Font_Size_Medium
-					max_width = 300
+					# sfa корректируем ширину титула
+					min_width = 220	
+					block "title_max_width"
+					{
+						max_width = 290
+					}
 				}
 
 				expand = {}
 			}
-
+			
 			text_single = {
 				name = "faction"
 				visible = "[Title.HasFaction]"
@@ -4398,20 +4405,47 @@ window = {
 				default_format = "#low"
 				align = nobaseline
 				fontsize_min = 14
+				# sfa
+				min_width = 220	
+				max_width = 290
 			}
 
 			text_single = {
 				name = "government_type"
 				visible = "[Not( Title.HasFaction )]"
 				layoutpolicy_horizontal = expanding
-				autoresize = no
+				autoresize = no 
 				text = "CV_REALM_TYPE"
+				
+				# SFA
+				min_width = 220
+				max_width = 290	
+				# SFA
+
+				default_format = "#low"
+				align = nobaseline
+				fontsize_min = 14
+			}
+
+			text_single = {
+				name = "authority_level"
+				# visible = "[GreaterThanTo_int32(Character.MakeScope.Var( 'authority_level' ).GetValue, '(int32)0')]"
+				layoutpolicy_horizontal = expanding
+				autoresize = no 
+
+				# SFA добавил авторитет вождя/короны
+				text = "CV_AUTHORITY_LEVEL"
+				# text = "[Select_CString( Or( Character.HasRealmLaw( 'crown_authority_0' ), Character.HasRealmLaw( 'tribal_authority_0' ) ), shieldmaiden, shieldmaiden ) ]"
+				tooltip = "[Select_CString( Character.HasRealmLaw( 'crown_authority_0' ), crown_authority, tribal_authority ) ]"
+				min_width = 220
+				max_width = 290	
+				# SFA
+
 				default_format = "#low"
 				align = nobaseline
 				fontsize_min = 14
 			}
 		}
-
 	}
 
 	template Animation_Character_Window_Refresh
@@ -4425,6 +4459,7 @@ window = {
 		state = {
 			using = Animation_Refresh_FadeIn
 		}
+
 	}
 
 	template Animation_Character_Window_Refresh_Short

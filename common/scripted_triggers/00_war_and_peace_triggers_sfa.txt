@@ -227,14 +227,18 @@ can_be_shieldmaiden_trigger = {
 can_be_shieldmaiden_valid_trigger = { 
 	# prowess >= decent_skill_rating
 	is_adult = yes
-	is_imprisoned = no
-	OR = {
-		AND = {
-			has_game_rule = shieldmaids_for_all
-			NOT = { has_trait = pregnant }		
-		}
-		NOT = { has_game_rule = shieldmaids_for_all }
-	}			
+	is_imprisoned = no	
+	trigger_if = {
+		limit = { has_game_rule = shieldmaids_for_all }
+		is_pregnant = no
+	}
+}
+can_rule_calling_shieldmaidens_valid_trigger = { 
+	# только для вождеств, король сразу может				
+	trigger_if = {
+		limit = { NOT = { has_realm_law = crown_authority_0 } }
+		has_realm_law = tribal_authority_1
+	}
 }
 
 # sfa
@@ -254,6 +258,9 @@ can_be_rejected_from_shieldmaiden_trigger = {
 	NOT = { 
 		this = scope:actor
 	}
-	is_courtier_of = scope:actor
+	OR = {
+		is_courtier_of = scope:actor
+		is_vassal_of = scope:actor
+	}
 	has_trait = shieldmaiden
 }

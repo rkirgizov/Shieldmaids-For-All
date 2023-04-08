@@ -13,3 +13,448 @@
 
 #COURTIERS AND GUESTS DOING STUFF
 # 3001 - Sets relationships and other secrets
+
+###################
+# GUESTS ARRIVING #
+###################
+
+#Guest arriving, message if they're great
+scripted_trigger courtier_guest_management_1001_exceptional_claimant_trigger = {
+	any_claim = { useful_courtier_or_guest_claim_trigger = { RULER = scope:host } }
+}
+
+scripted_trigger courtier_guest_management_1001_exceptional_marriage_candidate_trigger = {
+	save_temporary_scope_as = marriage_candidate
+	guest_marriage_candidate_trigger = yes
+	age > 14
+	OR = {
+		num_of_good_genetic_traits = 3
+		AND = {
+			num_of_good_genetic_traits = 2
+			OR = {
+				has_trait = beauty_good_3
+				has_trait = intellect_good_3
+				has_trait = physique_good_3
+			}
+		}
+		scope:host = {
+			can_marry_character_trigger = { CHARACTER = scope:marriage_candidate }
+			marriage_between_characters_unlocks_alliance_of_min_tier_trigger = {
+				MY_CHARACTER = scope:host
+				THEIR_CHARACTER = scope:marriage_candidate
+				TIER >= scope:host.highest_held_title_tier
+			}
+		}
+		AND = {
+			exists = dynasty
+			dynasty = { dynasty_prestige_level >= high_dynasty_prestige_level }
+		}
+		has_useful_potential_spouse_claim_trigger = { RULER = scope:host }
+		calc_true_if = {
+			amount >= 2
+			num_of_good_genetic_traits = 2
+			AND = {
+				num_of_good_genetic_traits = 1
+				OR = {
+					has_trait = beauty_good_2
+					has_trait = intellect_good_2
+					has_trait = physique_good_2
+				}
+			}
+			AND = {
+				exists = dynasty
+				dynasty = { dynasty_prestige_level > medium_dynasty_prestige_level }
+			}
+		}
+		calc_true_if = {
+			amount >= 3
+			AND = {
+				exists = dynasty
+				dynasty = { dynasty_prestige_level > low_dynasty_prestige_level }
+			}
+			num_of_good_genetic_traits = 1
+			diplomacy >= high_skill_rating
+			martial >= high_skill_rating
+			stewardship >= high_skill_rating
+			intrigue >= high_skill_rating
+			learning >= high_skill_rating
+		}
+	}
+	NOR = {
+		num_of_bad_genetic_traits > 1
+		is_lowborn = yes
+	}
+}
+
+scripted_trigger courtier_guest_management_1001_exceptional_commander_trigger = {
+	guest_commander_candidate_trigger = { HOST = scope:host }
+	number_of_commander_traits >= 1
+	martial >= very_high_skill_rating
+}
+
+scripted_trigger courtier_guest_management_1001_exceptional_vassal_trigger = {
+	guest_vassal_candidate_trigger = yes
+	opinion = {
+		target = scope:host
+		value >= medium_positive_opinion
+	}
+	calc_true_if = {
+		amount >= 2
+		OR = {
+			has_trait = content
+			has_trait = trusting
+			has_trait = humble
+		}	
+		martial >= high_skill_rating
+		stewardship >= high_skill_rating
+	}
+}
+
+scripted_trigger courtier_guest_management_1001_exceptional_knight_trigger = {
+	guest_knight_candidate_trigger = { HOST = root }
+	prowess >= very_high_skill_rating
+}
+
+# SFA
+scripted_trigger courtier_guest_management_1001_exceptional_shieldmaiden_trigger = {
+	can_be_potential_shieldmaiden_trigger = { HOST = root }
+	age < 40
+	age >= 20
+	prowess >= very_high_skill_rating
+}
+# SFA
+
+scripted_trigger courtier_guest_management_1001_exceptional_physician_trigger = {
+	guest_physician_candidate_trigger = yes
+	OR = {
+		has_trait = lifestyle_mystic
+		has_trait = lifestyle_physician
+		has_trait = lifestyle_herbalist
+	}	
+	learning >= high_skill_rating
+}
+
+
+
+courtier_guest_management.1001 = {
+	hidden = yes
+
+
+
+	immediate = {
+
+		scope:guest = {
+			every_traveling_family_member = {
+				add_to_temporary_list = guest_arrival_list
+			}
+		}
+		
+		# To update Adventure Inspiration to make sure that the target destination isn't in the realm they just arrived to. If it is we remove it and make them pick a new destination!
+		every_in_list = {
+			list = guest_arrival_list
+			limit = {
+				exists = inspiration
+				inspiration = { has_inspiration_type = adventure_inspiration }
+				exists = var:adventure_destination #They know where they want to go
+			}
+			get_adventure_inspiration_start_location = { ADVENTURER = this }
+			if = {
+				limit = {
+					scope:host = {
+						any_sub_realm_county = {
+							this = scope:location
+						}
+					}
+				}
+				remove_variable = adventure_destination
+				if = {
+					limit = {
+						adventure_inspiration_average_skill_value >= high_inspiration_skill
+					}
+					set_adventure_location_effect = {
+						BASE_SCOPE = this
+						NO_DESTINATION = yes
+					}
+				}
+				else = {
+					set_adventure_location_effect = {
+						BASE_SCOPE = this
+						NO_DESTINATION = no
+					}
+				}
+			}
+		}
+
+		###DEVELOPMENT EFFECT###
+		#Because the characters spend so little time in the pool, we also run it now
+
+		every_in_list = {
+			list = guest_arrival_list
+			limit = { is_adult = yes }
+			pool_character_development_effect = yes
+		}
+
+		###EXCEPTIONAL GUEST TOAST###
+		if = {
+			limit = { scope:host = { is_ai = no } } #This is just interface messages, AI doesn't care
+
+			every_in_list = {
+				list = guest_arrival_list
+				limit = {
+					OR = {
+						courtier_guest_management_1001_exceptional_claimant_trigger = yes
+						courtier_guest_management_1001_exceptional_marriage_candidate_trigger = yes
+						courtier_guest_management_1001_exceptional_vassal_trigger = yes
+						courtier_guest_management_1001_exceptional_commander_trigger = yes
+						courtier_guest_management_1001_exceptional_knight_trigger = yes
+
+                        # SFA
+						courtier_guest_management_1001_exceptional_shieldmaiden_trigger = yes
+                        # SFA
+                        
+						courtier_guest_management_1001_exceptional_physician_trigger = yes
+					}
+				}
+				save_scope_as = exceptional_guest
+
+				#CLAIMANT MESSAGE
+				if = {
+					limit = { courtier_guest_management_1001_exceptional_claimant_trigger = yes }
+					random_claim = {
+						limit = {
+							useful_courtier_or_guest_claim_trigger = { RULER = scope:host }
+							tier = tier_kingdom
+							scope:host.highest_held_title_tier > tier_kingdom
+						}
+						alternative_limit = {
+							useful_courtier_or_guest_claim_trigger = { RULER = scope:host }
+							tier = tier_duchy
+							scope:host.highest_held_title_tier > tier_duchy
+						}
+						alternative_limit = {
+							useful_courtier_or_guest_claim_trigger = { RULER = scope:host }
+							tier = tier_county
+							scope:host.highest_held_title_tier > tier_county
+						}
+						save_scope_as = guest_claim
+					}
+					scope:host = {
+						send_interface_toast = {
+							type = msg_notable_guest
+							left_icon = scope:exceptional_guest
+							right_icon = scope:guest_claim
+							title = courtier_guest_management.1001.t
+							desc = courtier_guest_management.1001.claimant.desc
+						}
+					}
+				}
+				#MARRIAGE CANDIDATE MESSAGE
+				else_if = {
+					limit = { courtier_guest_management_1001_exceptional_marriage_candidate_trigger = yes }
+
+					#Change text
+					if = {
+						limit = { can_marry_character_trigger = { CHARACTER = scope:host } }
+						save_scope_value_as = {
+							name = marriage_message_target
+							value = flag:me
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								any_child = {
+									count >= 1
+									child_available_for_guest_marriage_trigger = yes
+									can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+									is_male = yes
+								}
+								any_child = {
+									count >= 1
+									child_available_for_guest_marriage_trigger = yes
+									can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+									is_female = yes
+								}
+							}
+						}
+						save_scope_value_as = {
+							name = marriage_message_target
+							value = flag:children
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								any_child = {
+									count >= 2
+									child_available_for_guest_marriage_trigger = yes
+									can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+									is_male = yes
+								}
+							}
+						}
+						save_scope_value_as = {
+							name = marriage_message_target
+							value = flag:sons
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								any_child = {
+									count >= 2
+									child_available_for_guest_marriage_trigger = yes
+									can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+									is_female = yes
+								}
+							}
+						}
+						save_scope_value_as = {
+							name = marriage_message_target
+							value = flag:daughters
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								any_child = {
+									child_available_for_guest_marriage_trigger = yes
+									can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+									is_male = yes
+								}
+							}
+						}
+						random_child = {
+							limit = {
+								child_available_for_guest_marriage_trigger = yes
+								can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+								is_male = yes
+							}
+							save_scope_as = marriage_child
+						}
+					}
+					else = {
+						random_child = {
+							limit = {
+								child_available_for_guest_marriage_trigger = yes
+								can_marry_character_trigger = { CHARACTER = scope:exceptional_guest }
+								is_female = yes
+							}
+							save_scope_as = marriage_child
+						}
+					}
+
+					scope:host = {
+						send_interface_message = {
+							type = character_arrived
+							left_icon = scope:exceptional_guest
+							right_icon = scope:marriage_child
+							title = courtier_guest_management.1001.t
+							desc = {
+								desc = courtier_guest_management.1001.marriage_start.desc
+								first_valid = {
+									triggered_desc = {
+										trigger = {
+											exists = scope:marriage_message_target
+											scope:marriage_message_target = flag:me
+										}
+										desc = courtier_guest_management.1001.marriage_me.desc
+									}
+									triggered_desc = {
+										trigger = {
+											exists = scope:marriage_message_target
+											scope:marriage_message_target = flag:children
+										}
+										desc = courtier_guest_management.1001.marriage_my_children.desc
+									}
+									triggered_desc = {
+										trigger = {
+											exists = scope:marriage_message_target
+											scope:marriage_message_target = flag:sons
+										}
+										desc = courtier_guest_management.1001.marriage_my_sons.desc
+									}
+									triggered_desc = {
+										trigger = {
+											exists = scope:marriage_message_target
+											scope:marriage_message_target = flag:daughters
+										}
+										desc = courtier_guest_management.1001.marriage_my_daughters.desc
+									}
+									desc = courtier_guest_management.1001.marriage_my_child.desc
+								}
+							}
+						}
+					}	
+				}
+				#VASSAL MESSAGE
+				else_if = {
+					limit = { courtier_guest_management_1001_exceptional_vassal_trigger = yes }
+					scope:host = {
+						send_interface_message = {
+							type = character_arrived
+							left_icon = scope:exceptional_guest
+							title = courtier_guest_management.1001.t
+							desc = courtier_guest_management.1001.vassal.desc
+						}
+					}
+				}
+				#COMMANDER MESSAGE
+				else_if = {
+					limit = { courtier_guest_management_1001_exceptional_commander_trigger = yes }
+					scope:host = {
+						send_interface_message = {
+							type = character_arrived
+							left_icon = scope:exceptional_guest
+							title = courtier_guest_management.1001.t
+							desc = courtier_guest_management.1001.commander.desc
+						}
+					}
+				}
+				#KNIGHT MESSAGE
+				else_if = {
+					limit = {
+						courtier_guest_management_1001_exceptional_knight_trigger = yes
+					}
+					scope:host = {
+						send_interface_message = {
+							type = character_arrived
+							left_icon = scope:exceptional_guest
+							title = courtier_guest_management.1001.t
+							desc = courtier_guest_management.1001.knight.desc
+						}
+					}
+				}
+
+				#SFA SHIELDMAIDEN MESSAGE
+				else_if = {
+					limit = {
+						courtier_guest_management_1001_exceptional_shieldmaiden_trigger = yes
+					}
+					scope:host = {
+						send_interface_message = {
+							type = character_arrived
+							left_icon = scope:exceptional_guest
+							title = courtier_guest_management.1001.t
+							desc = courtier_guest_management.1001.shieldmaiden.desc
+						}
+					}
+				}
+                # SFA
+
+				#PHYSICIAN MESSAGE
+				else_if = {
+					limit = { courtier_guest_management_1001_exceptional_physician_trigger = yes }
+					scope:host = {
+						send_interface_message = {
+							type = character_arrived
+							left_icon = scope:exceptional_guest
+							title = courtier_guest_management.1001.t
+							desc = courtier_guest_management.1001.physician.desc
+						}
+					}
+				}
+			}
+		}
+	}
+}

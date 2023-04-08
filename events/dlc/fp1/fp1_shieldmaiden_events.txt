@@ -1,16 +1,13 @@
 ﻿namespace = fp1_shieldmaiden
 
-# DON RENAME FILE to _sfa
+# DONT RENAME FILE to _sfa
 
 scripted_trigger wrong_gender_for_fighting_in_faith_trigger = {
 	#Has access to the appropriate cultural parameter.
-	OR = { 
-		culture = { has_cultural_parameter = has_access_to_shieldmaidens }
-		has_game_rule = shieldmaids_for_all	
-	}
 	OR = {
 		AND = {
 			NOT = { has_game_rule = shieldmaids_for_all	}
+			culture = { has_cultural_parameter = has_access_to_shieldmaidens }
 			OR = {
 				AND = {
 					is_female = yes
@@ -20,7 +17,7 @@ scripted_trigger wrong_gender_for_fighting_in_faith_trigger = {
 					is_male = yes
 					faith = { has_doctrine = doctrine_gender_female_dominated }
 				}
-			}
+			}			
 		}
 		AND = {
 			has_game_rule = shieldmaids_for_all
@@ -1489,6 +1486,61 @@ fp1_shieldmaiden.0032 = {
 			modifier = {	#Weight down for stress.
 				add = -10
 				has_trait = paranoid
+			}
+		}
+	}
+}
+
+
+
+##################################################
+# Shieldmaiden Management
+# by SFA rkirgizov
+# 0041 - 0050
+##################################################
+
+#Shieldmaiden with current liege years counter
+fp1_shieldmaiden.0041 = {
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { 
+				exists = root.liege 
+				valid_for_shieldmaiden_veterancy = yes 
+			}
+			if = {
+				limit = { 
+					exists = var:shieldmaiden_liege 
+				}
+				if = {
+					limit = { 
+						var:shieldmaiden_liege = root.liege 
+					}
+					change_variable = {
+						name = shieldmaiden_liege_years_counter
+						add = 1
+					}
+				}
+				else = {
+					set_variable = {
+						name = shieldmaiden_liege
+						value = root.liege
+					}
+					set_variable = {
+						name = shieldmaiden_liege_years_counter
+						value = 0
+					}
+				}
+			}
+			else = {
+				set_variable = {
+					name = shieldmaiden_liege
+					value = root.liege
+				}
+				set_variable = {
+					name = shieldmaiden_liege_years_counter
+					value = 0
+				}
 			}
 		}
 	}
