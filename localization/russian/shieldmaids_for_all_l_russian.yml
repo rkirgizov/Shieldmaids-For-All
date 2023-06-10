@@ -105,7 +105,8 @@
 
 # GUI CHARACTER WINDOW
   CV_TOOLTIP_ICON_SHIELDMAIDENS:1 "#I Нажмите, чтобы открыть список [Concept( 'sfa_shieldmaidens', Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'воительниц', 'щитовиков' ) )|E], служащих при дворе правителя#!"
-  CV_AUTHORITY_LEVEL:2 " | #V [Character.MakeScope.Var( 'authority_level' ).GetValue|0]#!"
+  CV_REALM_TYPE_AND_AUTHORITY_LEVEL:0 "$CV_REALM_TYPE$ | $CV_AUTHORITY_TOOLTIP$"
+  CV_AUTHORITY_TOOLTIP:0 "[Select_CString( Character.HasRealmLaw( 'crown_authority_0' ), autonomous_vassals, '' ) |E][Select_CString( Character.HasRealmLaw( 'crown_authority_1' ), limited, '' ) |E][Select_CString( Character.HasRealmLaw( 'crown_authority_2' ), high, '' ) |E][Select_CString( Character.HasRealmLaw( 'crown_authority_3' ), absolute, '' ) |E][Select_CString( Character.HasRealmLaw( 'tribal_authority_0' ), disparate_tribes, '' ) |E][Select_CString( Character.HasRealmLaw( 'tribal_authority_1' ), limited_tribal, '' ) |E][Select_CString( Character.HasRealmLaw( 'tribal_authority_2' ), high_tribal, '' ) |E][Select_CString( Character.HasRealmLaw( 'tribal_authority_3' ), absolute_tribal, '' ) |E]"
 
 # GUI MILITARY WINDOW
   MV_TAB_SHIELDMAIDENS:1 "[Select_CString(GetPlayer.GetFaith.HasDoctrineByKey( 'doctrine_gender_male_dominated' ), 'Воительницы', 'Щитовики' )]"

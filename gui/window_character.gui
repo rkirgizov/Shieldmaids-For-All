@@ -1704,18 +1704,6 @@ window = {
 								# 	size = { 0 3 }
 								# }
 
-								# sfa обработка авторитета вождя/короны
-								widget = {
-									name = "authority_level_maintenance"	
-									datacontext = "[GetScriptedGui('sfa_character_window_authority_level')]"							
-									state = {
-										name = "if_change_character_in_characterwindow"
-										trigger_when = "[And( Character.IsIndependentRuler, Not( EqualTo_string(Character.GetUIName, GetVariableSystem.Get( 'current_independent_ruler' ) ) ) )]"
-										on_start = "[GetVariableSystem.Set( 'current_independent_ruler', Character.GetUIName )]"
-										on_finish = "[ScriptedGui.Execute( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)]"
-									}				
-								}
-
 								widget = {
 									name = "shieldmaidens_maintenance"	
 									datacontext = "[GetScriptedGui('sfa_character_window_shieldmaidens_list')]"							
@@ -4389,61 +4377,58 @@ window = {
 					min_width = 220	
 					block "title_max_width"
 					{
-						max_width = 290
+						max_width = 280
 					}
 				}
-
+				
 				expand = {}
 			}
 			
-			text_single = {
-				name = "faction"
-				visible = "[Title.HasFaction]"
-				layoutpolicy_horizontal = expanding
-				autoresize = no
-				text = "CV_CIVIL_WAR_FACTION"
-				default_format = "#low"
-				align = nobaseline
-				fontsize_min = 14
-				# sfa
-				min_width = 220	
-				max_width = 290
+			# sfa
+			spacer = {
+				size = { 0 0 }
 			}
 
-			text_single = {
-				name = "government_type"
-				visible = "[Not( Title.HasFaction )]"
+			hbox = {
 				layoutpolicy_horizontal = expanding
-				autoresize = no 
-				text = "CV_REALM_TYPE"
+
+				text_single = {
+					name = "faction"
+					visible = "[Title.HasFaction]"
+					layoutpolicy_horizontal = expanding
+					# autoresize = no
+					text = "CV_CIVIL_WAR_FACTION"
+					default_format = "#low"
+					align = nobaseline
+					fontsize_min = 14
+					# sfa
+					min_width = 220	
+					max_width = 280
+				}
 				
-				# SFA
-				min_width = 220
-				max_width = 290	
-				# SFA
+				text_single = {
+					name = "government_type"
+					visible = "[Not( Title.HasFaction )]"
+					layoutpolicy_horizontal = expanding
+					# autoresize = no 
+					
+					# SFA
+					text = "CV_REALM_TYPE_AND_AUTHORITY_LEVEL"
+					tooltip = "CV_AUTHORITY_TOOLTIP"
+					min_width = 220
+					max_width = 280	
+					# SFA
 
-				default_format = "#low"
-				align = nobaseline
-				fontsize_min = 14
+					default_format = "#low"
+					align = nobaseline
+					fontsize_min = 13
+				}
+				
+				expand = {}
 			}
-
-			text_single = {
-				name = "authority_level"
-				# visible = "[GreaterThanTo_int32(Character.MakeScope.Var( 'authority_level' ).GetValue, '(int32)0')]"
-				layoutpolicy_horizontal = expanding
-				autoresize = no 
-
-				# SFA добавил авторитет вождя/короны
-				text = "CV_AUTHORITY_LEVEL"
-				# text = "[Select_CString( Or( Character.HasRealmLaw( 'crown_authority_0' ), Character.HasRealmLaw( 'tribal_authority_0' ) ), shieldmaiden, shieldmaiden ) ]"
-				tooltip = "[Select_CString( Character.HasRealmLaw( 'crown_authority_0' ), crown_authority, tribal_authority ) ]"
-				min_width = 220
-				max_width = 290	
-				# SFA
-
-				default_format = "#low"
-				align = nobaseline
-				fontsize_min = 14
+			# sfa
+			spacer = {
+				size = { 0 10 }
 			}
 		}
 	}
